@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>nv_node_editor</class>
- <widget class="QMainWindow" name="nv_node_editor">
+ <class>coco_edit_window</class>
+ <widget class="QMainWindow" name="coco_edit_window">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tangle</string>
+   <string>Coco Edit by @cocoyosoy</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -53,7 +53,7 @@
          <bool>true</bool>
         </property>
         <property name="alternatingRowColors">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="selectionMode">
          <enum>QAbstractItemView::SingleSelection</enum>
@@ -94,7 +94,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1093</width>
+           <width>1101</width>
            <height>76</height>
           </rect>
          </property>

@@ -65,7 +65,7 @@ class NodeView(QGraphicsView):
     #     print event.source()
 
     def wheelEvent(self, event):
-        if event.delta() > 0:
+        if event.angleDelta().y() > 0:
             self.scale(1.1, 1.1)
         else:
             self.scale(0.9, 0.9)

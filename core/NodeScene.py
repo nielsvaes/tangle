@@ -23,7 +23,6 @@ class NodeScene(QGraphicsScene):
     def add_node_to_view(self, class_name, module, x=0, y=0):
         if type(class_name) == str:
             class_path = ".".join(["CocoEdit", "nodes", module, class_name, class_name])
-            print(class_path)
             node_class = locate(class_path)
             node_instance = node_class(self, x, y)
         else:
@@ -172,14 +171,10 @@ class NodeScene(QGraphicsScene):
         class_name = event.source().selectedItems()[0].text(0)
         module = event.source().selectedItems()[0].parent().text(0)
 
-        print(class_name)
-        print(module)
-
         x = event.scenePos().x()
         y = event.scenePos().y()
 
         self.add_node_to_view(class_name, module, x, y)
-
 
     def keyPressEvent(self, event):
         #from nodes.base_node import BaseNode

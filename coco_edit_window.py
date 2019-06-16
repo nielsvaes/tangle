@@ -20,21 +20,10 @@ from core.NodeScene import NodeScene
 from core.NodeView import NodeView
 from core.Constants import ss, IO
 
-
-class GeneralConstants():
-    file_name = "file_name"
-    folder_name = "folder_name"
-
-    icon_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), "ui", "icons")
-
-
-gk = GeneralConstants
-
 SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
 UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
 ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
 NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
-
 
 class CocoEditWindow(QMainWindow):
     def __init__(self):
@@ -61,14 +50,7 @@ class CocoEditWindow(QMainWindow):
         for i in range(1, 4):
             self.tree_nodes.setColumnHidden(i, True)
 
-        self.move(750, 30)
-
-        # self.btn_TEST_begin_node.clicked.connect(self.get_begin_node)
-        # self.btn_TEST_cyclical.clicked.connect(self.check_cyclical)
-        # self.btn_compute_node.clicked.connect(self.compute)
-        # self.btn_TEST_begin_normal_node.clicked.connect(self.scene.refresh_network)
-
-        # self.scene.refreshed.connect(self.load_values_ui)
+        # self.move(750, 30)
 
         self.scene.selectionChanged.connect(self.load_values_ui)
 
@@ -97,7 +79,7 @@ class CocoEditWindow(QMainWindow):
                     folder_item = QTreeWidgetItem(self.tree_nodes, [folder_name])
                     font = QFont()
                     font.setBold(True)
-                    font.setPointSize(10)
+                    font.setPointSize(12)
                     folder_item.setFont(0, font)
                     folder_item.setExpanded(True)
 
