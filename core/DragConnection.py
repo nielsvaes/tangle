@@ -1,4 +1,3 @@
-# from PyQt5.QtUiTools import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -31,7 +30,6 @@ class DragConnection(QGraphicsPathItem):
             center_point = socket.get_center_point()
             if self.__get_distance(end_pos, center_point) < nc.socket_size:
                 end_pos = center_point
-
 
         if self.mouse_position.x() > self.output_socket.get_center_point().x():
             cv1 = QPointF(start_pos.x() + cv_offset, start_pos.y())

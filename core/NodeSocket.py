@@ -144,9 +144,10 @@ class NodeSocket(QGraphicsEllipseItem):
 
         if isinstance(input_socket, NodeSocket):
             connection = SocketConnection(output_socket, input_socket, self.scene)
-            output_socket.set_label_style_connected(True)
-            input_socket.set_label_style_connected(True)
-            logging.info(str(connection))
+            if connection.is_valid:
+                output_socket.set_label_style_connected(True)
+                input_socket.set_label_style_connected(True)
+                logging.info(str(connection))
 
         else:
             logging.warning("Released at %s, there is no socket here" % self.connection_end_point)

@@ -19,8 +19,8 @@ class SocketConnection(QGraphicsPathItem):
         self.input_socket = input_socket
 
         self.order_sockets()
-        is_valid = self.check_validity()
-        if is_valid:
+        self.is_valid = self.check_validity()
+        if self.is_valid:
             self.update_sockets()
             self.__draw()
 
@@ -29,7 +29,6 @@ class SocketConnection(QGraphicsPathItem):
             socket.add_connection(self)
 
             socket.fetch_connected_value()
-
 
     def order_sockets(self):
         if self.output_socket.io != IO.output:
