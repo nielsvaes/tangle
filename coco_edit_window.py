@@ -88,7 +88,7 @@ class CocoEditWindow(QMainWindow):
 
     def load_values_ui(self):
         from nodes.base_node import BaseNode
-
+        # spacer = QSpacerItem(10, 4000)
         qutils.clear_layout(self.values_layout)
 
         for node in self.scene.selectedItems():
@@ -107,17 +107,9 @@ class CocoEditWindow(QMainWindow):
                 self.values_layout.insertWidget(self.values_layout.count(), title_label)
                 widget = node.get_ui()
 
-                # for socket in node.get_all_sockets():
-                #     widget = socket.socket_type.get_ui()
-                #     widget = socket.socket_type.get_ui()
-                #     if socket.io == IO.input and socket.is_connected():
-                #         widget.setEnabled(False)
-                #         widget.setStyleSheet(ss.socket_ui_connected)
-                #     elif socket.io == IO.input and not socket.is_connected():
-                #         widget.setEnabled(True)
-                #         widget.setStyleSheet("")
-
                 self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
+
+                # self.values_layout.addSpacerItem(spacer)
 
     def clear_values_layout(self):
         for i in reversed(range(self.values_layout.count())):

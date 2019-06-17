@@ -57,7 +57,7 @@ class PictureSocketType(BaseSocketType):
         super(PictureSocketType, self).__init__(parent_node)
 
         self.name = "pic"
-        self.color = QColor(255, 0, 0, 255)
+        self.color = QColor(90, 100, 170, 255)
 
     def get_ui(self):
         pass

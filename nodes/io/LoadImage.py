@@ -10,7 +10,6 @@ class LoadImage(BaseNode):
 
         self.add_label("Please click the button")
         self.add_button("Load image", self.load_image)
-        self.add_spacer()
 
     def load_image(self):
         print("Loading image!")
