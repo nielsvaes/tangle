@@ -14,6 +14,8 @@ class DragConnection(QGraphicsPathItem):
         self.all_sockets = []
         self.find_all_sockets()
 
+        self.end_pos = QPoint(0, 0)
+
         self.__draw()
 
     def find_all_sockets(self):
@@ -24,23 +26,23 @@ class DragConnection(QGraphicsPathItem):
         cv_offset = nc.connection_cv_offset
 
         start_pos = self.output_socket.get_center_point()
-        end_pos = self.mouse_position
+        self.end_pos = self.mouse_position
 
         for socket in self.all_sockets:
             center_point = socket.get_center_point()
-            if self.__get_distance(end_pos, center_point) < nc.socket_size:
-                end_pos = center_point
+            if self.__get_distance(self.end_pos, center_point) < nc.socket_size:
+                self.end_pos = center_point
 
         if self.mouse_position.x() > self.output_socket.get_center_point().x():
             cv1 = QPointF(start_pos.x() + cv_offset, start_pos.y())
-            cv2 = QPointF(end_pos.x() - cv_offset, end_pos.y())
+            cv2 = QPointF(self.end_pos.x() - cv_offset, self.end_pos.y())
         else:
             cv1 = QPointF(start_pos.x() - cv_offset, start_pos.y())
-            cv2 = QPointF(end_pos.x() + cv_offset, end_pos.y())
+            cv2 = QPointF(self.end_pos.x() + cv_offset, self.end_pos.y())
 
         path = QPainterPath(start_pos)
 
-        path.cubicTo(cv1, cv2, end_pos)
+        path.cubicTo(cv1, cv2, self.end_pos)
 
         self.setPath(path)
 

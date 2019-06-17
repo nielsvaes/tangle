@@ -130,7 +130,8 @@ class NodeSocket(QGraphicsEllipseItem):
             self.drag_connection.redraw()
 
     def mouseReleaseEvent(self, event):
-        self.connection_end_point = event.scenePos()
+        self.connection_end_point = self.drag_connection.end_pos
+        # self.connection_end_point = event.scenePos()
 
         if self.drag_connection is not None:
             self.drag_connection.destroy_self()

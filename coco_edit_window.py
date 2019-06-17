@@ -105,17 +105,19 @@ class CocoEditWindow(QMainWindow):
                 title_label.returnPressed.connect(title_label.node.reposition_title)
 
                 self.values_layout.insertWidget(self.values_layout.count(), title_label)
+                widget = node.get_ui()
 
-                for socket in node.get_all_sockets():
-                    widget = socket.socket_type.get_ui()
-                    if socket.io == IO.input and socket.is_connected():
-                        widget.setEnabled(False)
-                        widget.setStyleSheet(ss.socket_ui_connected)
-                    elif socket.io == IO.input and not socket.is_connected():
-                        widget.setEnabled(True)
-                        widget.setStyleSheet("")
+                # for socket in node.get_all_sockets():
+                #     widget = socket.socket_type.get_ui()
+                #     widget = socket.socket_type.get_ui()
+                #     if socket.io == IO.input and socket.is_connected():
+                #         widget.setEnabled(False)
+                #         widget.setStyleSheet(ss.socket_ui_connected)
+                #     elif socket.io == IO.input and not socket.is_connected():
+                #         widget.setEnabled(True)
+                #         widget.setStyleSheet("")
 
-                    self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
+                self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
     def clear_values_layout(self):
         for i in reversed(range(self.values_layout.count())):

@@ -21,8 +21,8 @@ class BaseSocketType(QObject):
         self.accept_multiple = False
         self.color = QColor(105, 105, 105, 255)
 
-    def get_ui(self):
-        raise NotImplementedError()
+    # def get_ui(self):
+    #     raise NotImplementedError()
 
     def get_parent_node(self):
         return self.__parent_node
@@ -51,6 +51,16 @@ class BaseSocketType(QObject):
 
     def reset_to_initial_value(self):
         self.__value = self.__initial_value
+
+class PictureSocketType(BaseSocketType):
+    def __init__(self, parent_node):
+        super(PictureSocketType, self).__init__(parent_node)
+
+        self.name = "pic"
+        self.color = QColor(255, 0, 0, 255)
+
+    def get_ui(self):
+        pass
 
 class ExecutionSocketType(BaseSocketType):
     def __init__(self):

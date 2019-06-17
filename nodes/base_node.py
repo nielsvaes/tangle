@@ -14,20 +14,43 @@ class BaseNode(NodeItem):
         self.x = x
         self.y = y
 
+        self.__widget = QWidget()
+        self.__layout = QVBoxLayout()
+
+        self.__widget.setLayout(self.__layout)
+
     def refresh(self):
         for socket in self.get_all_input_sockets():
             socket.fetch_connected_value()
             self.compute()
 
-
-    def auto_compute(self):
-        return self.__auto_compute
-
-    def set_auto_compute(self, value):
-        self.__auto_compute = value
+    # def auto_compute(self):
+    #     return self.__auto_compute
+    #
+    # def set_auto_compute(self, value):
+    #     self.__auto_compute = value
 
     def compute(self):
         raise NotImplementedError()
+
+    def get_ui(self):
+        return self.__widget
+
+    def add_button(self, button_text, clicked_function):
+        button = QPushButton(button_text)
+        button.clicked.connect(clicked_function)
+        self.__layout.addWidget(button)
+
+    def add_label(self, label_text):
+        label = QLabel(label_text)
+        self.__layout.addWidget(label)
+
+    def add_spacer(self):
+        spacer = QSpacerItem(10, 4000)
+        self.__layout.addSpacerItem(spacer)
+
+    def add_slider(self, changed_function):
+        pass
 
     def error(self, socket, text):
         logging.error("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))
