@@ -3,6 +3,7 @@ import sys
 from functools import partial
 import traceback
 import logging
+logging.basicConfig(level=logging.DEBUG)
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -44,7 +45,6 @@ class CocoEditWindow(QMainWindow):
         self.scene.setSceneRect(0, 0, 50000, 28000)
 
         self.view = NodeView(self.scene, self)
-        print(self.view)
         self.main_vertical_layout.addWidget(self.view)
 
         for i in range(1, 4):
@@ -123,10 +123,10 @@ class CocoEditWindow(QMainWindow):
         title_label.node.change_title(text)
 
     def check_cyclical(self):
-        print(self.scene.is_cyclical())
+        logging.debug(self.scene.is_cyclical())
 
     def get_begin_node(self):
-        print(self.scene.get_begin_executing_node().name)
+        logging.debug(self.scene.get_begin_executing_node().name)
 
     def compute(self):
         for node in self.scene.selectedItems():

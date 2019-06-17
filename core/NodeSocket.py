@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 import logging
+logging.basicConfig(level=logging.DEBUG)
 
 from .SocketConnection import SocketConnection
 from .DragConnection import DragConnection
@@ -138,9 +139,6 @@ class NodeSocket(QGraphicsEllipseItem):
 
         output_socket = self.scene.itemAt(self.connection_start_point, QTransform())
         input_socket = self.scene.itemAt(self.connection_end_point, QTransform())
-
-        print(output_socket)
-        print(input_socket)
 
         if isinstance(input_socket, NodeSocket):
             connection = SocketConnection(output_socket, input_socket, self.scene)

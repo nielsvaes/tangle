@@ -3,6 +3,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 import logging
+logging.basicConfig(level=logging.DEBUG)
+import uuid
 
 from .Constants import nc, Colors, IO
 from .NodeText import NodeText
@@ -29,6 +31,8 @@ class NodeItem(QGraphicsRectItem):
         self.__draw()
 
         self.title = self.__add_title(title)
+        self.uuid = uuid.uuid4()
+        logging.debug(self.uuid)
 
         self.scene.addItem(self)
         self.scene.addItem(self.title)

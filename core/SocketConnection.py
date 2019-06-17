@@ -53,7 +53,7 @@ class SocketConnection(QGraphicsPathItem):
             error_message = "%s -> %s is already connected" % (self.output_socket.name, self.input_socket.name)
 
         if self.output_socket.io == self.input_socket.io:
-            error_message = "Trying to connection %s to %s" % (self.output_socket.io, self.input_socket.io)
+            error_message = "Trying to connect %s to %s" % (self.output_socket.io, self.input_socket.io)
 
         if self.input_socket.is_connected() and self.input_socket.socket_type.accept_multiple == False:
             error_message = "%s doesn't allow multiple connections" % self.input_socket.name

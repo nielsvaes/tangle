@@ -1,6 +1,7 @@
 import traceback
-import os
+import sys
 import logging
+logging.basicConfig(level=logging.DEBUG)
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -21,19 +22,27 @@ class NodeScene(QGraphicsScene):
 
 
     def add_node_to_view(self, class_name, module, x=0, y=0):
+        node_instance = None
+
         if type(class_name) == str:
             class_path = ".".join(["CocoEdit", "nodes", module, class_name, class_name])
             node_class = locate(class_path)
-            node_instance = node_class(self, x, y)
+            try:
+                node_instance = node_class(self, x, y)
+            except TypeError as err:
+                logging.error(err)
+                _, _, tb = sys.exc_info()
+                logging.error(traceback.format_list(traceback.extract_tb(tb)[-1:])[-1])
         else:
             node_instance = class_name.__class__(self, x, y)
 
-        for socket_type in node_instance.get_all_socket_types():
-            socket_type.is_dirty.connect(self.__set_colors_dirty)
+        if node_instance is not None:
+            for socket_type in node_instance.get_all_socket_types():
+                socket_type.is_dirty.connect(self.__set_colors_dirty)
 
-        self.__set_colors_dirty()
+            self.__set_colors_dirty()
 
-        return node_instance
+            return node_instance
 
 
     def get_all_nodes(self):
@@ -168,13 +177,16 @@ class NodeScene(QGraphicsScene):
         event.accept()
 
     def dropEvent(self, event):
-        class_name = event.source().selectedItems()[0].text(0)
-        module = event.source().selectedItems()[0].parent().text(0)
+        try:
+            class_name = event.source().selectedItems()[0].text(0)
+            module = event.source().selectedItems()[0].parent().text(0)
 
-        x = event.scenePos().x()
-        y = event.scenePos().y()
+            x = event.scenePos().x()
+            y = event.scenePos().y()
 
-        self.add_node_to_view(class_name, module, x, y)
+            self.add_node_to_view(class_name, module, x, y)
+        except:
+            pass
 
     def keyPressEvent(self, event):
         #from nodes.base_node import BaseNode
