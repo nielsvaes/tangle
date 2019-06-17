@@ -32,7 +32,6 @@ class NodeItem(QGraphicsRectItem):
 
         self.title = self.__add_title(title)
         self.uuid = uuid.uuid4()
-        logging.debug(self.uuid)
 
         self.scene.addItem(self)
         self.scene.addItem(self.title)

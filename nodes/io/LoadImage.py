@@ -1,3 +1,5 @@
+from PyQt5.QtWidgets import *
+
 from nodes.base_node import BaseNode
 import socket_types as socket_types
 
@@ -12,7 +14,10 @@ class LoadImage(BaseNode):
         self.add_button("Load image", self.load_image)
 
     def load_image(self):
-        print("Loading image!")
+        file_path = QFileDialog.getOpenFileName(caption="Open image", filter="Image files (*.jpg *.png)")[0]
+        if file_path != "":
+            print(file_path)
+
 
     def compute(self):
         pass

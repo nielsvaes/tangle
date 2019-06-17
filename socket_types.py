@@ -59,9 +59,6 @@ class PictureSocketType(BaseSocketType):
         self.name = "pic"
         self.color = QColor(90, 100, 170, 255)
 
-    def get_ui(self):
-        pass
-
 class ExecutionSocketType(BaseSocketType):
     def __init__(self):
         super(ExecutionSocketType, self).__init__()
