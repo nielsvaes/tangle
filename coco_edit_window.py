@@ -110,6 +110,8 @@ class CocoEditWindow(QMainWindow):
                 self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
                 # self.values_layout.addSpacerItem(spacer)
+                image = node.get_image()
+                self.lbl_image.setPixmap(QPixmap(image))
 
     def clear_values_layout(self):
         for i in reversed(range(self.values_layout.count())):
@@ -148,7 +150,9 @@ if __name__ == "__main__":
     qtmodern.styles.dark(app)
 
     coco_edit_window = CocoEditWindow()
-    modern_window = qtmodern.windows.ModernWindow(coco_edit_window)
-    modern_window.show()
+    #modern_window = qtmodern.windows.ModernWindow(coco_edit_window)
+    #modern_window.show()
+
+    coco_edit_window.show()
 
     app.exec_()

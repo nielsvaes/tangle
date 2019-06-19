@@ -331,7 +331,6 @@ class NodeItem(QGraphicsRectItem):
 
         return None
 
-
     def reposition_title(self, title=None):
         if title is None:
             title = self.title

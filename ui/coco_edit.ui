@@ -30,6 +30,11 @@
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
+       <widget class="QLabel" name="lbl_image">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
        <widget class="QTreeWidget" name="tree_nodes">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
@@ -94,8 +99,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1101</width>
-           <height>76</height>
+           <width>594</width>
+           <height>71</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">

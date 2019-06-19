@@ -17,7 +17,11 @@ class BaseNode(NodeItem):
         self.__widget = QWidget()
         self.__layout = QVBoxLayout()
 
+        self.__image = QImage()
+
         self.__widget.setLayout(self.__layout)
+
+
 
     def refresh(self):
         for socket in self.get_all_input_sockets():
@@ -35,6 +39,12 @@ class BaseNode(NodeItem):
 
     def get_ui(self):
         return self.__widget
+
+    def get_image(self):
+        return self.__image
+
+    def set_image(self, image):
+        self.__image = image
 
     def add_button(self, button_text, clicked_function):
         button = QPushButton(button_text)

@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 
 from nodes.base_node import BaseNode
 import socket_types as socket_types
@@ -17,6 +19,8 @@ class LoadImage(BaseNode):
         file_path = QFileDialog.getOpenFileName(caption="Open image", filter="Image files (*.jpg *.png)")[0]
         if file_path != "":
             print(file_path)
+            self.set_image(QImage(file_path))
+
 
 
     def compute(self):
