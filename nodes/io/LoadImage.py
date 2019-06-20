@@ -18,10 +18,7 @@ class LoadImage(BaseNode):
     def load_image(self):
         file_path = QFileDialog.getOpenFileName(caption="Open image", filter="Image files (*.jpg *.png)")[0]
         if file_path != "":
-            print(file_path)
-            self.set_image(QImage(file_path))
-
-
+            self.set_pixmap(QPixmap(file_path))
 
     def compute(self):
         pass

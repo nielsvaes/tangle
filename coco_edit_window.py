@@ -35,6 +35,8 @@ class CocoEditWindow(QMainWindow):
 
         self.load_nodes()
 
+        self.scene.add_node_to_view("LoadImage", "io", 100, 100)
+
         self.show()
 
     def build_ui(self):
@@ -47,12 +49,19 @@ class CocoEditWindow(QMainWindow):
         self.view = NodeView(self.scene, self)
         self.main_vertical_layout.addWidget(self.view)
 
+        self.pixmap = QPixmap()
+
         for i in range(1, 4):
             self.tree_nodes.setColumnHidden(i, True)
 
         # self.move(750, 30)
 
+        # self.lbl_pixmap.setScaledContents(True)
+        self.lbl_pixmap.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+
         self.scene.selectionChanged.connect(self.load_values_ui)
+        self.horizontal_splitter.splitterMoved.connect(self.resize_pixmap)
+        self.vertical_splitter.splitterMoved.connect(self.resize_pixmap)
 
     def normal_node_start(self):
         for node in self.scene.get_begin_nodes():
@@ -110,8 +119,11 @@ class CocoEditWindow(QMainWindow):
                 self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
                 # self.values_layout.addSpacerItem(spacer)
-                image = node.get_image()
-                self.lbl_image.setPixmap(QPixmap(image))
+                self.pixmap = node.get_pixmap()
+                if self.pixmap is not None:
+                    self.lbl_pixmap.setPixmap(self.pixmap)
+                    self.resize_pixmap()
+
 
     def clear_values_layout(self):
         for i in reversed(range(self.values_layout.count())):
@@ -133,6 +145,17 @@ class CocoEditWindow(QMainWindow):
     def compute(self):
         for node in self.scene.selectedItems():
             node.compute()
+
+    def resize_pixmap(self):
+        try:
+            print("resizing")
+            self.lbl_pixmap.setPixmap(self.pixmap.scaled(self.lbl_pixmap.width(), self.lbl_pixmap.height(),
+                                                          Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        except AttributeError as err:
+            logging.error(err)
+            _, _, tb = sys.exc_info()
+            logging.error(traceback.format_list(traceback.extract_tb(tb)[-1:])[-1])
+
 
 
 class TitleLabel(QLineEdit):

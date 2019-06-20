@@ -17,7 +17,7 @@ class BaseNode(NodeItem):
         self.__widget = QWidget()
         self.__layout = QVBoxLayout()
 
-        self.__image = QImage()
+        self.__image = QPixmap()
 
         self.__widget.setLayout(self.__layout)
 
@@ -40,10 +40,10 @@ class BaseNode(NodeItem):
     def get_ui(self):
         return self.__widget
 
-    def get_image(self):
+    def get_pixmap(self):
         return self.__image
 
-    def set_image(self, image):
+    def set_pixmap(self, image):
         self.__image = image
 
     def add_button(self, button_text, clicked_function):

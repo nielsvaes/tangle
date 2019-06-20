@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1136</width>
+    <width>1098</width>
     <height>784</height>
    </rect>
   </property>
@@ -19,21 +19,36 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
-     <widget class="QSplitter" name="splitter_2">
+     <widget class="QSplitter" name="horizontal_splitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QWidget" name="verticalLayoutWidget">
        <layout class="QVBoxLayout" name="main_vertical_layout"/>
       </widget>
-      <widget class="QSplitter" name="splitter">
+      <widget class="QSplitter" name="vertical_splitter">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QLabel" name="lbl_image">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
+       <widget class="QWidget" name="horizontalLayoutWidget">
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <widget class="QLabel" name="lbl_pixmap">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+           <property name="scaledContents">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
        <widget class="QTreeWidget" name="tree_nodes">
         <property name="sizePolicy">
@@ -99,8 +114,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>594</width>
-           <height>71</height>
+           <width>1009</width>
+           <height>60</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -127,7 +142,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1136</width>
+     <width>1098</width>
      <height>20</height>
     </rect>
    </property>
