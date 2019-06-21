@@ -84,23 +84,19 @@ class NodeScene(QGraphicsScene):
     def refresh_network(self, node=None):
         try:
             if node is None:
+                logging.debug("refreshing!")
                 for begin_node in self.get_begin_nodes():
-                    begin_node.compute()
+                    if begin_node.is_dirty():
+                        begin_node.compute()
 
                     for connected_node in begin_node.get_connected_output_nodes():
                         self.refresh_network(node=connected_node)
             else:
-                # node.is_computed.connect(self.__set_colors_computed)
-                node.refresh()
+                node.compute()
                 for connected_node in node.get_connected_output_nodes():
                     self.refresh_network(node=connected_node)
 
-                    for socket_type in connected_node.get_all_socket_types():
-                        socket_type.is_dirty.connect(self.__set_colors_dirty)
-                        socket_type.get_ui()
-
             self.__set_colors_computed()
-            self.refreshed.emit()
         except Exception as err:
             logging.debug(traceback.format_exc(5))
 

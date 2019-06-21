@@ -35,7 +35,9 @@ class CocoEditWindow(QMainWindow):
 
         self.load_nodes()
 
-        self.scene.add_node_to_view("LoadImage", "io", 100, 100)
+        load_node = self.scene.add_node_to_view("LoadImage", "io", 100, 100)
+        load_node.set_pixmap(QPixmap(r"D:\Google Drive\Tools\CocoEdit\its-a-me_4.jpg"))
+        load_node.set_dirty(True)
 
         self.show()
 
@@ -148,7 +150,6 @@ class CocoEditWindow(QMainWindow):
 
     def resize_pixmap(self):
         try:
-            print("resizing")
             self.lbl_pixmap.setPixmap(self.pixmap.scaled(self.lbl_pixmap.width(), self.lbl_pixmap.height(),
                                                           Qt.KeepAspectRatio, Qt.SmoothTransformation))
         except AttributeError as err:
