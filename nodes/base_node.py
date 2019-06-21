@@ -17,16 +17,18 @@ class BaseNode(NodeItem):
         self.__widget = QWidget()
         self.__layout = QVBoxLayout()
 
-        self.__image = QPixmap()
+        self.__pixmap = QPixmap()
+        self.__is_dirty = False
 
         self.__widget.setLayout(self.__layout)
 
 
 
     def refresh(self):
-        for socket in self.get_all_input_sockets():
-            socket.fetch_connected_value()
-            self.compute()
+        pass
+        # for socket in self.get_all_input_sockets():
+        #     socket.fetch_connected_value()
+        #     self.compute()
 
     # def auto_compute(self):
     #     return self.__auto_compute
@@ -37,14 +39,20 @@ class BaseNode(NodeItem):
     def compute(self):
         raise NotImplementedError()
 
+    def set_dirty(self, value):
+        self.__is_dirty = value
+
+    def is_dirty(self):
+        return self.__is_dirty
+
     def get_ui(self):
         return self.__widget
 
     def get_pixmap(self):
-        return self.__image
+        return self.__pixmap
 
-    def set_pixmap(self, image):
-        self.__image = image
+    def set_pixmap(self, pixmap):
+        self.__pixmap = pixmap
 
     def add_button(self, button_text, clicked_function):
         button = QPushButton(button_text)

@@ -20,6 +20,9 @@ class LoadImage(BaseNode):
         if file_path != "":
             self.set_pixmap(QPixmap(file_path))
 
+        self.set_dirty(True)
+
     def compute(self):
-        pass
+        if self.is_dirty():
+            self.set_dirty(False)
 
