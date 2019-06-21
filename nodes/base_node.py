@@ -22,6 +22,8 @@ class BaseNode(NodeItem):
 
         self.__widget.setLayout(self.__layout)
 
+        self.add_label(str(self.uuid))
+
 
 
     def refresh(self):
@@ -64,7 +66,7 @@ class BaseNode(NodeItem):
         self.__layout.addWidget(label)
 
     def add_spacer(self):
-        spacer = QSpacerItem(10, 4000)
+        spacer = QSpacerItem(10, 20)
         self.__layout.addSpacerItem(spacer)
 
     def add_slider(self, changed_function):

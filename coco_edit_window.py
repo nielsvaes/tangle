@@ -42,7 +42,7 @@ class CocoEditWindow(QMainWindow):
         self.show()
 
     def build_ui(self):
-        self.setBaseSize(QSize(1600, 900))
+        self.setBaseSize(QSize(1920, 1080))
 
         self.scene = NodeScene()
         self.scene.setObjectName('Scene')
@@ -56,10 +56,10 @@ class CocoEditWindow(QMainWindow):
         for i in range(1, 4):
             self.tree_nodes.setColumnHidden(i, True)
 
-        # self.move(750, 30)
-
-        # self.lbl_pixmap.setScaledContents(True)
         self.lbl_pixmap.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+
+        self.horizontal_splitter.setSizes([500, 400])
+        self.vertical_splitter.setSizes([500, 400, 400])
 
         self.scene.selectionChanged.connect(self.load_values_ui)
         self.horizontal_splitter.splitterMoved.connect(self.resize_pixmap)
