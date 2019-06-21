@@ -45,7 +45,8 @@ class NumberConstants():
 
     title_offset = 2
 
-    socket_size = 15
+    node_item_width = 125
+    socket_size = 25
     socket_label_spacing = socket_size * 1.1
 
     execution_socket_size = socket_size * 1.3

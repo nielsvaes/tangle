@@ -10,7 +10,9 @@ class LoadImage(BaseNode):
         super(LoadImage, self).__init__(scene, x=x, y=y)
         self.change_title("*PICTURE*")
 
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "output_image")
+        self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
+
+        self.scene = scene
 
         self.add_label("Please click the button")
         self.add_button("Load image", self.load_image)
@@ -20,6 +22,7 @@ class LoadImage(BaseNode):
         if file_path != "":
             self.set_pixmap(QPixmap(file_path))
 
+        self.scene.get_main_window().load_values_ui()
         self.set_dirty(True)
 
     def compute(self):

@@ -11,6 +11,7 @@ from .NodeText import NodeText
 from .NodeSocket import NodeSocket
 from .ExecutionSocket import ExecutionSocket
 
+
 class NodeItem(QGraphicsRectItem):
     def __init__(self, scene, title, x=0, y=0):
         super(NodeItem, self).__init__()
@@ -139,7 +140,7 @@ class NodeItem(QGraphicsRectItem):
 
         socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * (nc.socket_size + 5))
 
-        input_socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2,socket_y_position)
+        input_socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, socket_y_position)
         input_socket = NodeSocket(IO.input, socket_type, label, self.scene, position=input_socket_position, color=color)
         input_socket.socket_type = socket_type
 
@@ -388,7 +389,7 @@ class NodeItem(QGraphicsRectItem):
         super(NodeItem, self).paint(painter, option, widget)
 
     def __draw(self, ):
-        self.rect = QRectF(0, 0, 150, self.height)
+        self.rect = QRectF(0, 0, nc.node_item_width, self.height)
         self.setRect(self.rect)
 
         self.__set_normal_colors()
@@ -406,12 +407,12 @@ class NodeItem(QGraphicsRectItem):
 
     def __resize(self):
         total_sockets = len(self.get_all_sockets())
-        new_height = (nc.socket_size * 1.5 * total_sockets) - (
-                nc.socket_size * 1.5 * self.__num_input_output_sockets) + self.height
+        new_height = (nc.socket_size * 1.5 * total_sockets) + self.height + (nc.socket_size * 1.1)
         position = self.pos()
-        self.rect = QRectF(0, 0, 150, new_height)
+        self.rect = QRectF(0, 0, nc.node_item_width, new_height)
         self.setRect(self.rect)
         self.setPos(position)
+        self.reposition_title(self.title)
 
     def __set_normal_colors(self):
         pen = QPen()

@@ -3,7 +3,7 @@ import sys
 from functools import partial
 import traceback
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -16,6 +16,7 @@ import qtmodern.windows
 import nv_utils.file_utils as file_utils
 import nv_utils.qt_utils as qutils
 import nv_utils.utils as utils
+from utils import image as im_utils
 
 from core.NodeScene import NodeScene
 from core.NodeView import NodeView
@@ -35,9 +36,7 @@ class CocoEditWindow(QMainWindow):
 
         self.load_nodes()
 
-        load_node = self.scene.add_node_to_view("LoadImage", "io", 100, 100)
-        load_node.set_pixmap(QPixmap(r"D:\Google Drive\Tools\CocoEdit\its-a-me_4.jpg"))
-        load_node.set_dirty(True)
+        self.pixmap = QPixmap()
 
         self.show()
 
@@ -50,8 +49,6 @@ class CocoEditWindow(QMainWindow):
 
         self.view = NodeView(self.scene, self)
         self.main_vertical_layout.addWidget(self.view)
-
-        self.pixmap = QPixmap()
 
         for i in range(1, 4):
             self.tree_nodes.setColumnHidden(i, True)
@@ -70,11 +67,6 @@ class CocoEditWindow(QMainWindow):
             pass
 
     def load_nodes(self):
-        # load_nodes_thread = threading.Thread(target=self.load_nodes_thread)
-        # load_nodes_thread.start()
-        self.load_nodes_thread()
-
-    def load_nodes_thread(self):
         for file_path in file_utils.get_files_recursively(NODE_FOLDER, filters=".py"):
             if file_path is not None and not "__" in file_path and not "base_node" in file_path and not file_path.endswith(
                     "pyc"):

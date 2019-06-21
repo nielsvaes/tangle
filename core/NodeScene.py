@@ -38,10 +38,11 @@ class NodeScene(QGraphicsScene):
 
         if node_instance is not None:
             for socket_type in node_instance.get_all_socket_types():
-                socket_type.is_dirty.connect(self.__set_colors_dirty)
+                socket_type.is_dirty.connect(self.set_colors_dirty)
 
-            self.__set_colors_dirty()
+            # self.set_colors_dirty()
 
+            node_instance.dirty_signal.signal.connect(self.set_colors_dirty)
             return node_instance
 
 
@@ -81,6 +82,9 @@ class NodeScene(QGraphicsScene):
     def get_view(self):
         return self.views()[0]
 
+    def get_main_window(self):
+        return self.get_view().window()
+
     def refresh_network(self, node=None):
         try:
             if node is None:
@@ -97,6 +101,7 @@ class NodeScene(QGraphicsScene):
                     self.refresh_network(node=connected_node)
 
             self.__set_colors_computed()
+
         except Exception as err:
             logging.debug(traceback.format_exc(5))
 
@@ -214,7 +219,7 @@ class NodeScene(QGraphicsScene):
         # else:
         #     super(NodeScene, self).keyPressEvent(event)
 
-    def __set_colors_dirty(self):
+    def set_colors_dirty(self):
         brush = QBrush()
         brush.setStyle(Qt.SolidPattern)
         brush.setColor(Colors.node_scene_dirty)

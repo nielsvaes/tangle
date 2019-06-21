@@ -5,6 +5,7 @@ from PyQt5.QtCore import *
 import logging
 
 from core.NodeItem import NodeItem
+from core.SignalEmitter import SignalEmitter
 
 class BaseNode(NodeItem):
     def __init__(self, scene, title="unnamed_node", x=0, y=0):
@@ -16,6 +17,8 @@ class BaseNode(NodeItem):
 
         self.__widget = QWidget()
         self.__layout = QVBoxLayout()
+
+        self.dirty_signal = SignalEmitter()
 
         self.__pixmap = QPixmap()
         self.__is_dirty = False
@@ -43,6 +46,8 @@ class BaseNode(NodeItem):
 
     def set_dirty(self, value):
         self.__is_dirty = value
+        if value == True:
+            self.dirty_signal.signal.emit()
 
     def is_dirty(self):
         return self.__is_dirty

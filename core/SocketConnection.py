@@ -15,6 +15,8 @@ class SocketConnection(QGraphicsPathItem):
 
         self.mouse_over = False
 
+        self.force_connection = True
+
         self.output_socket = output_socket
         self.input_socket = input_socket
 
@@ -56,6 +58,10 @@ class SocketConnection(QGraphicsPathItem):
             error_message = "Trying to connect %s to %s" % (self.output_socket.io, self.input_socket.io)
 
         if self.input_socket.is_connected() and self.input_socket.socket_type.accept_multiple == False:
+            if self.force_connection:
+                for connection in self.input_socket.get_connections():
+                    connection.destroy_self()
+                return True
             error_message = "%s doesn't allow multiple connections" % self.input_socket.name
 
         if error_message is not None:
