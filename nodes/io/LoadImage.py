@@ -34,6 +34,9 @@ class LoadImage(BaseNode):
         self.scene.get_main_window().load_values_ui()
         self.set_dirty(True)
 
+        for node in self.get_connected_output_nodes():
+            node.set_dirty(True)
+
     def compute(self):
         if self.is_dirty():
             self.set_dirty(False)

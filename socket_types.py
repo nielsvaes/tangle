@@ -49,6 +49,7 @@ class BaseSocketType(QObject):
 
         self.__value = value
         self.is_dirty.emit()
+        self.get_parent_node().set_dirty(True)
 
     def get_initial_value(self):
         return self.__initial_value

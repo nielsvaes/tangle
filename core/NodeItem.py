@@ -265,6 +265,19 @@ class NodeItem(QGraphicsRectItem):
 
         return connected_output_nodes
 
+    def get_connected_output_nodes_recursive(self, node=None):
+        connected_output_nodes = []
+
+        if node is None:
+            node = self
+
+        for output_node in node.get_connected_output_nodes():
+            connected_output_nodes.append(output_node)
+
+            connected_output_nodes += self.get_connected_output_nodes_recursive(node=output_node)
+
+        return connected_output_nodes
+
     def get_input_socket_types(self):
         input_socket_types = []
         for socket in self.get_all_input_sockets():

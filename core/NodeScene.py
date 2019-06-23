@@ -40,8 +40,6 @@ class NodeScene(QGraphicsScene):
             for socket_type in node_instance.get_all_socket_types():
                 socket_type.is_dirty.connect(self.set_colors_dirty)
 
-            # self.set_colors_dirty()
-
             node_instance.dirty_signal.signal.connect(self.set_colors_dirty)
             return node_instance
 
@@ -107,14 +105,25 @@ class NodeScene(QGraphicsScene):
                     if begin_node.is_dirty():
                         begin_node.compute()
 
-                    for connected_node in begin_node.get_connected_output_nodes():
-                        self.refresh_network(node=connected_node)
-            else:
-                if node.is_dirty():
-                    print("is dirty, needs computing: ", node.title)
-                    node.compute()
-                for connected_node in node.get_connected_output_nodes():
-                    self.refresh_network(node=connected_node)
+
+                    child_nodes_are_dirty = False
+                    for connected_node in begin_node.get_connected_output_nodes_recursive():
+                        if child_nodes_are_dirty:
+                            print("is a child node, needs computing: ", connected_node.title)
+                            connected_node.compute()
+                            continue
+                        if connected_node.is_dirty():
+                            print("is dirty, needs computing: ", connected_node.title)
+                            connected_node.compute()
+                            child_nodes_are_dirty = True
+            #
+            # else:
+            #     if node.is_dirty():
+            #         print("is dirty, needs computing: ", node.title)
+            #         node.compute()
+            #
+            #         for connected_node in node.get_connected_output_nodes():
+            #             self.refresh_network(node=connected_node)
 
             self.__set_colors_computed()
             for selected_node in selected_nodes:

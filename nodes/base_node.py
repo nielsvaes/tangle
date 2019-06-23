@@ -22,7 +22,7 @@ class BaseNode(NodeItem):
         self.compute_time = None
 
         self.__pixmap = QPixmap()
-        self.__is_dirty = False
+        self.__is_dirty = True
 
         self.__widget.setLayout(self.__layout)
 
