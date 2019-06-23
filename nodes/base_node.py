@@ -74,6 +74,26 @@ class BaseNode(NodeItem):
         spacer = QSpacerItem(10, 20)
         self.__layout.addSpacerItem(spacer)
 
+    def add_text_line(self):
+        txt_line = QLineEdit()
+        self.__layout.addWidget(txt_line)
+
+    def add_label_text_button(self, label_text, button_text, clicked_function):
+        layout = QHBoxLayout()
+        label = QLabel(label_text)
+        txt_line = QLineEdit()
+        button = QPushButton(button_text)
+
+        button.clicked.connect(clicked_function)
+
+        layout.addWidget(label)
+        layout.addWidget(txt_line)
+        layout.addWidget(button)
+
+        self.__layout.addLayout(layout)
+
+        return[label, txt_line, button]
+
     def add_slider(self, changed_function):
         pass
 
