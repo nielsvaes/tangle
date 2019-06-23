@@ -2,8 +2,13 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
+import PIL
+from PIL import Image, ImageQt, ImageOps, ImageEnhance
+
 from nodes.base_node import BaseNode
 import socket_types as socket_types
+
+from utils import image as im_utils
 
 class LoadImage(BaseNode):
     def __init__(self, scene, x=0, y=0):
@@ -19,8 +24,13 @@ class LoadImage(BaseNode):
 
     def load_image(self):
         file_path = QFileDialog.getOpenFileName(caption="Open image", filter="Image files (*.jpg *.png)")[0]
+
         if file_path != "":
-            self.set_pixmap(QPixmap(file_path))
+            pil_img = Image.open(file_path)
+
+            pixmap = ImageQt.toqpixmap(pil_img)
+            self.set_pixmap(pixmap)
+            self.output_image.set_value(pil_img)
 
         self.scene.get_main_window().load_values_ui()
         self.set_dirty(True)
