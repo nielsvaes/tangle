@@ -38,7 +38,13 @@ class CocoEditWindow(QMainWindow):
 
         self.pixmap = QPixmap()
 
+        self.keep_pixmap_on_empty_selection = False
+
         self.show()
+
+        # load_node = self.scene.add_node_to_view("LoadImage", "io", 100, 100)
+        # load_node.load_image(r"D:\Google Drive\Tools\CocoEdit\its-a-me_4.jpg")
+        # load_node.set_dirty(True)
 
     def build_ui(self):
         self.setBaseSize(QSize(1920, 1080))
@@ -94,30 +100,34 @@ class CocoEditWindow(QMainWindow):
         # spacer = QSpacerItem(10, 4000)
         qutils.clear_layout(self.values_layout)
 
-        for node in self.scene.selectedItems():
-            if issubclass(type(node), BaseNode):
-                node.refresh()
+        selected_items = self.scene.selectedItems()
+        if len(selected_items) > 0:
+            for node in selected_items:
+                if issubclass(type(node), BaseNode):
+                    node.refresh()
 
-                title_label = TitleLabel()
-                title_label.setText(node.name)
-                title_label.setStyleSheet(ss.values_title)
-                title_label.setAlignment(Qt.AlignCenter)
-                title_label.node = node
+                    title_label = TitleLabel()
+                    title_label.setText(node.name)
+                    title_label.setStyleSheet(ss.values_title)
+                    title_label.setAlignment(Qt.AlignCenter)
+                    title_label.node = node
 
-                title_label.textChanged.connect(partial(self.change_node_title, title_label))
-                title_label.returnPressed.connect(title_label.node.reposition_title)
+                    title_label.textChanged.connect(partial(self.change_node_title, title_label))
+                    title_label.returnPressed.connect(title_label.node.reposition_title)
 
-                self.values_layout.insertWidget(self.values_layout.count(), title_label)
-                widget = node.get_ui()
+                    self.values_layout.insertWidget(self.values_layout.count(), title_label)
+                    widget = node.get_ui()
 
-                self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
+                    self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
-                # self.values_layout.addSpacerItem(spacer)
-                self.pixmap = node.get_pixmap()
-                if self.pixmap is not None:
-                    self.lbl_pixmap.setPixmap(self.pixmap)
-                    self.resize_pixmap()
-
+                    # self.values_layout.addSpacerItem(spacer)
+                    self.pixmap = node.get_pixmap()
+                    if self.pixmap is not None:
+                        self.lbl_pixmap.setPixmap(self.pixmap)
+                        self.resize_pixmap()
+        else:
+            if not self.keep_pixmap_on_empty_selection:
+                self.lbl_pixmap.clear()
 
     def clear_values_layout(self):
         for i in reversed(range(self.values_layout.count())):
@@ -148,6 +158,10 @@ class CocoEditWindow(QMainWindow):
             logging.error(err)
             _, _, tb = sys.exc_info()
             logging.error(traceback.format_list(traceback.extract_tb(tb)[-1:])[-1])
+
+    def resizeEvent(self, event):
+        self.resize_pixmap()
+        super(CocoEditWindow, self).resizeEvent(event)
 
 
 

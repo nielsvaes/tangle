@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+import numpy as np
+
 import nv_utils.qt_utils as qutils
 
 class BaseSocketType(QObject):
@@ -38,8 +40,13 @@ class BaseSocketType(QObject):
         return self.__value
 
     def set_value(self, value):
-        if self.__value == value:
-            return
+        if type(value) == np.ndarray:
+            if np.all(value) == np.all(self.__value):
+                return
+        else:
+            if self.__value == value:
+                return
+
         self.__value = value
         self.is_dirty.emit()
 
@@ -58,6 +65,7 @@ class PictureSocketType(BaseSocketType):
 
         self.name = "pic"
         self.color = QColor(90, 100, 170, 255)
+        self.set_initial_value(QPixmap())
 
 class ExecutionSocketType(BaseSocketType):
     def __init__(self):

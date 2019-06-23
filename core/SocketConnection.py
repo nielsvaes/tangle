@@ -30,7 +30,7 @@ class SocketConnection(QGraphicsPathItem):
         for socket in [self.input_socket, self.output_socket]:
             socket.add_connection(self)
 
-            socket.fetch_connected_value()
+        self.input_socket.set_value(self.output_socket.get_value())
 
     def order_sockets(self):
         if self.output_socket.io != IO.output:
@@ -94,12 +94,8 @@ class SocketConnection(QGraphicsPathItem):
             # socket.is_connected = False
             socket.set_label_style_connected(False)
 
+        self.input_socket.get_node().set_dirty(True)
         self.input_socket.reset_to_initial_value()
-
-        # self.output_socket.set_label_connected(False)
-        # self.input_socket.set_label_connected(False)
-        # self.output_socket.connections.remove(self)
-        # self.input_socket.connections.remove(self)
 
     def hoverEnterEvent(self, event):
         self.mouse_over = True

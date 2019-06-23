@@ -19,6 +19,7 @@ class BaseNode(NodeItem):
         self.__layout = QVBoxLayout()
 
         self.dirty_signal = SignalEmitter()
+        self.compute_time = None
 
         self.__pixmap = QPixmap()
         self.__is_dirty = False
@@ -66,17 +67,29 @@ class BaseNode(NodeItem):
         button.clicked.connect(clicked_function)
         self.__layout.addWidget(button)
 
+        return button
+
     def add_label(self, label_text):
         label = QLabel(label_text)
         self.__layout.addWidget(label)
+
+        return label
 
     def add_spacer(self):
         spacer = QSpacerItem(10, 20)
         self.__layout.addSpacerItem(spacer)
 
-    def add_text_line(self):
+        return spacer
+
+    def add_text_line(self, text="", text_changed_function=None):
         txt_line = QLineEdit()
+
+        if text_changed_function is not None:
+            txt_line.textChanged.connect(text_changed_function)
+
         self.__layout.addWidget(txt_line)
+
+        return txt_line
 
     def add_label_text_button(self, label_text, button_text, clicked_function):
         layout = QHBoxLayout()
@@ -94,8 +107,49 @@ class BaseNode(NodeItem):
 
         return[label, txt_line, button]
 
-    def add_slider(self, changed_function):
-        pass
+    def add_label_text(self, label_text, txt_text="", text_changed_function=None):
+        layout = QHBoxLayout()
+        label = QLabel(label_text)
+        txt_line = QLineEdit(str(txt_text))
+
+        layout.addWidget(label)
+        layout.addWidget(txt_line)
+
+        if text_changed_function is not None:
+            txt_line.textChanged.connect(text_changed_function)
+
+        self.__layout.addLayout(layout)
+
+        return[label, txt_line]
+
+    def add_checkbox(self, label, checked=True, change_checked_function=None):
+        checkbox = QCheckBox(label)
+        checkbox.setChecked(checked)
+
+        if change_checked_function is not None:
+            checkbox.stateChanged.connect(change_checked_function)
+
+        self.__layout.addWidget(checkbox)
+
+        return checkbox
+
+    def add_slider(self, minimum, maximum, start, changed_function=None):
+        slider = QSlider()
+        slider.setMinimum(minimum)
+        slider.setMaximum(maximum)
+        slider.setValue(start)
+        slider.setOrientation(Qt.Horizontal)
+        if changed_function is not None:
+            slider.sliderMoved.connect(changed_function)
+
+        self.__layout.addWidget(slider)
+
+        return slider
+
+    def add_custom_widget(self, widget):
+        self.__layout.addWidget(widget)
+
+        return widget
 
     def error(self, socket, text):
         logging.error("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))

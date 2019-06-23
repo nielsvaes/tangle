@@ -13,13 +13,12 @@ from utils import image as im_utils
 class LoadImage(BaseNode):
     def __init__(self, scene, x=0, y=0):
         super(LoadImage, self).__init__(scene, x=x, y=y)
-        self.change_title("*PICTURE*")
+        self.change_title("load_image")
 
         self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
 
         self.scene = scene
 
-        self.add_label("Please click the button")
         self.add_button("Load image", self.load_image)
 
     def load_image(self):

@@ -103,7 +103,7 @@ class NodeSocket(QGraphicsEllipseItem):
                 self.label.setDefaultTextColor(Colors.text_default)
         self.label.draw()
 
-    def get_parent_node(self):
+    def get_node(self):
         return self.parentItem()
 
     def add_connection(self, connection):

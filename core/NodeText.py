@@ -23,6 +23,9 @@ class NodeText(QGraphicsTextItem):
 
         self.setZValue(100)
 
+    def __str__(self):
+        return self.toPlainText()
+
 
 # bool ValueAxisLabel::sceneEvent(QEvent *event)
 # {

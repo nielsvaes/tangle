@@ -44,6 +44,7 @@ class NumberConstants():
     execution_connection_width = 3
 
     title_offset = 2
+    title_label_size = 18
 
     node_item_width = 125
     socket_size = 25

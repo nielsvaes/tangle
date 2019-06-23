@@ -8,25 +8,29 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
-import numpy as np
 
 
-def skimage_to_qpixmap(skimage_array):
-    skimage_array = skimage.img_as_ubyte(io.imread(r"D:\Google Drive\Tools\CocoEdit\its-a-me_4.jpg"))
+def skimage_as_float(image):
+    return skimage.img_as_float(image)
 
-    height = skimage_array.shape[0]
-    width = skimage_array.shape[1]
+def skimage_as_ubyte(image):
+    return skimage.img_as_ubyte(image)
 
-    if len(skimage_array.shape) == 3:
+def skimage_to_qpixmap(im):
+    # image = img_as_ubyte(im, force_copy=True)
+    image = im
+    height = image.shape[0]
+    width = image.shape[1]
+
+    if len(image.shape) == 3:
         qimage_format = QImage.Format_RGB888
     else:
         qimage_format = QImage.Format_Indexed8
 
-    img = QImage(skimage_array.data, width, height, skimage_array.strides[0], qimage_format)
+    img = QImage(image.data, width, height, image.strides[0], qimage_format)
     pixmap = QPixmap.fromImage(img)
 
     return pixmap
-
 
 def qpixmap_to_skimage(qpixmap):
     qimage = QImage(qpixmap)
@@ -42,6 +46,10 @@ def qpixmap_to_skimage(qpixmap):
     string = qimage.bits().asstring(width * height * channel_count)
 
     shape = (height, width, channel_count)
-    skim = np.fromstring(string, dtype=np.uint8).reshape(shape)
+    skimg = np.fromstring(string, dtype=np.uint8).reshape(shape)
 
-    return skim
+    return skimg
+
+def blur(image, amount=10):
+    return filters.gaussian(image, sigma=amount, multichannel=True)
+

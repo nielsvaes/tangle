@@ -79,6 +79,18 @@ class NodeScene(QGraphicsScene):
                 pass
             #TODO: generate unique name, now battlefield
 
+    def get_node_by_name(self, name):
+        for node in self.get_all_nodes():
+            if node.title == name:
+                return node
+        return None
+
+    def get_node_by_uuid(self, uuid):
+        for node in self.get_all_nodes():
+            if node.uuid == uuid:
+                return node
+        return None
+
     def get_view(self):
         return self.views()[0]
 
@@ -86,9 +98,11 @@ class NodeScene(QGraphicsScene):
         return self.get_view().window()
 
     def refresh_network(self, node=None):
+        selected_nodes = self.selectedItems()
+        self.clearSelection()
+
         try:
             if node is None:
-                logging.debug("refreshing!")
                 for begin_node in self.get_begin_nodes():
                     if begin_node.is_dirty():
                         begin_node.compute()
@@ -96,14 +110,19 @@ class NodeScene(QGraphicsScene):
                     for connected_node in begin_node.get_connected_output_nodes():
                         self.refresh_network(node=connected_node)
             else:
-                node.compute()
+                if node.is_dirty():
+                    print("is dirty, needs computing: ", node.title)
+                    node.compute()
                 for connected_node in node.get_connected_output_nodes():
                     self.refresh_network(node=connected_node)
 
             self.__set_colors_computed()
+            for selected_node in selected_nodes:
+                selected_node.setSelected(True)
 
         except Exception as err:
-            logging.debug(traceback.format_exc(5))
+            logging.error(err)
+            logging.error(traceback.format_exc(5))
 
     def get_begin_nodes(self):
         start_nodes = []
@@ -118,7 +137,28 @@ class NodeScene(QGraphicsScene):
                     if len(node.get_connected_input_sockets()) == 0:
                         start_nodes.append(node)
 
+                if len(node.get_connected_input_sockets()) + len(node.get_connected_output_sockets()) == 0:
+                    start_nodes.append(node)
+
         return start_nodes
+
+    def get_end_nodes(self):
+        end_nodes = []
+        non_executing_nodes = self.get_all_non_executing_nodes()
+
+        if len(non_executing_nodes) == 1:
+            return non_executing_nodes
+
+        if len(non_executing_nodes) > 1:
+            for node in non_executing_nodes:
+                if len(node.get_connected_input_sockets()) > 0:
+                    if len(node.get_connected_output_sockets()) == 0:
+                        end_nodes.append(node)
+
+                if len(node.get_connected_input_sockets()) + len(node.get_connected_output_sockets()) == 0:
+                    end_nodes.append(node)
+
+        return end_nodes
 
     def get_begin_executing_node(self):
         start_nodes = []

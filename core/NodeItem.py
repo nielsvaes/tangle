@@ -21,8 +21,8 @@ class NodeItem(QGraphicsRectItem):
         self.mouse_over = False
 
         self.height = 30
-        self.title_label_size = 20
-        self.socket_label_size = nc.socket_size - 2
+        self.title_label_size = 18
+        self.socket_label_size = nc.socket_size - 6
         self.socket_size = nc.socket_size
         self.socket_offset_from_top = nc.socket_size * 2.5
 
@@ -253,7 +253,7 @@ class NodeItem(QGraphicsRectItem):
         connected_input_nodes = []
         for socket in self.get_connected_input_sockets():
             for connection in socket.get_connections():
-                connected_input_nodes.append(connection.output_socket.get_parent_node())
+                connected_input_nodes.append(connection.output_socket.get_node())
 
         return connected_input_nodes
 
@@ -261,7 +261,7 @@ class NodeItem(QGraphicsRectItem):
         connected_output_nodes = []
         for socket in self.get_connected_output_sockets():
             for connection in socket.get_connections():
-                connected_output_nodes.append(connection.input_socket.get_parent_node())
+                connected_output_nodes.append(connection.input_socket.get_node())
 
         return connected_output_nodes
 
