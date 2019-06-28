@@ -23,13 +23,14 @@ class AutoContrast(BaseNode):
 
     def slider_changed(self):
         self.set_dirty(True)
+        self.scene.refresh_network()
 
     def compute(self):
         if self.input_image.is_connected():
+            print("computing autocontrast")
             self.input_image.fetch_connected_value()
 
             contrasted = self.input_image.get_value()
-
             contrasted = ImageOps.autocontrast(contrasted, cutoff = self.sld_contrast_amount.value())
 
             self.output_image.set_value(contrasted)
@@ -37,4 +38,5 @@ class AutoContrast(BaseNode):
             contrasted_pixmap = ImageQt.toqpixmap(contrasted)
             self.set_pixmap(contrasted_pixmap)
 
+            self.get_main_window().set_pixmap(contrasted_pixmap)
             self.set_dirty(False)

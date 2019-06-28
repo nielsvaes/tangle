@@ -7,7 +7,7 @@ import numpy as np
 import nv_utils.qt_utils as qutils
 
 class BaseSocketType(QObject):
-    is_dirty = pyqtSignal()
+    #is_dirty = pyqtSignal()
     def __init__(self, parent_node):
         super(BaseSocketType, self).__init__()
 
@@ -48,7 +48,7 @@ class BaseSocketType(QObject):
                 return
 
         self.__value = value
-        self.is_dirty.emit()
+        # self.is_dirty.emit()
         self.get_parent_node().set_dirty(True)
 
     def get_initial_value(self):

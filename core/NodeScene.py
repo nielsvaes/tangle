@@ -37,8 +37,8 @@ class NodeScene(QGraphicsScene):
             node_instance = class_name.__class__(self, x, y)
 
         if node_instance is not None:
-            for socket_type in node_instance.get_all_socket_types():
-                socket_type.is_dirty.connect(self.set_colors_dirty)
+            # for socket_type in node_instance.get_all_socket_types():
+            #     socket_type.is_dirty.connect(self.set_colors_dirty)
 
             node_instance.dirty_signal.signal.connect(self.set_colors_dirty)
             return node_instance
@@ -96,8 +96,8 @@ class NodeScene(QGraphicsScene):
         return self.get_view().window()
 
     def refresh_network(self, node=None):
-        selected_nodes = self.selectedItems()
-        self.clearSelection()
+        # selected_nodes = self.selectedItems()
+        # self.clearSelection()
 
         try:
             if node is None:
@@ -126,8 +126,8 @@ class NodeScene(QGraphicsScene):
             #             self.refresh_network(node=connected_node)
 
             self.__set_colors_computed()
-            for selected_node in selected_nodes:
-                selected_node.setSelected(True)
+            # for selected_node in selected_nodes:
+            #     selected_node.setSelected(True)
 
         except Exception as err:
             logging.error(err)
@@ -235,8 +235,10 @@ class NodeScene(QGraphicsScene):
             y = event.scenePos().y()
 
             self.add_node_to_view(class_name, module, x, y)
-        except:
-            pass
+        except Exception as err:
+            logging.error(err)
+            _, _, tb = sys.exc_info()
+            logging.error(traceback.format_list(traceback.extract_tb(tb)[-1:])[-1])
 
     def keyPressEvent(self, event):
         #from nodes.base_node import BaseNode
@@ -269,10 +271,19 @@ class NodeScene(QGraphicsScene):
         #     super(NodeScene, self).keyPressEvent(event)
 
     def set_colors_dirty(self):
-        brush = QBrush()
-        brush.setStyle(Qt.SolidPattern)
-        brush.setColor(Colors.node_scene_dirty)
-        self.setBackgroundBrush(brush)
+        dirty_node_exists = False
+        for node in self.get_all_nodes():
+            if node.is_dirty():
+                dirty_node_exists = True
+                break
+
+        if dirty_node_exists:
+            brush = QBrush()
+            brush.setStyle(Qt.SolidPattern)
+            brush.setColor(Colors.node_scene_dirty)
+            self.setBackgroundBrush(brush)
+
+            #self.refresh_network()
 
     def __set_colors_computed(self):
         brush = QBrush()

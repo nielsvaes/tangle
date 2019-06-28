@@ -14,7 +14,7 @@ from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 class SaveImage(BaseNode):
     def __init__(self, scene, x=0, y=0):
         super(SaveImage, self).__init__(scene, x=x, y=y)
-        self.change_title("*PICTURE*")
+        self.change_title("save")
 
         self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
 
@@ -37,4 +37,5 @@ class SaveImage(BaseNode):
         else:
             self.set_pixmap(self.input_image.get_initial_value())
 
+            self.set_dirty(False)
 

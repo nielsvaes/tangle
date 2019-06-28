@@ -21,6 +21,7 @@ class Sharpen(BaseNode):
 
     def slider_changed(self):
         self.set_dirty(True)
+        self.scene.refresh_network()
 
     def compute(self):
         if self.input_image.is_connected():
@@ -35,4 +36,5 @@ class Sharpen(BaseNode):
             sharpen_pixmap = ImageQt.toqpixmap(sharpen)
             self.set_pixmap(sharpen_pixmap)
 
+            self.get_main_window().set_pixmap(sharpen_pixmap)
             self.set_dirty(False)

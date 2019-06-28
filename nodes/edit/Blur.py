@@ -12,7 +12,7 @@ from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 class Blur(BaseNode):
     def __init__(self, scene, x=0, y=0):
         super(Blur, self).__init__(scene, x=x, y=y)
-        self.change_title("*BLUR*")
+        self.change_title("blur")
 
         self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
         self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
@@ -21,6 +21,7 @@ class Blur(BaseNode):
 
     def slider_changed(self):
         self.set_dirty(True)
+        self.scene.refresh_network()
 
     def compute(self):
         if self.input_image.is_connected():
@@ -32,4 +33,5 @@ class Blur(BaseNode):
             blurred_pixmap = ImageQt.toqpixmap(blurred)
             self.set_pixmap(blurred_pixmap)
 
+            self.get_main_window().set_pixmap(blurred_pixmap)
             self.set_dirty(False)

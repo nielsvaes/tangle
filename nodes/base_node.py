@@ -2,10 +2,15 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+import inspect
+
 import logging
+logging.basicConfig(level=logging.INFO)
 
 from core.NodeItem import NodeItem
 from core.SignalEmitter import SignalEmitter
+
+import nv_utils.qt_utils as qutils
 
 class BaseNode(NodeItem):
     def __init__(self, scene, title="unnamed_node", x=0, y=0):
@@ -15,40 +20,34 @@ class BaseNode(NodeItem):
         self.x = x
         self.y = y
 
-        self.__widget = QWidget()
-        self.__layout = QVBoxLayout()
-
         self.dirty_signal = SignalEmitter()
         self.compute_time = None
 
+        self.__widget = QWidget()
+        self.__layout = QVBoxLayout()
+
         self.__pixmap = QPixmap()
         self.__is_dirty = True
+        self.__auto_compute_on_connect = False
 
         self.__widget.setLayout(self.__layout)
 
         self.add_label(str(self.uuid))
 
-
-
     def refresh(self):
         pass
-        # for socket in self.get_all_input_sockets():
-        #     socket.fetch_connected_value()
-        #     self.compute()
-
-    # def auto_compute(self):
-    #     return self.__auto_compute
-    #
-    # def set_auto_compute(self, value):
-    #     self.__auto_compute = value
 
     def compute(self):
         raise NotImplementedError()
 
     def set_dirty(self, value):
+        #
+        # curframe = inspect.currentframe()
+        # calframe = inspect.getouterframes(curframe, 2)
+        # print('caller name:', calframe[1][3])
         self.__is_dirty = value
-        if value == True:
-            self.dirty_signal.signal.emit()
+        # if value == True:
+        #     self.dirty_signal.signal.emit()
 
     def is_dirty(self):
         return self.__is_dirty
@@ -61,6 +60,15 @@ class BaseNode(NodeItem):
 
     def set_pixmap(self, pixmap):
         self.__pixmap = pixmap
+
+    def set_auto_compute_on_connect(self, value):
+        self.__auto_compute_on_connect = value
+
+    def auto_compute_on_connect(self):
+        return self.__auto_compute_on_connect
+
+    def get_main_window(self):
+        return self.scene.get_main_window()
 
     def add_button(self, button_text, clicked_function):
         button = QPushButton(button_text)
@@ -145,6 +153,33 @@ class BaseNode(NodeItem):
         self.__layout.addWidget(slider)
 
         return slider
+
+    def add_combobox(self, items=[], changed_function=None):
+        combobox = QComboBox()
+        qutils.add_items_to_combobox(combobox, items=items)
+
+        if changed_function is not None:
+            combobox.currentIndexChanged.connect(changed_function)
+
+        self.__layout.addWidget(combobox)
+
+        return combobox
+
+    def add_label_combobox(self, label_text, items=[], changed_function=None):
+        layout = QHBoxLayout()
+        label = QLabel(label_text)
+        combobox = QComboBox()
+        qutils.add_items_to_combobox(combobox, items=items)
+
+        layout.addWidget(label)
+        layout.addWidget(combobox)
+
+        if changed_function is not None:
+            combobox.currentIndexChanged.connect(changed_function)
+
+        self.__layout.addLayout(layout)
+
+        return combobox
 
     def add_custom_widget(self, widget):
         self.__layout.addWidget(widget)

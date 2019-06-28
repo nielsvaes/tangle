@@ -23,6 +23,7 @@ class Mirror(BaseNode):
 
     def value_changed(self):
         self.set_dirty(True)
+        self.scene.refresh_network()
 
     def compute(self):
         if self.input_image.is_connected():

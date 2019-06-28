@@ -69,7 +69,7 @@ class DragConnection(QGraphicsPathItem):
         self.pen.setStyle(Qt.DotLine)
         self.pen.setWidth(nc.connection_width_hover)
         try:
-            self.pen.setColor(self.output_socket.socket_type.color)
+            self.pen.setColor(self.output_socket.color)
         except:
             self.pen.setColor(Colors.white)
         self.setPen(self.pen)

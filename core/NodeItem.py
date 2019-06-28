@@ -9,7 +9,7 @@ import uuid
 from .Constants import nc, Colors, IO
 from .NodeText import NodeText
 from .NodeSocket import NodeSocket
-from .ExecutionSocket import ExecutionSocket
+# from .ExecutionSocket import ExecutionSocket
 
 
 class NodeItem(QGraphicsRectItem):
@@ -67,7 +67,7 @@ class NodeItem(QGraphicsRectItem):
 
         self.execution_input_socket.setParentItem(self)
 
-    def add_output(self, socket_type, output_name, color=Colors.socket_output):
+    def add_output(self, socket_type, output_name):
         if self.get_socket(output_name, IO.output) is not None:
             logging.error("Output '%s' is already exists on '%s'" % (output_name, self.name))
             return
@@ -77,7 +77,7 @@ class NodeItem(QGraphicsRectItem):
         socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * nc.socket_size + 5)
 
         socket_position = QPointF(self.boundingRect().right() - nc.socket_size / 2, socket_y_position)
-        socket = NodeSocket(IO.output, socket_type, label, self.scene, position=socket_position, color=color)
+        socket = NodeSocket(IO.output, socket_type, label, self.scene, position=socket_position)
         socket.socket_type = socket_type
 
         label_x = self.boundingRect().right() - label.boundingRect().width() - nc.socket_label_spacing
@@ -99,7 +99,7 @@ class NodeItem(QGraphicsRectItem):
 
         return socket
 
-    def add_input(self, socket_type, input_name, color=Colors.socket_input):
+    def add_input(self, socket_type, input_name):
         if self.get_socket(input_name, IO.input) is not None:
             logging.error("Input '%s' is already exists on '%s'" % (input_name, self.name))
             return
@@ -109,7 +109,7 @@ class NodeItem(QGraphicsRectItem):
         socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * nc.socket_size + 5)
 
         socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, socket_y_position)
-        socket = NodeSocket(IO.input, socket_type, label, self.scene, position=socket_position, color=color)
+        socket = NodeSocket(IO.input, socket_type, label, self.scene, position=socket_position)
         socket.socket_type = socket_type
 
         label_x = self.boundingRect().left() + nc.socket_label_spacing
@@ -131,7 +131,7 @@ class NodeItem(QGraphicsRectItem):
 
         return socket
 
-    def add_input_output(self, socket_type, input_output_name, color=Colors.socket_input):
+    def add_input_output(self, socket_type, input_output_name):
         if self.get_socket(input_output_name, IO.both) is not None:
             logging.error("Input or output '%s' is already exists on '%s'" % (input_output_name, self.name))
             return
@@ -141,12 +141,11 @@ class NodeItem(QGraphicsRectItem):
         socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * (nc.socket_size + 5))
 
         input_socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, socket_y_position)
-        input_socket = NodeSocket(IO.input, socket_type, label, self.scene, position=input_socket_position, color=color)
+        input_socket = NodeSocket(IO.input, socket_type, label, self.scene, position=input_socket_position)
         input_socket.socket_type = socket_type
 
         output_socket_position = QPointF(self.boundingRect().right() - nc.socket_size / 2, socket_y_position)
-        output_socket = NodeSocket(IO.output, socket_type, label, self.scene, position=output_socket_position,
-                                   color=color)
+        output_socket = NodeSocket(IO.output, socket_type, label, self.scene, position=output_socket_position)
         output_socket.socket_type = socket_type
 
         label_x = self.boundingRect().width() / 2 - label.boundingRect().width() / 2

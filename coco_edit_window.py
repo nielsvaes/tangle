@@ -123,8 +123,9 @@ class CocoEditWindow(QMainWindow):
                     # self.values_layout.addSpacerItem(spacer)
                     self.pixmap = node.get_pixmap()
                     if self.pixmap is not None:
-                        self.lbl_pixmap.setPixmap(self.pixmap)
-                        self.resize_pixmap()
+                        self.set_pixmap(self.pixmap)
+                        # self.lbl_pixmap.setPixmap(self.pixmap)
+                        # self.resize_pixmap()
         else:
             if not self.keep_pixmap_on_empty_selection:
                 self.lbl_pixmap.clear()
@@ -158,6 +159,11 @@ class CocoEditWindow(QMainWindow):
             logging.error(err)
             _, _, tb = sys.exc_info()
             logging.error(traceback.format_list(traceback.extract_tb(tb)[-1:])[-1])
+
+    def set_pixmap(self, pixmap):
+        self.pixmap = pixmap
+        self.lbl_pixmap.setPixmap(self.pixmap)
+        self.resize_pixmap()
 
     def resizeEvent(self, event):
         self.resize_pixmap()

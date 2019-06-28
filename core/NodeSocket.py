@@ -11,15 +11,13 @@ from .Constants import nc, Colors, IO
 
 
 class NodeSocket(QGraphicsEllipseItem):
-    def __init__(self, io, socket_type, label, scene, position=None, color=Qt.green):
+    def __init__(self, io, socket_type, label, scene, position=None):
         super(NodeSocket, self).__init__()
         self.rect = QRectF(0, 0, nc.socket_size, nc.socket_size)
         self.position = position
         self.scene = scene
 
         self.socket_type = socket_type
-
-        self.__draw()
 
         self.io = io
         self.label = label
@@ -30,8 +28,12 @@ class NodeSocket(QGraphicsEllipseItem):
 
         self.drag_connection = None
 
+        self.color = self.socket_type.color
+
         #todo change list to function
         self.connections = []
+
+        self.__draw()
 
     def get_value(self):
         return self.socket_type.get_value()
@@ -62,6 +64,8 @@ class NodeSocket(QGraphicsEllipseItem):
                 socket = self.get_connected_sockets()[0]
                 value = socket.get_value()
                 self.set_value(value)
+        else:
+            self.set_value(None)
 
     def get_center_point(self):
         if self.io == IO.input:
@@ -117,6 +121,10 @@ class NodeSocket(QGraphicsEllipseItem):
     def get_connections(self):
         return self.connections
 
+    def override_color(self, color):
+        self.color = color
+        self.__draw()
+
     def mousePressEvent(self, event):
         self.connection_start_point = event.scenePos()
         output_socket = self.scene.itemAt(self.connection_start_point, QTransform())
@@ -145,7 +153,7 @@ class NodeSocket(QGraphicsEllipseItem):
             if connection.is_valid:
                 output_socket.set_label_style_connected(True)
                 input_socket.set_label_style_connected(True)
-                self.scene.set_colors_dirty()
+                self.scene.refresh_network()
                 logging.info(str(connection))
             else:
                 del connection
@@ -181,7 +189,7 @@ class NodeSocket(QGraphicsEllipseItem):
     def __draw(self):
         self.brush = QBrush()
         self.brush.setStyle(Qt.SolidPattern)
-        self.brush.setColor(self.socket_type.color)
+        self.brush.setColor(self.color)
 
         self.pen = QPen()
         self.pen.setStyle(Qt.SolidLine)

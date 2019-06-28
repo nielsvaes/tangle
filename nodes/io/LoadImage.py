@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
+from functools import partial
+
 import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance
 
@@ -19,9 +21,10 @@ class LoadImage(BaseNode):
 
         self.scene = scene
 
-        self.add_button("Load image", self.load_image)
+        self.add_button("Load image", partial(self.load_image, set_dirty=True))
+        self.load_image()
 
-    def load_image(self):
+    def load_image(self, set_dirty=False):
         file_path = QFileDialog.getOpenFileName(caption="Open image", filter="Image files (*.jpg *.png)")[0]
 
         if file_path != "":
@@ -32,10 +35,12 @@ class LoadImage(BaseNode):
             self.output_image.set_value(pil_img)
 
         self.scene.get_main_window().load_values_ui()
-        self.set_dirty(True)
 
-        for node in self.get_connected_output_nodes():
-            node.set_dirty(True)
+        if set_dirty:
+            self.set_dirty(True)
+
+            for node in self.get_connected_output_nodes():
+                node.set_dirty(True)
 
     def compute(self):
         if self.is_dirty():

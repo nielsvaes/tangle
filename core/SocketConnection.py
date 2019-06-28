@@ -32,9 +32,16 @@ class SocketConnection(QGraphicsPathItem):
 
         self.input_socket.set_value(self.output_socket.get_value())
 
+        input_node = self.input_socket.get_node()
+        if input_node.auto_compute_on_connect():
+            input_node.compute()
+
     def order_sockets(self):
-        if self.output_socket.io != IO.output:
-            self.output_socket, self.input_socket = self.input_socket, self.output_socket
+        try:
+            if self.output_socket.io != IO.output:
+                self.output_socket, self.input_socket = self.input_socket, self.output_socket
+        except:
+            pass
 
     def check_validity(self):
         error_message = None
@@ -139,7 +146,7 @@ class SocketConnection(QGraphicsPathItem):
         pen.setStyle(Qt.SolidLine)
         pen.setWidth(nc.connection_width_hover)
         # pen.setColor(Colors.connection_hover)
-        pen.setColor(self.output_socket.socket_type.color)
+        pen.setColor(self.output_socket.color)
         self.setZValue(nc.connection_z_depth_hover)
         self.setPen(pen)
 

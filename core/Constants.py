@@ -29,6 +29,9 @@ class Colors():
     gray                     = QColor(80, 80, 80, 255)
     white                    = QColor(255, 255, 255, 255)
     black                    = QColor(0, 0, 0, 255)
+    red                      = QColor(221, 119, 119, 255)
+    green                    = QColor(119, 221, 119, 255)
+    blue                     = QColor(119, 119, 211, 255)
 
     node_scene_computed       = QColor(43, 43, 43, 255)
     node_scene_dirty          = QColor(53, 43, 43, 255)
