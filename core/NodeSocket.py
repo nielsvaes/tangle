@@ -125,6 +125,19 @@ class NodeSocket(QGraphicsEllipseItem):
         self.color = color
         self.__draw()
 
+    def destroy_self(self):
+        all_sockets = self.get_node().get_all_sockets()
+
+        all_sockets.remove(self)
+
+        for s in self.get_node().get_all_sockets():
+            print(s.name)
+
+
+        self.scene.removeItem(self)
+        self.scene.removeItem(self.label)
+
+
     def mousePressEvent(self, event):
         self.connection_start_point = event.scenePos()
         output_socket = self.scene.itemAt(self.connection_start_point, QTransform())

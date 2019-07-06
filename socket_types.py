@@ -68,6 +68,19 @@ class PictureSocketType(BaseSocketType):
         self.color = QColor(90, 100, 170, 255)
         self.set_initial_value(QPixmap())
 
+    def reset_to_initial_value(self):
+        print("setting to initial value ", self.get_parent_node().name)
+        self.__value = self.__initial_value
+        self.get_parent_node().set_pixmap(self.__initial_value)
+
+class TupleSocketType(BaseSocketType):
+    def __init__(self, parent_node):
+        super(TupleSocketType, self).__init__(parent_node)
+
+        self.name = "tuple"
+        self.color = QColor(255, 230, 40, 255)
+        self.set_initial_value(tuple())
+
 class ExecutionSocketType(BaseSocketType):
     def __init__(self):
         super(ExecutionSocketType, self).__init__()
@@ -295,17 +308,17 @@ class DebugSocketType(BaseSocketType):
         self.name = "debug"
         self.color = QColor(90, 90, 70, 255)
 
-    def get_ui(self):
-        layout = QHBoxLayout()
-        text_edit = QTextEdit()
-
-        self.ui_widget.setLayout(layout)
-
-        try:
-            text_edit.setPlainText(self.get_value())
-        except Exception as err:
-            pass
-
-        layout.addWidget(text_edit)
-
-        return self.ui_widget
+    # def get_ui(self):
+    #     layout = QHBoxLayout()
+    #     text_edit = QTextEdit()
+    #
+    #     self.ui_widget.setLayout(layout)
+    #
+    #     try:
+    #         text_edit.setPlainText(self.get_value())
+    #     except Exception as err:
+    #         pass
+    #
+    #     layout.addWidget(text_edit)
+    #
+    #     return self.ui_widget

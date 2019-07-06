@@ -53,23 +53,15 @@ class NodeScene(QGraphicsScene):
 
         return nodes
 
-    def get_all_non_executing_nodes(self):
-        from nodes.base_node import BaseNode
-        nodes = []
-        for node in self.items():
-            if issubclass(type(node), BaseNode):
-                if not node.is_executing_node():
-                    nodes.append(node)
-
-        return nodes
-
-    def get_all_executing_nodes(self):
-        executing_nodes = []
-        for node in self.get_all_nodes():
-            if node.is_executing_node():
-                executing_nodes.append(node)
-
-        return executing_nodes
+    # def get_all_nodes(self):
+    #     from nodes.base_node import BaseNode
+    #     nodes = []
+    #     for node in self.items():
+    #         if issubclass(type(node), BaseNode):
+    #             if not node.is_executing_node():
+    #                 nodes.append(node)
+    #
+    #     return nodes
 
     def get_nonexisting_name(self, name):
         for node in self.get_all_nodes():
@@ -135,7 +127,7 @@ class NodeScene(QGraphicsScene):
 
     def get_begin_nodes(self):
         start_nodes = []
-        non_executing_nodes = self.get_all_non_executing_nodes()
+        non_executing_nodes = self.get_all_nodes()
 
         if len(non_executing_nodes) == 1:
             return non_executing_nodes
@@ -153,7 +145,7 @@ class NodeScene(QGraphicsScene):
 
     def get_end_nodes(self):
         end_nodes = []
-        non_executing_nodes = self.get_all_non_executing_nodes()
+        non_executing_nodes = self.get_all_nodes()
 
         if len(non_executing_nodes) == 1:
             return non_executing_nodes
@@ -169,46 +161,19 @@ class NodeScene(QGraphicsScene):
 
         return end_nodes
 
-    def get_begin_executing_node(self):
-        start_nodes = []
-
-        executing_nodes = self.get_all_executing_nodes()
-        if len(executing_nodes) == 1:
-            return executing_nodes[0]
-
-        if len(executing_nodes) > 1:
-            for node in executing_nodes:
-                try:
-                    if node.is_execution_connected():
-                        if node.is_execution_output_connected() and not node.is_execution_input_connected():
-                            start_nodes.append(node)
-                    else:
-                        start_nodes.append(node)
-                except AttributeError as err:
-                    pass
-
-            if len(start_nodes) == 1:
-                return start_nodes[0]
-
-        if len(executing_nodes) == 0:
-            raise RuntimeError("There is no executing node in the scene!")
-
-
-        raise RuntimeError("There are multiple nodes that have their out ExecutionSocket connected but not their input ExecutionSocket. This is invalid for the graph!\nPotential invalid nodes are: %s" % [start_node.name for start_node in start_nodes])
-
-    def is_cyclical(self):
-        try:
-            self.get_begin_executing_node()
-            return False
-        except:
-            pass
-
-        result = True
-        for node in self.get_all_executing_nodes():
-            if not node.is_execution_output_connected() or not node.is_execution_input_connected:
-                result = False
-
-        return result
+    # def is_cyclical(self):
+    #     try:
+    #         self.get_begin_executing_node()
+    #         return False
+    #     except:
+    #         pass
+    #
+    #     result = True
+    #     for node in self.get_all_executing_nodes():
+    #         if not node.is_execution_output_connected() or not node.is_execution_input_connected:
+    #             result = False
+    #
+    #     return result
 
     def duplicate_nodes(self, nodes=None):
         from nodes.base_node import BaseNode

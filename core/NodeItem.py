@@ -45,27 +45,27 @@ class NodeItem(QGraphicsRectItem):
         self.execution_output_socket = None
 
 
-    def add_execution_output(self):
-        if self.execution_output_socket is not None:
-            raise IndexError("Node (%s) can only have 1 output execution socket" % self.name)
-
-        position = QPointF(self.boundingRect().right() - nc.execution_socket_size / 2,
-                           self.boundingRect().top()   - nc.execution_socket_size / 2)
-
-        self.execution_output_socket = ExecutionSocket(IO.output, self.scene, position)
-
-        self.execution_output_socket.setParentItem(self)
-
-    def add_execution_input(self):
-        if self.execution_input_socket is not None:
-            raise IndexError("Node (%s) can only have 1 input execution socket" % self.name)
-
-        position = QPointF(self.boundingRect().left() - nc.execution_socket_size / 2,
-                           self.boundingRect().top()  - nc.execution_socket_size / 2)
-
-        self.execution_input_socket = ExecutionSocket(IO.input, self.scene, position)
-
-        self.execution_input_socket.setParentItem(self)
+    # def add_execution_output(self):
+    #     if self.execution_output_socket is not None:
+    #         raise IndexError("Node (%s) can only have 1 output execution socket" % self.name)
+    #
+    #     position = QPointF(self.boundingRect().right() - nc.execution_socket_size / 2,
+    #                        self.boundingRect().top()   - nc.execution_socket_size / 2)
+    #
+    #     self.execution_output_socket = ExecutionSocket(IO.output, self.scene, position)
+    #
+    #     self.execution_output_socket.setParentItem(self)
+    #
+    # def add_execution_input(self):
+    #     if self.execution_input_socket is not None:
+    #         raise IndexError("Node (%s) can only have 1 input execution socket" % self.name)
+    #
+    #     position = QPointF(self.boundingRect().left() - nc.execution_socket_size / 2,
+    #                        self.boundingRect().top()  - nc.execution_socket_size / 2)
+    #
+    #     self.execution_input_socket = ExecutionSocket(IO.input, self.scene, position)
+    #
+    #     self.execution_input_socket.setParentItem(self)
 
     def add_output(self, socket_type, output_name):
         if self.get_socket(output_name, IO.output) is not None:
@@ -176,45 +176,6 @@ class NodeItem(QGraphicsRectItem):
         self.title.setPlainText(new_title)
         self.reposition_title()
 
-    def is_execution_connected(self):
-        if self.is_executing_node():
-            for execution_socket in [self.execution_output_socket, self.execution_input_socket]:
-                if execution_socket.connection is not None:
-                    return True
-            return False
-        else:
-            raise AttributeError("%s is not an executing node!" % self.name)
-
-    def is_execution_output_connected(self):
-        if self.is_executing_node():
-            if self.execution_output_socket.connection is not None:
-                return True
-            return False
-        else:
-            raise AttributeError("%s is not an executing node!" % self.name)
-
-    def is_execution_input_connected(self):
-        if self.execution_input_socket.connection is not None:
-            return True
-        return False
-
-    def get_connected_execution_output_node(self):
-        if not self.is_execution_output_connected():
-            raise RuntimeError("%s doesn't have its output ExecutionSocket connected!" % self.name)
-
-        return self.execution_output_socket.connection.input_socket.get_node()
-
-    def get_connected_execution_input_node(self):
-        if not self.is_execution_input_connected():
-            raise RuntimeError("%s doesn't have its input ExecutionSocket connected!" % self.name)
-
-        return self.execution_input_socket.connection.input_socket.get_node()
-
-    def is_executing_node(self):
-        if self.execution_output_socket is not None or self.execution_input_socket is not None:
-            return True
-        return False
-
     def get_all_sockets(self):
         return self.__output_sockets + self.__input_sockets
 
@@ -276,6 +237,31 @@ class NodeItem(QGraphicsRectItem):
             connected_output_nodes += self.get_connected_output_nodes_recursive(node=output_node)
 
         return connected_output_nodes
+
+    def get_connected_input_nodes_recursive(self, node=None):
+        connected_input_nodes = []
+
+        if node is None:
+            node = self
+
+        for input_node in node.get_connected_input_nodes():
+            connected_input_nodes.append(input_node)
+
+            connected_input_nodes += self.get_connected_output_nodes_recursive(node=input_node)
+
+        return connected_input_nodes
+
+    def get_input_nodes_of_type(self, node_type):
+        for node in self.get_connected_input_nodes():
+            if type(node) == node_type:
+                return node
+        return None
+
+    def get_output_nodes_of_type(self, node_type):
+        for node in self.get_connected_output_nodes():
+            if type(node) == node_type:
+                return node
+        return None
 
     def get_input_socket_types(self):
         input_socket_types = []
