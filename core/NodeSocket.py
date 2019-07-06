@@ -9,6 +9,8 @@ from .SocketConnection import SocketConnection
 from .DragConnection import DragConnection
 from .Constants import nc, Colors, IO
 
+import nv_utils.utils as utils
+
 
 class NodeSocket(QGraphicsEllipseItem):
     def __init__(self, io, socket_type, label, scene, position=None):
@@ -130,13 +132,8 @@ class NodeSocket(QGraphicsEllipseItem):
 
         all_sockets.remove(self)
 
-        for s in self.get_node().get_all_sockets():
-            print(s.name)
-
-
         self.scene.removeItem(self)
         self.scene.removeItem(self.label)
-
 
     def mousePressEvent(self, event):
         self.connection_start_point = event.scenePos()
@@ -162,7 +159,12 @@ class NodeSocket(QGraphicsEllipseItem):
         input_socket = self.scene.itemAt(self.connection_end_point, QTransform())
 
         if isinstance(input_socket, NodeSocket):
-            connection = SocketConnection(output_socket, input_socket, self.scene)
+            try:
+                connection = SocketConnection(output_socket, input_socket, self.scene)
+            except Exception as err:
+                utils.trace(err)
+                return
+
             if connection.is_valid:
                 output_socket.set_label_style_connected(True)
                 input_socket.set_label_style_connected(True)

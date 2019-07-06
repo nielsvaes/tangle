@@ -26,7 +26,7 @@ class BaseNode(NodeItem):
         self.__widget = QWidget()
         self.__layout = QVBoxLayout()
 
-        self.__pixmap = QPixmap()
+        #self.__pixmap = QPixmap()
         self.__is_dirty = True
         self.__auto_compute_on_connect = False
 
@@ -141,7 +141,7 @@ class BaseNode(NodeItem):
 
         return checkbox
 
-    def add_slider(self, minimum, maximum, start, changed_function=None):
+    def add_slider(self, minimum, maximum, start, changed_function=None, released_function=None):
         slider = QSlider()
         slider.setMinimum(minimum)
         slider.setMaximum(maximum)
@@ -149,6 +149,9 @@ class BaseNode(NodeItem):
         slider.setOrientation(Qt.Horizontal)
         if changed_function is not None:
             slider.sliderMoved.connect(changed_function)
+
+        if released_function is not None:
+            slider.sliderReleased.connect(released_function)
 
         self.__layout.addWidget(slider)
 
