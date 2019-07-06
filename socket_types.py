@@ -70,8 +70,11 @@ class PictureSocketType(BaseSocketType):
 
     def reset_to_initial_value(self):
         print("setting to initial value ", self.get_parent_node().name)
-        self.__value = self.__initial_value
-        self.get_parent_node().set_pixmap(self.__initial_value)
+        super().reset_to_initial_value()
+        # self.__value = self.__initial_value
+        print("got here")
+        self.get_parent_node().set_pixmap(self.get_initial_value())
+        print("done setting initial value")
 
 class TupleSocketType(BaseSocketType):
     def __init__(self, parent_node):

@@ -10,16 +10,16 @@ from functools import partial
 import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
-class Contrast(ImageNode):
+class Saturation(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(Contrast, self).__init__(scene, x=x, y=y)
-        self.change_title("contrast")
+        super(Saturation, self).__init__(scene, x=x, y=y)
+        self.change_title("saturation")
 
         self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
         self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
 
-        self.add_label("Contrast amount")
-        self.sld_contrast_amount = self.add_slider(0, 200, 100, self.slider_changed)
+        self.add_label("Saturation amount")
+        self.sld_contrast_amount = self.add_slider(0, 800, 100, self.slider_changed)
 
         self.set_auto_compute_on_connect(True)
 
@@ -33,11 +33,11 @@ class Contrast(ImageNode):
 
             factor = self.sld_contrast_amount.value()
 
-            contrasted = ImageEnhance.Contrast(self.input_image.get_value()).enhance(factor / 100)
+            saturated = ImageEnhance.Color(self.input_image.get_value()).enhance(factor / 100)
 
-            self.output_image.set_value(contrasted)
+            self.output_image.set_value(saturated)
 
-            contrasted_pixmap = ImageQt.toqpixmap(contrasted)
+            contrasted_pixmap = ImageQt.toqpixmap(saturated)
             self.set_pixmap(contrasted_pixmap)
 
             self.get_main_window().set_pixmap(contrasted_pixmap)

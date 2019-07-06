@@ -11,24 +11,25 @@ import traceback
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from nodes.base_node import BaseNode
+from nodes.image_node import ImageNode
+from nodes.io.LoadImage import LoadImage
 import socket_types as socket_types
 from core.Constants import Colors
 
 import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter, ImageDraw
 
-class CombineChannels(BaseNode):
+class CombineChannels(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(CombineChannels, self).__init__(scene, x=x, y=y)
-        self.change_title("rgb_2_l")
+        self.change_title("combine")
 
         self.input_r = self.add_input(socket_types.PictureSocketType(self), "in R")
         self.input_g = self.add_input(socket_types.PictureSocketType(self), "in G")
         self.input_b = self.add_input(socket_types.PictureSocketType(self), "in B")
         self.input_a = self.add_input(socket_types.PictureSocketType(self), "in A")
 
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "RGB")
+        self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
 
         self.input_r.override_color(Colors.red)
         self.input_g.override_color(Colors.green)
@@ -39,6 +40,10 @@ class CombineChannels(BaseNode):
         self.black_image = Image.new("L", (100, 100))
 
         self.set_auto_compute_on_connect(True)
+
+    def get_input_image_size(self):
+        self.get_input_nodes_of_type(LoadImage)
+
 
     def get_most_common_size(self, image_list):
         sizes = []
@@ -68,7 +73,9 @@ class CombineChannels(BaseNode):
 
     def compute(self):
         if self.input_r.is_connected() or self.input_r.is_connected() or self.input_r.is_connected() or self.input_r.is_connected():
-            print("computing combine")
+
+            print("there's a connected input")
+
             self.input_r.fetch_connected_value()
             self.input_g.fetch_connected_value()
             self.input_b.fetch_connected_value()

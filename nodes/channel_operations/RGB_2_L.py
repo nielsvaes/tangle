@@ -5,14 +5,14 @@ from PyQt5.QtGui import *
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from nodes.base_node import BaseNode
+from nodes.image_node import ImageNode
 import socket_types as socket_types
 from core.Constants import Colors
 
 import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
-class RGB_2_L(BaseNode):
+class RGB_2_L(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(RGB_2_L, self).__init__(scene, x=x, y=y)
         self.change_title("rgb_2_l")

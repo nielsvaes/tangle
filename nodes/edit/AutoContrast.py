@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from nodes.base_node import BaseNode
+from nodes.image_node import ImageNode
 import socket_types as socket_types
 
 from functools import partial
@@ -10,7 +10,7 @@ from functools import partial
 import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
-class AutoContrast(BaseNode):
+class AutoContrast(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(AutoContrast, self).__init__(scene, x=x, y=y)
         self.change_title("autocontrast")

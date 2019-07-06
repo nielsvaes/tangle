@@ -5,13 +5,13 @@ from PyQt5.QtGui import *
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from nodes.base_node import BaseNode
+from nodes.image_node import ImageNode
 import socket_types as socket_types
 
 import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
-class SaveImage(BaseNode):
+class SaveImage(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(SaveImage, self).__init__(scene, x=x, y=y)
         self.change_title("save")

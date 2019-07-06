@@ -7,9 +7,10 @@ class Debug(BaseNode):
         self.change_title("*DEBUG*")
 
         self.debug_value = self.add_input(socket_types.DebugSocketType(self), "debug value")
-        self.enum_debug = self.add_input(socket_types.EnumSocketType(self), "enum value")
 
-        self.test_value = self.add_output(socket_types.DebugSocketType(self), "output test")
+        self.lbl_debug = self.add_label_text("Debug value: ")[1]
+
+        self.set_auto_compute_on_connect(True)
 
     def compute(self):
-        print(self.debug_value.get_value())
+        self.lbl_debug.setText(str(self.debug_value.get_value()))
