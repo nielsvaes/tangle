@@ -17,8 +17,8 @@ class BaseNode(NodeItem):
         super(BaseNode, self).__init__(scene, title, x, y)
         self.scene = scene
         self.__auto_compute = False
-        self.x = x
-        self.y = y
+        self.__x = x
+        self.__y = y
 
         self.dirty_signal = SignalEmitter()
         self.compute_time = None
@@ -26,13 +26,12 @@ class BaseNode(NodeItem):
         self.__widget = QWidget()
         self.__layout = QVBoxLayout()
 
-        #self.__pixmap = QPixmap()
         self.__is_dirty = True
         self.__auto_compute_on_connect = False
 
         self.__widget.setLayout(self.__layout)
 
-        self.add_label(str(self.uuid))
+        self.add_label(str(self.get_uuid()))
 
     def refresh(self):
         pass
@@ -55,11 +54,11 @@ class BaseNode(NodeItem):
     def get_ui(self):
         return self.__widget
 
-    def get_pixmap(self):
-        return self.__pixmap
+    def get_x(self):
+        return self.__x
 
-    def set_pixmap(self, pixmap):
-        self.__pixmap = pixmap
+    def get_y(self):
+        return self.__y
 
     def set_auto_compute_on_connect(self, value):
         self.__auto_compute_on_connect = value

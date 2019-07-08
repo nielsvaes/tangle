@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from nodes.base_node import BaseNode
+from nodes.image_node import ImageNode
 import socket_types as socket_types
 
 from functools import partial
@@ -10,10 +10,10 @@ from functools import partial
 import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
-class Rotate(BaseNode):
+class Rotate(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(Rotate, self).__init__(scene, x=x, y=y)
-        self.change_title("Rotate")
+        self.change_title("rotate")
 
         self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
         self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")

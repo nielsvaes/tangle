@@ -7,7 +7,6 @@ import socket_types as socket_types
 
 from functools import partial
 
-import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
 class Saturation(ImageNode):

@@ -120,12 +120,13 @@ class CocoEditWindow(QMainWindow):
 
                     self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
-                    # self.values_layout.addSpacerItem(spacer)
-                    self.pixmap = node.get_pixmap()
-                    if self.pixmap is not None:
-                        self.set_pixmap(self.pixmap)
-                        # self.lbl_pixmap.setPixmap(self.pixmap)
-                        # self.resize_pixmap()
+                    try:
+                        self.pixmap = node.get_pixmap()
+                        if self.pixmap is not None:
+                            self.set_pixmap(self.pixmap)
+                    except AttributeError as err:
+                        utils.trace(err)
+
         else:
             if not self.keep_pixmap_on_empty_selection:
                 self.lbl_pixmap.clear()
@@ -156,9 +157,7 @@ class CocoEditWindow(QMainWindow):
             self.lbl_pixmap.setPixmap(self.pixmap.scaled(self.lbl_pixmap.width(), self.lbl_pixmap.height(),
                                                           Qt.KeepAspectRatio, Qt.SmoothTransformation))
         except AttributeError as err:
-            logging.error(err)
-            _, _, tb = sys.exc_info()
-            logging.error(traceback.format_list(traceback.extract_tb(tb)[-1:])[-1])
+            utils.trace(err)
 
     def set_pixmap(self, pixmap):
         self.pixmap = pixmap
@@ -186,8 +185,8 @@ if __name__ == "__main__":
     qtmodern.styles.dark(app)
 
     coco_edit_window = CocoEditWindow()
-    #modern_window = qtmodern.windows.ModernWindow(coco_edit_window)
-    #modern_window.show()
+    # modern_window = qtmodern.windows.ModernWindow(coco_edit_window)
+    # modern_window.show()
 
     coco_edit_window.show()
 

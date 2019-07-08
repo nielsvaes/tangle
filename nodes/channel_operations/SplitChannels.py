@@ -15,7 +15,7 @@ from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 class SplitChannels(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(SplitChannels, self).__init__(scene, x=x, y=y)
-        self.change_title("rgb_2_l")
+        self.change_title("split")
 
         self.input_image = self.add_input(socket_types.PictureSocketType(self), "RGB(A) in")
         self.output_r = self.add_output(socket_types.PictureSocketType(self), "out R")

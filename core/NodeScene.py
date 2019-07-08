@@ -3,10 +3,12 @@ import sys
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
+from collections import OrderedDict
+import pickle
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from PyQt5 import uic
 
 
 from pydoc import locate
@@ -88,15 +90,11 @@ class NodeScene(QGraphicsScene):
         return self.get_view().window()
 
     def refresh_network(self, node=None):
-        # selected_nodes = self.selectedItems()
-        # self.clearSelection()
-
         try:
             if node is None:
                 for begin_node in self.get_begin_nodes():
                     if begin_node.is_dirty():
                         begin_node.compute()
-
 
                     child_nodes_are_dirty = False
                     for connected_node in begin_node.get_connected_output_nodes_recursive():
@@ -108,22 +106,24 @@ class NodeScene(QGraphicsScene):
                             print("is dirty, needs computing: ", connected_node.title)
                             connected_node.compute()
                             child_nodes_are_dirty = True
-            #
-            # else:
-            #     if node.is_dirty():
-            #         print("is dirty, needs computing: ", node.title)
-            #         node.compute()
-            #
-            #         for connected_node in node.get_connected_output_nodes():
-            #             self.refresh_network(node=connected_node)
 
             self.__set_colors_computed()
-            # for selected_node in selected_nodes:
-            #     selected_node.setSelected(True)
 
         except Exception as err:
             logging.error(err)
             logging.error(traceback.format_exc(5))
+
+    def map_network(self):
+        node_dict = OrderedDict()
+        for begin_node in self.get_begin_nodes():
+            for attribute in vars(begin_node):
+            # for index, attribute in enumerate(begin_node.__dict__):
+                node_dict[begin_node.get_uuid(as_string=True)] = {}
+                node_dict[begin_node.get_uuid(as_string=True)][attribute] = getattr(begin_node, attribute)
+
+        for key, value in enumerate(node_dict):
+            print(key)
+            print(value)
 
     def get_begin_nodes(self):
         start_nodes = []
@@ -175,6 +175,11 @@ class NodeScene(QGraphicsScene):
     #
     #     return result
 
+    def save(self, file_path=None):
+        if file_path is None:
+            file_path = QFileDialog.getSaveFileName(caption="Save Network", filter="Coco Edit Network Files(*.json)")[0]
+
+
     def duplicate_nodes(self, nodes=None):
         from nodes.base_node import BaseNode
         if nodes is None:
@@ -221,19 +226,13 @@ class NodeScene(QGraphicsScene):
         if event.key() == Qt.Key_D and event.modifiers() == Qt.ControlModifier:
             self.duplicate_nodes()
 
+        if event.key() == Qt.Key_S and event.modifiers() == Qt.ControlModifier:
+            self.map_network()
+
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             self.refresh_network()
-            # print "enter"
-            # for item in self.items():
-            #     if issubclass(type(item), BaseNode):
-            #         try:
-            #
-            #         except StandardError, err:
-            #             print "Can't refresh network"
-            #             print err
-            #             pass
-        # else:
-        #     super(NodeScene, self).keyPressEvent(event)
+
+
 
     def set_colors_dirty(self):
         dirty_node_exists = False

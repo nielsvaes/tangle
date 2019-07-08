@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from nodes.base_node import BaseNode
+from nodes.image_node import ImageNode
 import socket_types as socket_types
 
 import logging
@@ -10,40 +10,24 @@ logging.basicConfig(level=logging.INFO)
 
 import nv_utils.qt_utils as qutils
 
-import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
-class SizeReduce(BaseNode):
+class SizeReduce(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(SizeReduce, self).__init__(scene, x=x, y=y)
         self.change_title("resize")
 
         self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
         self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
+        self.size = self.add_output(socket_types.TupleSocketType(self), "size")
 
-        percentage_list = ["25", "50", "75"]
-
-        # for i in range(1, 99):
-        #     percentage_list.append(str(i))
+        percentage_list = ["0", "25", "50", "75"]
 
         self.cb_percentage = self.add_label_combobox("Reduce by %", percentage_list, changed_function=self.value_changed)
 
-
-    # def get_ui(self):
-    #     if self.input_image.is_connected() and not self.has_been_changed:
-    #         try:
-    #             super(Resize, self).get_ui()
-    #             width, height = self.input_image.get_value().size
-    #             self.txt_width.setText(width)
-    #             self.txt_height.setText(height)
-    #         except AttributeError as err:
-    #             logging.warning("Input connection doesn't have a pixmap assigned!")
-    #     else:
-    #         super(Resize, self).get_ui()
-
-
     def value_changed(self):
         self.set_dirty(True)
+        self.scene.refresh_network()
 
     def compute(self):
         if self.input_image.is_connected():
@@ -60,5 +44,7 @@ class SizeReduce(BaseNode):
 
             resized_pixmap = ImageQt.toqpixmap(resized)
             self.set_pixmap(resized_pixmap)
+
+            self.size.set_value(resized.size)
 
             self.set_dirty(False)

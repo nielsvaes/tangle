@@ -16,6 +16,8 @@ from nodes.io.LoadImage import LoadImage
 import socket_types as socket_types
 from core.Constants import Colors
 
+import nv_utils.utils as utils
+
 import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter, ImageDraw
 
@@ -98,15 +100,16 @@ class CombineChannels(ImageNode):
                 else:
                     combined_image = Image.merge("RGB", checked_channels[:-1])
             except ValueError as err:
-                logging.error(err)
-                _, _, tb = sys.exc_info()
-                logging.error(traceback.format_list(traceback.extract_tb(tb)[-1:])[-1])
+                utils.trace(err)
+                logging.error("R: ", self.input_r.get_value().size)
+                logging.error("G: ", self.input_g.get_value().size)
+                logging.error("B: ", self.input_b.get_value().size)
+                logging.error("A: ", self.input_a.get_value().size)
 
                 if self.chk_rgba.isChecked():
                     combined_image = Image.merge("RGBA", [self.black_image, self.black_image, self.black_image, self.black_image])
                 else:
                     combined_image = Image.merge("RGB", [self.black_image, self.black_image, self.black_image])
-
 
             self.output_image.set_value(combined_image)
             self.set_pixmap(ImageQt.toqpixmap(combined_image))

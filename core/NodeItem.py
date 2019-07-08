@@ -32,7 +32,7 @@ class NodeItem(QGraphicsRectItem):
         self.__draw()
 
         self.title = self.__add_title(title)
-        self.uuid = uuid.uuid4()
+        self.__uuid = uuid.uuid4()
 
         self.scene.addItem(self)
         self.scene.addItem(self.title)
@@ -175,6 +175,11 @@ class NodeItem(QGraphicsRectItem):
     def change_title(self, new_title):
         self.title.setPlainText(new_title)
         self.reposition_title()
+
+    def get_uuid(self, as_string=False):
+        if as_string:
+            return str(self.__uuid)
+        return self.__uuid
 
     def get_all_sockets(self):
         return self.__output_sockets + self.__input_sockets
