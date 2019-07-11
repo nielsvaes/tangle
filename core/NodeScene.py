@@ -3,6 +3,8 @@ import sys
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
+import os
+
 from collections import OrderedDict
 import pickle
 
@@ -10,6 +12,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+import nv_utils.utils as utils
 
 from pydoc import locate
 
@@ -27,7 +30,8 @@ class NodeScene(QGraphicsScene):
         node_instance = None
 
         if type(class_name) == str:
-            class_path = ".".join(["CocoEdit", "nodes", module, class_name, class_name])
+            class_path = ".".join([os.path.basename(self.get_main_window().SCRIPT_FOLDER), "nodes", module, class_name, class_name])
+            print(class_path)
             node_class = locate(class_path)
             try:
                 node_instance = node_class(self, x, y)

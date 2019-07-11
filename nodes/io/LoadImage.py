@@ -26,7 +26,7 @@ class LoadImage(ImageNode):
         self.load_image()
 
     def load_image(self, set_dirty=False):
-        file_path = QFileDialog.getOpenFileName(caption="Open image", filter="Image files (*.jpg *.png)")[0]
+        file_path = QFileDialog.getOpenFileName(caption="Open image", filter="Image files (*.jpg *.png *.tga)")[0]
 
         if file_path != "":
             pil_img = Image.open(file_path)

@@ -22,23 +22,18 @@ from core.NodeScene import NodeScene
 from core.NodeView import NodeView
 from core.Constants import ss, IO
 
-SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
-UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
-ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
-NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
-
-
-
-#https://stackoverflow.com/questions/7274221/changing-image-hue-with-python-pil
-
 
 class CocoEditWindow(QMainWindow):
     def __init__(self):
         super(CocoEditWindow, self).__init__()
-        uic.loadUi(os.path.join(UI_PATH, "coco_edit.ui"), self)
+        self.SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
+        self.UI_PATH = os.path.join(self.SCRIPT_FOLDER, "ui")
+        self.ICONS_PATH = os.path.join(self.SCRIPT_FOLDER, "ui", "icons")
+        self.NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
+
+        uic.loadUi(os.path.join(self.UI_PATH, "coco_edit.ui"), self)
 
         self.build_ui()
-
         self.load_nodes()
 
         self.pixmap = QPixmap()
@@ -47,7 +42,7 @@ class CocoEditWindow(QMainWindow):
 
         self.show()
 
-        load_node = self.scene.add_node_to_view("LoadImage", "io", 100, 100)
+        #load_node = self.scene.add_node_to_view("LoadImage", "io", 100, 100)
         # load_node.load_image(r"D:\Google Drive\Tools\CocoEdit\its-a-me_4.jpg")
         # load_node.set_dirty(True)
 
@@ -78,9 +73,9 @@ class CocoEditWindow(QMainWindow):
             pass
 
     def load_nodes(self):
-        for file_path in file_utils.get_files_recursively(NODE_FOLDER, filters=".py"):
+        for file_path in file_utils.get_files_recursively(self.NODE_FOLDER, filters=".py"):
             if file_path is not None and not "__" in file_path and not "base_node" in file_path and not file_path.endswith(
-                    "pyc"):
+                    "pyc") and not "image_node" in file_path:
 
                 file_name = os.path.basename(file_path)
                 file_name_no_ext = os.path.splitext(file_name)[0]
@@ -89,6 +84,7 @@ class CocoEditWindow(QMainWindow):
                 complete_path = os.path.join(complete_folder, file_name).replace("\\", "/")
 
                 folder_item = qutils.get_item_with_text_from_tree_widget(self.tree_nodes, folder_name, 0)
+
                 if folder_item is None:
                     folder_item = QTreeWidgetItem(self.tree_nodes, [folder_name])
                     font = QFont()
