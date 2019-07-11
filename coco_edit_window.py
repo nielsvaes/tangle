@@ -27,6 +27,11 @@ UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
 ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
 NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
 
+
+
+#https://stackoverflow.com/questions/7274221/changing-image-hue-with-python-pil
+
+
 class CocoEditWindow(QMainWindow):
     def __init__(self):
         super(CocoEditWindow, self).__init__()
@@ -42,7 +47,7 @@ class CocoEditWindow(QMainWindow):
 
         self.show()
 
-        # load_node = self.scene.add_node_to_view("LoadImage", "io", 100, 100)
+        load_node = self.scene.add_node_to_view("LoadImage", "io", 100, 100)
         # load_node.load_image(r"D:\Google Drive\Tools\CocoEdit\its-a-me_4.jpg")
         # load_node.set_dirty(True)
 

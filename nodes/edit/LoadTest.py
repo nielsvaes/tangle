@@ -52,19 +52,24 @@ class LoadTest(ImageNode):
 
             ni = np.array(self.input_image.get_value())
 
-            print(ni)
 
-            blues = ni[:,:,2] > 150
+            reds = (ni[:,:,0] > 102) & (ni[:,:,0] < 142)
+            greens = (ni[:,:,1] > 143) & (ni[:,:,1] < 183)
+            blues = (ni[:,:,2] > 150) & (ni[:,:,2] < 230)
+            #
+            #
+            # print("these are the blues")
+            # print(blues)
 
-            print("these are the blues")
-            print(blues)
+            mask_array = np.logical_and(reds, np.logical_and(greens, blues))
+            mask_array = np.invert(mask_array)
 
-            mask_image = Image.fromarray((blues * 255).astype(np.uint8))
+            mask_image = Image.fromarray((mask_array * 255).astype(np.uint8))
 
 
-
-            print("mask image")
-            print(np.array(mask_image))
+            #
+            # print("mask image")
+            # print(np.array(mask_image))
 
 
             self.output_image.set_value(mask_image)
