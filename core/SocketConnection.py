@@ -36,6 +36,9 @@ class SocketConnection(QGraphicsPathItem):
         if input_node.auto_compute_on_connect():
             input_node.compute()
 
+        if self.input_socket.adjust_color_to_input:
+            self.input_socket.override_color(self.output_socket.color)
+
     def order_sockets(self):
         try:
             if self.output_socket.io != IO.output:

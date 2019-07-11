@@ -3,7 +3,7 @@ import socket_types as socket_types
 
 import numpy as np
 
-from PIL import Image, ImageQt
+from PIL import Image, ImageQt, ImageOps
 
 class Invert(ImageNode):
     def __init__(self, scene, x=0, y=0):
@@ -19,16 +19,11 @@ class Invert(ImageNode):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 
-            print(self.input_image.get_value())
+            inverted_image = ImageOps.invert(self.input_image.get_value())
 
-            image_array = np.array(self.input_image.get_value())
-            mask_array = np.invert(image_array)
+            self.output_image.set_value(inverted_image)
 
-            mask_image = Image.fromarray((mask_array * 255).astype(np.uint8))
-
-            self.output_image.set_value(mask_image)
-
-            output_pixmap = ImageQt.toqpixmap(mask_image)
+            output_pixmap = ImageQt.toqpixmap(inverted_image)
             self.set_pixmap(output_pixmap)
 
             self.get_main_window().set_pixmap(output_pixmap)

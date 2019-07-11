@@ -34,9 +34,13 @@ class CombineChannels(ImageNode):
         self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
 
         self.input_r.override_color(Colors.red)
+        self.input_r.adjust_color_to_input = False
         self.input_g.override_color(Colors.green)
+        self.input_g.adjust_color_to_input = False
         self.input_b.override_color(Colors.blue)
+        self.input_b.adjust_color_to_input = False
         self.input_a.override_color(Colors.gray)
+        self.input_a.adjust_color_to_input = False
 
         self.chk_rgba = self.add_checkbox("Output is RGBA image", checked=False)
         self.black_image = Image.new("L", (100, 100))

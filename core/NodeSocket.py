@@ -30,6 +30,8 @@ class NodeSocket(QGraphicsEllipseItem):
 
         self.drag_connection = None
 
+        self.adjust_color_to_input = True
+
         self.color = self.socket_type.color
 
         #todo change list to function
@@ -42,9 +44,6 @@ class NodeSocket(QGraphicsEllipseItem):
 
     def set_value(self, value):
         self.socket_type.set_value(value)
-
-        # for socket in self.get_connected_sockets():
-        #     socket.fetch_connected_value()
 
     def set_initial_value(self, value):
         self.socket_type.set_initial_value(value)
@@ -60,7 +59,6 @@ class NodeSocket(QGraphicsEllipseItem):
             if self.socket_type.accept_multiple:
                 values_list = []
                 for socket in self.get_connected_sockets():
-                    # socket.fetch_connected_value()
                     values_list.append(socket.get_value())
             else:
                 socket = self.get_connected_sockets()[0]
