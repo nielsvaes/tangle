@@ -38,8 +38,6 @@ class Colors():
 
 
 class NumberConstants():
-    node_border_width_selected = 4
-
     connection_width_normal    = 2
     connection_width_hover     = connection_width_normal * 1.5
     connection_width_selected  = connection_width_normal * 1.75
@@ -48,9 +46,9 @@ class NumberConstants():
 
     title_offset = 2
     title_label_size = 18
+    title_background_height = 30
 
-    node_item_width = 125
-    socket_size = 25
+    socket_size = 20
     socket_label_spacing = socket_size * 1.1
 
     execution_socket_size = socket_size * 1.3
@@ -61,6 +59,10 @@ class NumberConstants():
     connection_z_depth_hover  = 50
 
     connection_cv_offset = 30
+
+    node_item_border_width_selected = 4
+    node_item_height = socket_size
+    node_item_width = node_item_height * 5
 
 nc = NumberConstants
 

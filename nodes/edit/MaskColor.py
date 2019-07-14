@@ -16,8 +16,11 @@ class MaskColor(ImageNode):
         super(MaskColor, self).__init__(scene, x=x, y=y)
         self.change_title("mask_color")
 
-        self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "mask")
+        # self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
+        # self.output_image = self.add_output(socket_types.PictureSocketType(self), "mask")
+
+        self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
+
         self.output_image.override_color(nc.Colors.black)
 
         self.add_label("Spread")

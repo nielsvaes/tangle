@@ -126,12 +126,14 @@ class NodeSocket(QGraphicsEllipseItem):
         self.__draw()
 
     def destroy_self(self):
+        print("destorying node")
         all_sockets = self.get_node().get_all_sockets()
 
         all_sockets.remove(self)
 
         self.scene.removeItem(self)
         self.scene.removeItem(self.label)
+        print("done destroying")
 
     def mousePressEvent(self, event):
         self.connection_start_point = event.scenePos()

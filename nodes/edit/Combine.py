@@ -8,13 +8,12 @@ from PIL import ImageQt, ImageOps
 class Combine(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(Combine, self).__init__(scene, x=x, y=y)
-        self.change_title("equalize")
+        self.change_title("combine")
 
-        self.background_input = self.add_input(socket_types.PictureSocketType(self), "bg")
+        self.background_input, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
         self.foreground_input = self.add_input(socket_types.PictureSocketType(self), "fg")
-        self.input_mask = self.add_input(socket_types.PictureSocketType(self), "mask")
 
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
+        self.input_mask = self.add_input(socket_types.PictureSocketType(self), "mask")
 
         self.input_mask.override_color(nc.Colors.black)
 

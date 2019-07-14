@@ -15,8 +15,7 @@ class Brightness(ImageNode):
         super(Brightness, self).__init__(scene, x=x, y=y)
         self.change_title("brightness")
 
-        self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
+        self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
 
         self.add_label("Brightness amount")
         self.sld_contrast_amount = self.add_slider(0, 400, 100, changed_function=self.slider_changed, released_function=self.slider_released)

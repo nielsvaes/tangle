@@ -10,9 +10,8 @@ class Equalize(ImageNode):
         super(Equalize, self).__init__(scene, x=x, y=y)
         self.change_title("equalize")
 
-        self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
+        self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
         self.input_mask = self.add_input(socket_types.PictureSocketType(self), "mask")
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
 
         self.input_mask.override_color(nc.Colors.black)
 

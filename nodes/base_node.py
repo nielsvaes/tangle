@@ -9,12 +9,13 @@ logging.basicConfig(level=logging.INFO)
 
 from core.NodeItem import NodeItem
 from core.SignalEmitter import SignalEmitter
+from core.Constants import Colors
 
 import nv_utils.qt_utils as qutils
 
 class BaseNode(NodeItem):
-    def __init__(self, scene, title="unnamed_node", x=0, y=0):
-        super(BaseNode, self).__init__(scene, title, x, y)
+    def __init__(self, scene, title="unnamed_node", title_background_color=Colors.node_selected_border ,x=0, y=0):
+        super(BaseNode, self).__init__(scene, title, title_background_color, x, y)
         self.scene = scene
         self.__auto_compute = False
         self.__x = x

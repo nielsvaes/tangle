@@ -1,13 +1,11 @@
 from PyQt5.QtGui import *
 
-import logging
-logging.basicConfig(level=logging.INFO)
-
+from core.Constants import Colors
 from nodes.base_node import BaseNode
 
 class ImageNode(BaseNode):
-    def __init__(self, scene, title="unnamed_node", x=0, y=0):
-        super(ImageNode, self).__init__(scene, title, x, y)
+    def __init__(self, scene, title="unnamed_node", title_background_color=Colors.node_selected_border, x=0, y=0):
+        super(ImageNode, self).__init__(scene, title, title_background_color, x, y)
 
         self.__pixmap = QPixmap()
 

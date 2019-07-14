@@ -7,21 +7,21 @@ logging.basicConfig(level=logging.DEBUG)
 import uuid
 
 from .Constants import nc, Colors, IO
-from .NodeText import NodeText
+from .NodeTitle import NodeTitle
 from .NodeSocket import NodeSocket
-# from .ExecutionSocket import ExecutionSocket
+from .NodeTitleBackground import NodeTitleBackground
 
 
 class NodeItem(QGraphicsRectItem):
-    def __init__(self, scene, title, x=0, y=0):
+    def __init__(self, scene, title, title_background_color=Colors.node_selected_border, x=0, y=0):
         super(NodeItem, self).__init__()
         self.scene = scene
         self.name = None
 
         self.mouse_over = False
 
-        self.height = 30
-        self.title_label_size = 18
+        self.height = nc.node_item_height
+        self.title_label_size = nc.title_label_size
         self.socket_label_size = nc.socket_size - 6
         self.socket_size = nc.socket_size
         self.socket_offset_from_top = nc.socket_size * 2.5
@@ -31,7 +31,9 @@ class NodeItem(QGraphicsRectItem):
 
         self.__draw()
 
+        self.title_background_color = title_background_color
         self.title = self.__add_title(title)
+
         self.__uuid = uuid.uuid4()
 
         self.scene.addItem(self)
@@ -41,38 +43,12 @@ class NodeItem(QGraphicsRectItem):
         self.__output_sockets = []
         self.__num_input_output_sockets = 0
 
-        self.execution_input_socket = None
-        self.execution_output_socket = None
-
-
-    # def add_execution_output(self):
-    #     if self.execution_output_socket is not None:
-    #         raise IndexError("Node (%s) can only have 1 output execution socket" % self.name)
-    #
-    #     position = QPointF(self.boundingRect().right() - nc.execution_socket_size / 2,
-    #                        self.boundingRect().top()   - nc.execution_socket_size / 2)
-    #
-    #     self.execution_output_socket = ExecutionSocket(IO.output, self.scene, position)
-    #
-    #     self.execution_output_socket.setParentItem(self)
-    #
-    # def add_execution_input(self):
-    #     if self.execution_input_socket is not None:
-    #         raise IndexError("Node (%s) can only have 1 input execution socket" % self.name)
-    #
-    #     position = QPointF(self.boundingRect().left() - nc.execution_socket_size / 2,
-    #                        self.boundingRect().top()  - nc.execution_socket_size / 2)
-    #
-    #     self.execution_input_socket = ExecutionSocket(IO.input, self.scene, position)
-    #
-    #     self.execution_input_socket.setParentItem(self)
-
     def add_output(self, socket_type, output_name):
         if self.get_socket(output_name, IO.output) is not None:
             logging.error("Output '%s' is already exists on '%s'" % (output_name, self.name))
             return
 
-        label = NodeText(output_name, font_size=self.socket_label_size)
+        label = NodeTitle(output_name, font_size=self.socket_label_size)
 
         socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * nc.socket_size + 5)
 
@@ -104,7 +80,7 @@ class NodeItem(QGraphicsRectItem):
             logging.error("Input '%s' is already exists on '%s'" % (input_name, self.name))
             return
 
-        label = NodeText(input_name, font_size=self.socket_label_size)
+        label = NodeTitle(input_name, font_size=self.socket_label_size)
 
         socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * nc.socket_size + 5)
 
@@ -136,7 +112,7 @@ class NodeItem(QGraphicsRectItem):
             logging.error("Input or output '%s' is already exists on '%s'" % (input_output_name, self.name))
             return
 
-        label = NodeText(input_output_name, font_size=self.socket_label_size)
+        label = NodeTitle(input_output_name, font_size=self.socket_label_size)
 
         socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * (nc.socket_size + 5))
 
@@ -300,13 +276,6 @@ class NodeItem(QGraphicsRectItem):
             logging.info("Destroying %s" % connection)
             connection.destroy_self()
 
-        for execution_socket in [self.execution_input_socket, self.execution_output_socket]:
-            if execution_socket is not None:
-                try:
-                    execution_socket.connection.destroy_self()
-                except:
-                    logging.warning("Can't call destroy_self() on ExecutionSocketConnection: %s" % execution_socket.connection)
-
         self.scene.removeItem(self)
 
     def get_socket_connections(self):
@@ -392,8 +361,8 @@ class NodeItem(QGraphicsRectItem):
         super(NodeItem, self).paint(painter, option, widget)
 
     def __draw(self, ):
-        self.rect = QRectF(0, 0, nc.node_item_width, self.height)
-        self.setRect(self.rect)
+        self.node_rect = QRectF(0, 0, nc.node_item_width, self.height)
+        self.setRect(self.node_rect)
 
         self.__set_normal_colors()
 
@@ -412,8 +381,8 @@ class NodeItem(QGraphicsRectItem):
         total_sockets = len(self.get_all_sockets())
         new_height = (nc.socket_size * 1.5 * total_sockets) + self.height + (nc.socket_size * 1.1)
         position = self.pos()
-        self.rect = QRectF(0, 0, nc.node_item_width, new_height)
-        self.setRect(self.rect)
+        self.node_rect = QRectF(0, 0, nc.node_item_width, new_height)
+        self.setRect(self.node_rect)
         self.setPos(position)
         self.reposition_title(self.title)
 
@@ -442,7 +411,7 @@ class NodeItem(QGraphicsRectItem):
     def __set_selected_colors(self):
         pen = QPen()
         pen.setStyle(Qt.SolidLine)
-        pen.setWidth(nc.node_border_width_selected)
+        pen.setWidth(nc.node_item_border_width_selected)
         pen.setColor(Colors.node_selected_border)
         self.setPen(pen)
         brush = QBrush()
@@ -451,11 +420,13 @@ class NodeItem(QGraphicsRectItem):
         self.setBrush(brush)
 
     def __add_title(self, title):
-        node_title = NodeText(title, font_size=self.title_label_size)
+        node_title = NodeTitle(title, font_size=self.title_label_size)
 
         node_title.setParentItem(self)
         self.name = node_title.toPlainText()
 
         self.reposition_title(title=node_title)
+
+        background = NodeTitleBackground(self.scene, self, self.title_background_color)
 
         return node_title

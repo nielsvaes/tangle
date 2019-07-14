@@ -10,8 +10,7 @@ class Invert(ImageNode):
         super(Invert, self).__init__(scene, x=x, y=y)
         self.change_title("invert")
 
-        self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
+        self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
 
         self.set_auto_compute_on_connect(True)
 
