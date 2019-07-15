@@ -7,13 +7,13 @@ import socket_types as socket_types
 
 import numpy as np
 
-import core.Constants as nc
+from core.Constants import Colors
 
 from PIL import Image, ImageQt
 
 class MaskColor(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(MaskColor, self).__init__(scene, x=x, y=y)
+        super(MaskColor, self).__init__(scene, title_background_color=Colors.mask_color, x=x, y=y)
         self.change_title("mask_color")
 
         # self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
@@ -21,7 +21,7 @@ class MaskColor(ImageNode):
 
         self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
 
-        self.output_image.override_color(nc.Colors.black)
+        self.output_image.override_color(Colors.black)
 
         self.add_label("Spread")
         self.sld_spread_amount = self.add_slider(0, 255, 0, changed_function=self.slider_changed, released_function=self.slider_released)

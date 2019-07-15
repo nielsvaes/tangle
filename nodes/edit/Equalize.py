@@ -1,19 +1,18 @@
 from nodes.image_node import ImageNode
 import socket_types as socket_types
 
-import core.Constants as nc
-
+from core.Constants import Colors
 from PIL import ImageQt, ImageOps
 
 class Equalize(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(Equalize, self).__init__(scene, x=x, y=y)
+        super(Equalize, self).__init__(scene, title_background_color=Colors.equalize, x=x, y=y)
         self.change_title("equalize")
 
         self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
         self.input_mask = self.add_input(socket_types.PictureSocketType(self), "mask")
 
-        self.input_mask.override_color(nc.Colors.black)
+        self.input_mask.override_color(Colors.black)
 
         self.set_auto_compute_on_connect(True)
 

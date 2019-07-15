@@ -9,12 +9,12 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 import nv_utils.qt_utils as qutils
-
+from core.Constants import Colors
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
-class SizeReduce(ImageNode):
+class Shrink(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(SizeReduce, self).__init__(scene, x=x, y=y)
+        super(Shrink, self).__init__(scene, title_background_color=Colors.shrink, x=x, y=y)
         self.change_title("resize")
 
         self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")

@@ -7,12 +7,12 @@ import socket_types as socket_types
 
 from functools import partial
 
-import PIL
+from core.Constants import Colors
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
 class Brightness(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(Brightness, self).__init__(scene, x=x, y=y)
+        super(Brightness, self).__init__(scene, title_background_color=Colors.brightness, x=x, y=y)
         self.change_title("brightness")
 
         self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")

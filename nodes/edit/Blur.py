@@ -6,12 +6,12 @@ from nodes.image_node import ImageNode
 import socket_types as socket_types
 import utils.image as im_utils
 
-import PIL
+from core.Constants import Colors
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
 class Blur(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(Blur, self).__init__(scene, x=x, y=y)
+        super(Blur, self).__init__(scene, title_background_color=Colors.blur, x=x, y=y)
         self.change_title("blur")
 
         self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")

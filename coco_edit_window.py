@@ -79,6 +79,7 @@ class CocoEditWindow(QMainWindow):
 
                 file_name = os.path.basename(file_path)
                 file_name_no_ext = os.path.splitext(file_name)[0]
+                icon_path = os.path.join(self.ICONS_PATH, file_name_no_ext + ".png")
                 complete_folder = os.path.dirname(file_path)
                 folder_name = complete_folder.split(os.sep)[-1]
                 complete_path = os.path.join(complete_folder, file_name).replace("\\", "/")
@@ -96,9 +97,12 @@ class CocoEditWindow(QMainWindow):
                 file_item = QTreeWidgetItem(folder_item,
                                             [file_name_no_ext, complete_path, complete_folder, folder_name])
 
+                if os.path.isfile(icon_path):
+                    file_item.setIcon(0, QIcon(icon_path))
+
+
     def load_values_ui(self):
         from nodes.base_node import BaseNode
-        # spacer = QSpacerItem(10, 4000)
         qutils.clear_layout(self.values_layout)
 
         selected_items = self.scene.selectedItems()

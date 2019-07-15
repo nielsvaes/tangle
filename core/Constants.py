@@ -33,8 +33,28 @@ class Colors():
     green                    = QColor(119, 221, 119, 255)
     blue                     = QColor(119, 119, 211, 255)
 
-    node_scene_computed       = QColor(43, 43, 43, 255)
-    node_scene_dirty          = QColor(53, 43, 43, 255)
+    node_scene_computed      = QColor(43, 43, 43, 255)
+    node_scene_dirty         = QColor(53, 43, 43, 255)
+
+    load_image               = QColor(90, 112, 35)
+    save_image               = QColor(90, 112, 35)
+    split_channel            = QColor(35, 112, 68)
+    combine_channel          = QColor(35, 112, 68)
+    color_to_gray            = QColor(24, 77, 89)
+    gray_to_color            = QColor(24, 77, 89)
+    blur                     = QColor(24, 89, 62)
+    brightness               = QColor(24, 43, 89)
+    combine                  = QColor(81, 24, 89)
+    contrast                 = QColor(89, 24, 64)
+    equalize                 = QColor(89, 24, 33)
+    invert                   = QColor(24, 89, 38)
+    mask_color               = QColor(90, 94, 26)
+    saturation               = QColor(94, 42, 26)
+    sharpen                  = QColor(11, 138, 119)
+    enlarge                  = QColor(140, 100, 83)
+    shrink                   = QColor(138, 120, 113)
+    mirror                   = QColor(42, 82, 80)
+    rotate                   = QColor(27, 62, 143)
 
 
 class NumberConstants():

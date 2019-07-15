@@ -7,12 +7,12 @@ import socket_types as socket_types
 
 from functools import partial
 
-import PIL
+from core.Constants import Colors
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
 class Rotate(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(Rotate, self).__init__(scene, x=x, y=y)
+        super(Rotate, self).__init__(scene, title_background_color=Colors.rotate, x=x, y=y)
         self.change_title("rotate")
 
         self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")

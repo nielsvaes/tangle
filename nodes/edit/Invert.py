@@ -2,12 +2,12 @@ from nodes.image_node import ImageNode
 import socket_types as socket_types
 
 import numpy as np
-
+from core.Constants import Colors
 from PIL import Image, ImageQt, ImageOps
 
 class Invert(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(Invert, self).__init__(scene, x=x, y=y)
+        super(Invert, self).__init__(scene, title_background_color=Colors.invert, x=x, y=y)
         self.change_title("invert")
 
         self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")

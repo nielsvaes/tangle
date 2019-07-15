@@ -8,12 +8,12 @@ logging.basicConfig(level=logging.DEBUG)
 from nodes.image_node import ImageNode
 import socket_types as socket_types
 
-import PIL
+from core.Constants import Colors
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 
 class SaveImage(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(SaveImage, self).__init__(scene, x=x, y=y)
+        super(SaveImage, self).__init__(scene, title_background_color=Colors.save_image, x=x, y=y)
         self.change_title("save")
 
         self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")

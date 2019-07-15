@@ -9,27 +9,24 @@ from nodes.image_node import ImageNode
 import socket_types as socket_types
 from core.Constants import Colors
 
-import PIL
-from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
+from PIL import ImageQt
 
-class RGB_2_L(ImageNode):
+class GrayToColor(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(RGB_2_L, self).__init__(scene, x=x, y=y)
-        self.change_title("rgb_2_l")
+        super(GrayToColor, self).__init__(scene, title_background_color=Colors.gray_to_color, x=x, y=y)
+        self.change_title("to_color")
 
-        self.input_image = self.add_input(socket_types.PictureSocketType(self), "RGB in")
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "L out")
-        self.output_image.override_color(Colors.gray)
+        self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "Color")
+        self.input_image.override_color(Colors.gray)
 
         self.set_auto_compute_on_connect(True)
 
 
     def compute(self):
         if self.input_image.is_connected():
-            print("computing rgb 2 l")
             self.input_image.fetch_connected_value()
 
-            converted = self.input_image.get_value().convert("L")
+            converted = self.input_image.get_value().convert("RGBA")
 
             self.output_image.set_value(converted)
 
