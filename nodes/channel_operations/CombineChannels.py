@@ -24,7 +24,7 @@ from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter, ImageDraw
 class CombineChannels(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(CombineChannels, self).__init__(scene, title_background_color=Colors.combine_channel, x=x, y=y)
-        self.change_title("combine")
+        self.change_title("join")
 
         self.input_r = self.add_input(socket_types.PictureSocketType(self), "in R")
         self.input_g = self.add_input(socket_types.PictureSocketType(self), "in G")

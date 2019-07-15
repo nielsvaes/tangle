@@ -17,11 +17,11 @@ class SplitChannels(ImageNode):
         super(SplitChannels, self).__init__(scene, title_background_color=Colors.split_channel, x=x, y=y)
         self.change_title("split")
 
-        self.input_image = self.add_input(socket_types.PictureSocketType(self), "RGB(A) in")
-        self.output_r = self.add_output(socket_types.PictureSocketType(self), "out R")
-        self.output_g = self.add_output(socket_types.PictureSocketType(self), "out G")
-        self.output_b = self.add_output(socket_types.PictureSocketType(self), "out B")
-        self.output_a = self.add_output(socket_types.PictureSocketType(self), "out A")
+        self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
+        self.output_r = self.add_output(socket_types.PictureSocketType(self), "R")
+        self.output_g = self.add_output(socket_types.PictureSocketType(self), "G")
+        self.output_b = self.add_output(socket_types.PictureSocketType(self), "B")
+        self.output_a = self.add_output(socket_types.PictureSocketType(self), "A")
 
         self.output_r.override_color(Colors.red)
         self.output_g.override_color(Colors.green)
@@ -30,10 +30,8 @@ class SplitChannels(ImageNode):
 
         self.set_auto_compute_on_connect(True)
 
-
     def compute(self):
         if self.input_image.is_connected():
-            print("computing split")
             self.input_image.fetch_connected_value()
 
             channels = self.input_image.get_value().split()
@@ -44,6 +42,8 @@ class SplitChannels(ImageNode):
                 self.output_a.set_value(channels[3])
 
             self.set_pixmap(ImageQt.toqpixmap(self.input_image.get_value()))
+
+            self.output_image.set_value(self.input_image.get_value())
 
             self.set_dirty(False)
 

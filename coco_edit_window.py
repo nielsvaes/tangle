@@ -191,7 +191,8 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     qtmodern.styles.dark(app)
 
-    splash_pixmap = QPixmap("D:/arttools.jpg")
+
+    splash_pixmap = QPixmap(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ui", "icons", "splashscreen.png"))
     splash_screen = QSplashScreen(splash_pixmap)
 
     splash_screen.show()
@@ -200,6 +201,7 @@ if __name__ == "__main__":
 
     time.sleep(1.5)
     coco_edit_window = CocoEditWindow()
+
     # modern_window = qtmodern.windows.ModernWindow(coco_edit_window)
     # modern_window.show()
 

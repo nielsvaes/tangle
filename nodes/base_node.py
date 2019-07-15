@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
-import inspect
+from functools import partial
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -142,18 +142,32 @@ class BaseNode(NodeItem):
         return checkbox
 
     def add_slider(self, minimum, maximum, start, changed_function=None, released_function=None):
+        def set_label_text(slider, label):
+            label.setText(str(slider.value()))
+
+        layout = QHBoxLayout()
         slider = QSlider()
         slider.setMinimum(minimum)
         slider.setMaximum(maximum)
         slider.setValue(start)
         slider.setOrientation(Qt.Horizontal)
+
+        label = QLabel(str(slider.value()))
+
         if changed_function is not None:
             slider.sliderMoved.connect(changed_function)
 
         if released_function is not None:
             slider.sliderReleased.connect(released_function)
 
-        self.__layout.addWidget(slider)
+        slider.valueChanged.connect(partial(set_label_text, slider, label))
+
+        layout.addWidget(slider)
+        layout.addWidget(label)
+
+        self.__layout.addLayout(layout)
+
+
 
         return slider
 
