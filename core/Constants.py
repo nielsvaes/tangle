@@ -42,6 +42,8 @@ class Colors():
     combine_channel          = QColor(35, 112, 68)
     color_to_gray            = QColor(24, 77, 89)
     gray_to_color            = QColor(24, 77, 89)
+    rgb_to_rgba                = QColor(43, 143, 166)
+    rgba_to_rgb                = QColor(43, 143, 166)
     blur                     = QColor(24, 89, 62)
     brightness               = QColor(24, 43, 89)
     combine                  = QColor(81, 24, 89)

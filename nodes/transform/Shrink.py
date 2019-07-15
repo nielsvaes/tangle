@@ -15,10 +15,10 @@ from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
 class Shrink(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(Shrink, self).__init__(scene, title_background_color=Colors.shrink, x=x, y=y)
-        self.change_title("resize")
+        self.change_title("shrink")
 
-        self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
+        self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
+        # self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
         self.size = self.add_output(socket_types.TupleSocketType(self), "size")
 
         percentage_list = ["0", "25", "50", "75"]
@@ -31,7 +31,6 @@ class Shrink(ImageNode):
 
     def compute(self):
         if self.input_image.is_connected():
-            print("computing reduce size")
             self.input_image.fetch_connected_value()
 
             width, height = self.input_image.get_value().size

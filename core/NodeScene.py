@@ -1,4 +1,5 @@
 import os
+import importlib
 
 from collections import OrderedDict
 import pickle
@@ -26,11 +27,14 @@ class NodeScene(QGraphicsScene):
         node_instance = None
 
         if type(class_name) == str:
-            class_path = ".".join([os.path.basename(self.get_main_window().SCRIPT_FOLDER), "nodes", module, class_name, class_name])
-            print(class_path)
-            node_class = locate(class_path)
+            module_path = ".".join(["nodes", module, class_name])
+            node_module = importlib.import_module(module_path)
+            importlib.reload(node_module)
+            # class_path = ".".join([os.path.basename(self.get_main_window().SCRIPT_FOLDER), "nodes", module, class_name, class_name])
+            # node_class = locate(class_path)
             try:
-                node_instance = node_class(self, x, y)
+                node_instance = getattr(node_module, class_name)(self, x, y)
+                # node_instance = node_class(self, x, y)
             except TypeError as err:
                 utils.trace(err)
         else:

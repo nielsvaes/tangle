@@ -1,7 +1,7 @@
 import os
 import sys
 from functools import partial
-import traceback
+import time
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -41,6 +41,8 @@ class CocoEditWindow(QMainWindow):
         self.keep_pixmap_on_empty_selection = False
 
         self.show()
+
+        self.setWindowTitle("Tangle")
 
         #load_node = self.scene.add_node_to_view("LoadImage", "io", 100, 100)
         # load_node.load_image(r"D:\Google Drive\Tools\CocoEdit\its-a-me_4.jpg")
@@ -189,10 +191,20 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     qtmodern.styles.dark(app)
 
+    splash_pixmap = QPixmap("D:/arttools.jpg")
+    splash_screen = QSplashScreen(splash_pixmap)
+
+    splash_screen.show()
+
+    app.processEvents()
+
+    time.sleep(1.5)
     coco_edit_window = CocoEditWindow()
     # modern_window = qtmodern.windows.ModernWindow(coco_edit_window)
     # modern_window.show()
 
     coco_edit_window.show()
+    splash_screen.finish(coco_edit_window)
+
 
     app.exec_()
