@@ -16,8 +16,13 @@ class NodeView(QGraphicsView):
         self.start_y = None
         self.drag_speed = 0.03
 
-        self.horizontalScrollBar().setValue(1)
-        self.verticalScrollBar().setValue(1)
+        self.zoom = 5
+
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        # self.horizontalScrollBar().setValue(1)
+        # self.verticalScrollBar().setValue(1)
 
         self.setDragMode(QGraphicsView.RubberBandDrag)
 
@@ -25,49 +30,66 @@ class NodeView(QGraphicsView):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MiddleButton:
-            self.middle_mouse_down = True
-            self.start_x = event.pos().x()
-            self.start_y = event.pos().y()
-
-            self.setCursor(Qt.ClosedHandCursor)
-            event.accept()
+            release_event = QMouseEvent(QEvent.MouseButtonRelease, event.localPos(), event.screenPos(),
+                                       Qt.LeftButton, Qt.NoButton, event.modifiers())
+            super().mouseReleaseEvent(release_event)
+            self.setDragMode(QGraphicsView.ScrollHandDrag)
+            fake_event = QMouseEvent(event.type(), event.localPos(), event.screenPos(),
+                                    Qt.LeftButton, event.buttons() | Qt.LeftButton, event.modifiers())
+            super().mousePressEvent(fake_event)
         else:
+            event.accept()
             super(NodeView, self).mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MiddleButton:
+            fakeEvent = QMouseEvent(event.type(), event.localPos(), event.screenPos(),
+                                    Qt.LeftButton, event.buttons() & ~Qt.LeftButton, event.modifiers())
+            super().mouseReleaseEvent(fakeEvent)
+            self.setDragMode(QGraphicsView.RubberBandDrag)
+        else:
+            event.accept()
+            super(NodeView, self).mouseReleaseEvent(event)
 
         # if event.button() == Qt.MiddleButton:
         #     self.setDragMode(QGraphicsView.ScrollHandDrag)
         #     event.accept()
 
-    def mouseMoveEvent(self, event):
-        if self.middle_mouse_down:
-            self.horizontalScrollBar().setValue(
-                (self.horizontalScrollBar().value() - (event.pos().x() - self.start_x) * self.drag_speed))
-            self.verticalScrollBar().setValue(
-                (self.verticalScrollBar().value() - (event.pos().y() - self.start_y) * self.drag_speed))
-            event.accept()
-        else:
-            event.ignore()
+    # def mouseMoveEvent(self, event):
+    #     if self.middle_mouse_down:
+    #         self.horizontalScrollBar().setValue(
+    #             (self.horizontalScrollBar().value() - (event.pos().x() - self.start_x) * self.drag_speed))
+    #         self.verticalScrollBar().setValue(
+    #             (self.verticalScrollBar().value() - (event.pos().y() - self.start_y) * self.drag_speed))
+    #         event.accept()
+    #     else:
+    #         event.ignore()
+    #
+    #     super(NodeView, self).mouseMoveEvent(event)
 
-        super(NodeView, self).mouseMoveEvent(event)
-
-    def mouseReleaseEvent(self, event):
-        if event.button() == Qt.MiddleButton:
-            self.setDragMode(QGraphicsView.RubberBandDrag)
-            self.middle_mouse_down = False
-            self.setCursor(Qt.ArrowCursor)
-            event.accept()
-        else:
-            event.ignore()
-
-        super(NodeView, self).mouseReleaseEvent(event)
+    # def mouseReleaseEvent(self, event):
+    #     if event.button() == Qt.MiddleButton:
+    #         self.setDragMode(QGraphicsView.RubberBandDrag)
+    #         self.middle_mouse_down = False
+    #         self.setCursor(Qt.ArrowCursor)
+    #         event.accept()
+    #     else:
+    #         event.ignore()
+    #
+    #     super(NodeView, self).mouseReleaseEvent(event)
 
     # def dragLeaveEvent(self, event):
     #     print event.source()
 
     def wheelEvent(self, event):
         if event.angleDelta().y() > 0:
-            self.scale(1.1, 1.1)
+            if self.zoom < 15:
+                self.zoom += 1
+                self.scale(1.1, 1.1)
         else:
-            self.scale(0.9, 0.9)
+            if self.zoom > 1:
+                self.zoom -= 1
+                self.scale(0.9, 0.9)
+
 
 

@@ -15,15 +15,14 @@ class Rotate(ImageNode):
         super(Rotate, self).__init__(scene, title_background_color=Colors.rotate, x=x, y=y)
         self.change_title("rotate")
 
-        self.input_image = self.add_input(socket_types.PictureSocketType(self), "in")
-        self.output_image = self.add_output(socket_types.PictureSocketType(self), "out")
+        self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
 
         self.chk_counter_clockwise = self.add_checkbox("Counter clockwise", change_checked_function=self.value_changed)
-        self.cb_percentage = self.add_label_combobox("Rotate by degrees", ["90", "180", "270"],
-                                                     changed_function=self.value_changed)
+        self.cd_degrees = self.add_label_combobox("Rotate by degrees", ["90", "180", "270"],
+                                                  changed_function=self.value_changed)
     def value_changed(self):
         self.set_dirty(True)
-        self.scene.refresh_network()
+        self.compute()
 
     def compute(self):
         if self.input_image.is_connected():
@@ -31,7 +30,7 @@ class Rotate(ImageNode):
 
             rotated = self.input_image.get_value()
 
-            degrees_to_rotate = int(self.cb_percentage.currentText())
+            degrees_to_rotate = int(self.cd_degrees.currentText())
             if not self.chk_counter_clockwise.isChecked():
                 degrees_to_rotate = degrees_to_rotate * -1
 

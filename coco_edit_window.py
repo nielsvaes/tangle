@@ -23,9 +23,9 @@ from core.NodeView import NodeView
 from core.Constants import ss, IO
 
 
-class CocoEditWindow(QMainWindow):
+class TangleWindow(QMainWindow):
     def __init__(self):
-        super(CocoEditWindow, self).__init__()
+        super(TangleWindow, self).__init__()
         self.SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
         self.UI_PATH = os.path.join(self.SCRIPT_FOLDER, "ui")
         self.ICONS_PATH = os.path.join(self.SCRIPT_FOLDER, "ui", "icons")
@@ -147,12 +147,6 @@ class CocoEditWindow(QMainWindow):
         title_label.setText(text)
         title_label.node.change_title(text)
 
-    def check_cyclical(self):
-        logging.debug(self.scene.is_cyclical())
-
-    def get_begin_node(self):
-        logging.debug(self.scene.get_begin_executing_node().name)
-
     def compute(self):
         for node in self.scene.selectedItems():
             node.compute()
@@ -171,7 +165,7 @@ class CocoEditWindow(QMainWindow):
 
     def resizeEvent(self, event):
         self.resize_pixmap()
-        super(CocoEditWindow, self).resizeEvent(event)
+        super(TangleWindow, self).resizeEvent(event)
 
 
 
@@ -199,13 +193,13 @@ if __name__ == "__main__":
     app.processEvents()
 
     time.sleep(1.5)
-    coco_edit_window = CocoEditWindow()
+    tangle_window = TangleWindow()
 
-    # modern_window = qtmodern.windows.ModernWindow(coco_edit_window)
+    # modern_window = qtmodern.windows.ModernWindow(tangle_window)
     # modern_window.show()
 
-    coco_edit_window.show()
-    splash_screen.finish(coco_edit_window)
+    tangle_window.show()
+    splash_screen.finish(tangle_window)
 
 
     app.exec_()
