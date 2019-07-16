@@ -13,7 +13,7 @@ import nv_utils.utils as utils
 from pydoc import locate
 
 from core.Constants import Colors
-from core.NodeItem import NodeItem
+from core.Node import Node
 
 class NodeScene(QGraphicsScene):
     refreshed = pyqtSignal()

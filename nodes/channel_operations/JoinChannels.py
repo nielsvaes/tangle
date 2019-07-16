@@ -21,9 +21,9 @@ import nv_utils.utils as utils
 import PIL
 from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter, ImageDraw
 
-class CombineChannels(ImageNode):
+class JoinChannels(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(CombineChannels, self).__init__(scene, title_background_color=Colors.combine_channel, x=x, y=y)
+        super(JoinChannels, self).__init__(scene, title_background_color=Colors.combine_channel, x=x, y=y)
         self.change_title("join")
 
         self.input_r = self.add_input(socket_types.PictureSocketType(self), "in R")

@@ -140,9 +140,7 @@ class CocoEditWindow(QMainWindow):
 
     def clear_values_layout(self):
         for i in reversed(range(self.values_layout.count())):
-            self.values_layout.itemAt(i).widget().setParent(None)
-
-            self.values_layout.takeAt(i)
+            self.values_layout.takeAt(i).widget().setParent(None)
 
     def change_node_title(self, title_label, text):
         text = text.replace(" ", "_")
@@ -184,6 +182,7 @@ class TitleLabel(QLineEdit):
         self.node = None
 
     def delete_ui(self):
+        self.setParent(None)
         self.deleteLater()
 
 

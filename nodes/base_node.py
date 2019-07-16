@@ -7,13 +7,13 @@ from functools import partial
 import logging
 logging.basicConfig(level=logging.INFO)
 
-from core.NodeItem import NodeItem
+from core.Node import Node
 from core.SignalEmitter import SignalEmitter
 from core.Constants import Colors
 
 import nv_utils.qt_utils as qutils
 
-class BaseNode(NodeItem):
+class BaseNode(Node):
     def __init__(self, scene, title="unnamed_node", title_background_color=Colors.node_selected_border ,x=0, y=0):
         super(BaseNode, self).__init__(scene, title, title_background_color, x, y)
         self.scene = scene
@@ -197,6 +197,39 @@ class BaseNode(NodeItem):
         self.__layout.addLayout(layout)
 
         return combobox
+
+    def add_spinbox(self, value=0, changed_function=None):
+        spin_number = QDoubleSpinBox()
+        spin_number.setKeyboardTracking(False)
+        spin_number.setDecimals(3)
+        spin_number.setMaximum(float("inf"))
+        spin_number.setMinimum(float("-inf"))
+
+        spin_number.valueChanged.connect(changed_function)
+
+        self.__layout.addWidget(spin_number)
+
+        return spin_number
+
+    def add_label_spinbox(self, label_text, value=0, changed_function=None):
+        layout = QHBoxLayout()
+
+        label = QLabel(label_text)
+
+        spin_number = QDoubleSpinBox()
+        spin_number.setKeyboardTracking(False)
+        spin_number.setDecimals(3)
+        spin_number.setMaximum(float("inf"))
+        spin_number.setMinimum(float("-inf"))
+
+        layout.addWidget(label)
+        layout.addWidget(spin_number)
+
+        spin_number.valueChanged.connect(changed_function)
+
+        self.__layout.addLayout(layout)
+
+        return spin_number
 
     def add_custom_widget(self, widget):
         self.__layout.addWidget(widget)

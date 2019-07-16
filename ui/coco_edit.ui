@@ -118,8 +118,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1258</width>
-           <height>84</height>
+           <width>1259</width>
+           <height>79</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -147,11 +147,35 @@
      <x>0</x>
      <y>0</y>
      <width>1294</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionSettings"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

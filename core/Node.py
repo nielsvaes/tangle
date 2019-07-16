@@ -12,9 +12,9 @@ from .NodeSocket import NodeSocket
 from .NodeTitleBackground import NodeTitleBackground
 
 
-class NodeItem(QGraphicsRectItem):
+class Node(QGraphicsRectItem):
     def __init__(self, scene, title, title_background_color=Colors.node_selected_border, x=0, y=0):
-        super(NodeItem, self).__init__()
+        super(Node, self).__init__()
         self.scene = scene
         self.name = None
 
@@ -317,13 +317,13 @@ class NodeItem(QGraphicsRectItem):
         self.mouse_over = True
         self.update()
 
-        super(NodeItem, self).hoverEnterEvent(event)
+        super(Node, self).hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event):
         self.mouse_over = False
         self.update()
 
-        super(NodeItem, self).hoverLeaveEvent(event)
+        super(Node, self).hoverLeaveEvent(event)
 
     def itemChange(self, change, value):
         try:
@@ -358,7 +358,7 @@ class NodeItem(QGraphicsRectItem):
         else:
             self.__set_normal_colors()
 
-        super(NodeItem, self).paint(painter, option, widget)
+        super(Node, self).paint(painter, option, widget)
 
     def __draw(self, ):
         self.node_rect = QRectF(0, 0, nc.node_item_width, self.height)
