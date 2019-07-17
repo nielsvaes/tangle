@@ -97,38 +97,38 @@ class IntSocketType(BaseSocketType):
 
 
 class FloatSocketType(BaseSocketType):
-    def __init__(self, parent_node, label_name):
+    def __init__(self, parent_node):
         super(FloatSocketType, self).__init__(parent_node)
 
         self.name = "float"
         self.color = QColor(79, 255, 102, 255)
 
-        self.spin_number = QDoubleSpinBox()
-        self.spin_number.setKeyboardTracking(False)
-        self.spin_number.setDecimals(3)
-        self.spin_number.setMaximum(float("inf"))
-        self.spin_number.setMinimum(float("-inf"))
-
-        self.layout = QHBoxLayout()
-        self.label = QLabel(label_name)
-
-        # self.label_name = label_name
-        self.set_value(0.0)
-
-    def get_ui(self):
-        self.ui_widget.setLayout(self.layout)
-
-        self.layout.addWidget(self.label)
-        self.layout.addWidget(self.spin_number)
-
-        self.spin_number.setValue(self.get_value())
-
-        self.spin_number.valueChanged.connect(self.enter_value)
-
-        return self.ui_widget
-
-    def enter_value(self):
-        self.set_value(self.spin_number.value())
+    #     self.spin_number = QDoubleSpinBox()
+    #     self.spin_number.setKeyboardTracking(False)
+    #     self.spin_number.setDecimals(3)
+    #     self.spin_number.setMaximum(float("inf"))
+    #     self.spin_number.setMinimum(float("-inf"))
+    #
+    #     self.layout = QHBoxLayout()
+    #     self.label = QLabel(label_name)
+    #
+    #     # self.label_name = label_name
+    #     self.set_value(0.0)
+    #
+    # def get_ui(self):
+    #     self.ui_widget.setLayout(self.layout)
+    #
+    #     self.layout.addWidget(self.label)
+    #     self.layout.addWidget(self.spin_number)
+    #
+    #     self.spin_number.setValue(self.get_value())
+    #
+    #     self.spin_number.valueChanged.connect(self.enter_value)
+    #
+    #     return self.ui_widget
+    #
+    # def enter_value(self):
+    #     self.set_value(self.spin_number.value())
 
 
 class StringSocketType(BaseSocketType):

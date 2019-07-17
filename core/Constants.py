@@ -58,6 +58,8 @@ class Colors():
     mirror                   = QColor(42, 82, 80)
     rotate                   = QColor(27, 62, 143)
 
+    float                    = QColor(43, 181, 53)
+
 
 class NumberConstants():
     connection_width_normal    = 2

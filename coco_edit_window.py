@@ -132,7 +132,8 @@ class TangleWindow(QMainWindow):
                         if self.pixmap is not None:
                             self.set_pixmap(self.pixmap)
                     except AttributeError as err:
-                        utils.trace(err)
+                        pass
+                        # utils.trace(err)
 
         else:
             if not self.keep_pixmap_on_empty_selection:

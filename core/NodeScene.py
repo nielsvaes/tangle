@@ -194,6 +194,15 @@ class NodeScene(QGraphicsScene):
 
             new_node = self.add_node_to_view(node, None, x, y)
 
+    # def drawBackground(self, painter, rect):
+    #     super().drawBackground(painter, rect)
+    #     grid_size = 20
+    #
+    #     left = int(rect.left()) - (int(rect.left()) % grid_size)
+    #     top = int(rect.top()) - (int(rect.top()) % grid_size)
+    #
+    #     for x in range(left,
+
     def dragMoveEvent(self, event):
         event.accept()
 
