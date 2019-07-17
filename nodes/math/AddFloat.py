@@ -17,15 +17,31 @@ class AddFloat(BaseNode):
         self.set_auto_compute_on_connect(True)
 
     def compute(self):
-        self.input_01.fetch_connected_value()
-        self.input_02.fetch_connected_value()
+        if self.is_dirty():
+            self.input_01.fetch_connected_value()
+            value_1 = self.input_01.get_value()
 
-        try:
-            result = self.input_01.get_value() + self.input_02.get_value()
-        except Exception as err:
-            result = 0.0
+            self.input_02.fetch_connected_value()
+            value_2 = self.input_02.get_value()
 
-        self.output_float.set_value(result)
-        self.result_label.setText(str(result))
+            # if self.input_01.is_connected():
+            #     self.input_01.fetch_connected_value()
+            #     value_1 = self.input_01.get_value()
+            # else:
+            #     value_1 = self.input_01.get_initial_value()
+            #
+            # if self.input_02.is_connected():
+            #     self.input_02.fetch_connected_value()
+            #     value_2 = self.input_02.get_value()
+            # else:
+            #     value_2 = self.input_02.get_initial_value()
 
-        self.set_dirty(False)
+            try:
+                result = value_1 + value_2
+            except Exception as err:
+                result = 0.0
+
+            self.output_float.set_value(result)
+            self.result_label.setText(str(result))
+
+            self.set_dirty(False)

@@ -65,7 +65,8 @@ class NodeSocket(QGraphicsEllipseItem):
                 value = socket.get_value()
                 self.set_value(value)
         else:
-            self.set_value(None)
+            # self.set_value(None)
+            self.reset_to_initial_value()
 
     def get_center_point(self):
         if self.io == IO.input:

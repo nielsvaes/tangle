@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 import numpy as np
+from PIL import Image
 
 import nv_utils.qt_utils as qutils
 
@@ -66,7 +67,7 @@ class PictureSocketType(BaseSocketType):
 
         self.name = "pic"
         self.color = QColor(90, 100, 170, 255)
-        self.set_initial_value(QPixmap())
+        self.set_initial_value(None)
 
     def reset_to_initial_value(self):
         super().reset_to_initial_value()
@@ -80,14 +81,6 @@ class TupleSocketType(BaseSocketType):
         self.color = QColor(255, 230, 40, 255)
         self.set_initial_value(tuple())
 
-class ExecutionSocketType(BaseSocketType):
-    def __init__(self):
-        super(ExecutionSocketType, self).__init__()
-
-        self.name = "exec"
-        self.color = QColor(255, 255, 255, 255)
-
-
 class IntSocketType(BaseSocketType):
     def __init__(self):
         super(IntSocketType, self).__init__()
@@ -95,13 +88,14 @@ class IntSocketType(BaseSocketType):
         self.name = "int"
         self.color = QColor(255, 140, 33, 255)
 
-
 class FloatSocketType(BaseSocketType):
     def __init__(self, parent_node):
         super(FloatSocketType, self).__init__(parent_node)
 
         self.name = "float"
         self.color = QColor(79, 255, 102, 255)
+        self.set_initial_value(0.0)
+        self.reset_to_initial_value()
 
     #     self.spin_number = QDoubleSpinBox()
     #     self.spin_number.setKeyboardTracking(False)

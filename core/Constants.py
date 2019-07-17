@@ -58,7 +58,7 @@ class Colors():
     mirror                   = QColor(42, 82, 80)
     rotate                   = QColor(27, 62, 143)
 
-    float                    = QColor(43, 181, 53)
+    float                    = QColor(48, 89, 48)
 
 
 class NumberConstants():

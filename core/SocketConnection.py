@@ -33,6 +33,8 @@ class SocketConnection(QGraphicsPathItem):
         self.input_socket.set_value(self.output_socket.get_value())
 
         input_node = self.input_socket.get_node()
+        input_node.set_dirty(True)
+
         if input_node.auto_compute_on_connect():
             input_node.compute()
 

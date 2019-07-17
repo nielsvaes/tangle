@@ -40,15 +40,15 @@ class BaseNode(Node):
     def compute(self):
         raise NotImplementedError()
 
-    def set_dirty(self, value, emit=False):
+    def set_dirty(self, is_dirty, emit=False):
         #
         # curframe = inspect.currentframe()
         # calframe = inspect.getouterframes(curframe, 2)
         # print('caller name:', calframe[1][3])
-        self.__is_dirty = value
+        self.__is_dirty = is_dirty
 
-        if value == True:
-            self.compute()
+        # if is_dirty:
+        #     self.compute()
 
     def is_dirty(self):
         return self.__is_dirty

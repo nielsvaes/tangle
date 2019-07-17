@@ -18,8 +18,9 @@ class Float(BaseNode):
 
         for node in self.get_connected_output_nodes():
             node.set_dirty(True)
+            node.compute()
 
-        self.set_dirty(True, emit=True)
+        self.set_dirty(True)
 
     def compute(self):
         if self.is_dirty():
