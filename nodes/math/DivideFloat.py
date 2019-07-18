@@ -3,17 +3,16 @@ import socket_types as socket_types
 
 from core.Constants import Colors
 
-class AddFloat(BaseNode):
+class DivideFloat(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(AddFloat, self).__init__(scene, title_background_color=Colors.add_float, x=x, y=y)
+        super(DivideFloat, self).__init__(scene, title_background_color=Colors.divide_float, x=x, y=y)
         self.change_title("0.0")
 
         self.input_01, self.output_float = self.add_input_output(socket_types.FloatSocketType(self), "A")
         self.input_02 = self.add_input(socket_types.FloatSocketType(self), "B")
 
-        self.add_label("Add")
+        self.add_label("Divide")
         self.lbl_result = self.add_label("0")
-        self.btn_add_input = self.add_button("Add input", clicked_function=self.add_new_input)
 
         self.inputs = [self.input_01, self.input_02]
 
@@ -29,17 +28,17 @@ class AddFloat(BaseNode):
         if self.is_dirty():
             result = 0.0
 
-            for each in self.inputs:
-                each.fetch_connected_value()
-                input_value = each.get_value()
+            self.input_01.fetch_connected_value()
+            self.input_02.fetch_connected_value()
 
-                result += input_value
+            if self.input_02.get_value() != 0:
+                result = self.input_01.get_value() / self.input_02.get_value()
 
-            self.output_float.set_value(result)
-            self.lbl_result.setText(str(result))
+                self.output_float.set_value(result)
+                self.lbl_result.setText(str(result))
 
-            self.compute_connected_nodes()
-            self.set_dirty(False)
+                self.compute_connected_nodes()
+                self.set_dirty(False)
 
-            self.title.setPlainText(str(result))
-            self.reposition_title()
+                self.title.setPlainText(str(result))
+                self.reposition_title()

@@ -76,6 +76,9 @@ class SocketConnection(QGraphicsPathItem):
                 return True
             error_message = "%s doesn't allow multiple connections" % self.input_socket.name
 
+        if self.input_socket.get_node().is_child_of(self.output_socket.get_node()):
+            error_message = "%s is an input of %s" % (self.input_socket.get_node().get_uuid(), self.output_socket.get_node().get_uuid())
+
         if error_message is not None:
             logging.error(error_message)
             return False

@@ -3,15 +3,15 @@ import socket_types as socket_types
 
 from core.Constants import Colors
 
-class AddFloat(BaseNode):
+class SubtractFloat(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(AddFloat, self).__init__(scene, title_background_color=Colors.add_float, x=x, y=y)
+        super(SubtractFloat, self).__init__(scene, title_background_color=Colors.subtract_float, x=x, y=y)
         self.change_title("0.0")
 
         self.input_01, self.output_float = self.add_input_output(socket_types.FloatSocketType(self), "A")
         self.input_02 = self.add_input(socket_types.FloatSocketType(self), "B")
 
-        self.add_label("Add")
+        self.add_label("Subtract")
         self.lbl_result = self.add_label("0")
         self.btn_add_input = self.add_button("Add input", clicked_function=self.add_new_input)
 
@@ -33,7 +33,7 @@ class AddFloat(BaseNode):
                 each.fetch_connected_value()
                 input_value = each.get_value()
 
-                result += input_value
+                result -= input_value
 
             self.output_float.set_value(result)
             self.lbl_result.setText(str(result))

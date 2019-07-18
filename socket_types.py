@@ -5,6 +5,8 @@ from PyQt5.QtCore import *
 import numpy as np
 from PIL import Image
 
+from core.Constants import Colors
+
 import nv_utils.qt_utils as qutils
 
 class BaseSocketType(QObject):
@@ -93,7 +95,7 @@ class FloatSocketType(BaseSocketType):
         super(FloatSocketType, self).__init__(parent_node)
 
         self.name = "float"
-        self.color = QColor(79, 255, 102, 255)
+        self.color = Colors.float
         self.set_initial_value(0.0)
         self.reset_to_initial_value()
 

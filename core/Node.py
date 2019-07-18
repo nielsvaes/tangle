@@ -82,7 +82,7 @@ class Node(QGraphicsRectItem):
 
         label = NodeTitle(input_name, font_size=self.socket_label_size)
 
-        socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * nc.socket_size + 5)
+        socket_y_position = self.boundingRect().top() + ((nc.socket_size + nc.socket_spacing) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * nc.socket_size + nc.socket_spacing)
 
         socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, socket_y_position)
         socket = NodeSocket(IO.input, socket_type, label, self.scene, position=socket_position)
@@ -114,7 +114,7 @@ class Node(QGraphicsRectItem):
 
         label = NodeTitle(input_output_name, font_size=self.socket_label_size)
 
-        socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * (nc.socket_size + 5))
+        socket_y_position = self.boundingRect().top() + ((nc.socket_size + nc.socket_spacing) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * (nc.socket_size + nc.socket_spacing))
 
         input_socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, socket_y_position)
         input_socket = NodeSocket(IO.input, socket_type, label, self.scene, position=input_socket_position)
@@ -194,7 +194,9 @@ class Node(QGraphicsRectItem):
         connected_input_nodes = []
         for socket in self.get_connected_input_sockets():
             for connection in socket.get_connections():
-                connected_input_nodes.append(connection.output_socket.get_node())
+                node = connection.output_socket.get_node()
+                if node not in connected_input_nodes:
+                    connected_input_nodes.append(node)
 
         return connected_input_nodes
 
@@ -202,7 +204,9 @@ class Node(QGraphicsRectItem):
         connected_output_nodes = []
         for socket in self.get_connected_output_sockets():
             for connection in socket.get_connections():
-                connected_output_nodes.append(connection.input_socket.get_node())
+                node = connection.input_socket.get_node()
+                if node not in connected_output_nodes:
+                    connected_output_nodes.append(node)
 
         return connected_output_nodes
 
@@ -228,9 +232,30 @@ class Node(QGraphicsRectItem):
         for input_node in node.get_connected_input_nodes():
             connected_input_nodes.append(input_node)
 
-            connected_input_nodes += self.get_connected_output_nodes_recursive(node=input_node)
+            connected_input_nodes += self.get_connected_input_nodes_recursive(node=input_node)
 
+        [print(each.get_uuid()) for each in connected_input_nodes]
         return connected_input_nodes
+
+    def is_child_of(self, parent_node, recursive=True):
+        if recursive:
+            if self in parent_node.get_connected_input_nodes_recursive():
+                return True
+            return False
+        else:
+            if self in parent_node.get_connected_input_nodes():
+                return True
+            return False
+
+    def is_parent_of(self, child_node, recursive=True):
+        if recursive:
+            if self in child_node.get_connected_output_nodes_recursive():
+                return True
+            return False
+        else:
+            if self in child_node.get_connected_output_nodes():
+                return True
+            return False
 
     def get_input_nodes_of_type(self, node_type):
         for node in self.get_connected_input_nodes():
@@ -379,7 +404,7 @@ class Node(QGraphicsRectItem):
 
     def __resize(self):
         total_sockets = len(self.get_all_sockets())
-        new_height = (nc.socket_size * 1.5 * total_sockets) + self.height + (nc.socket_size * 1.1)
+        new_height = (nc.socket_size * 1.5 * total_sockets) + self.height + (nc.socket_size * 1.1)  - (self.__num_input_output_sockets * (nc.socket_size + nc.socket_spacing))
         position = self.pos()
         self.node_rect = QRectF(0, 0, nc.node_item_width, new_height)
         self.setRect(self.node_rect)

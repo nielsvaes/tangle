@@ -50,6 +50,11 @@ class BaseNode(Node):
         # if is_dirty:
         #     self.compute()
 
+    def compute_connected_nodes(self):
+        for node in self.get_connected_output_nodes():
+            node.set_dirty(True)
+            node.compute()
+
     def is_dirty(self):
         return self.__is_dirty
 
@@ -205,6 +210,7 @@ class BaseNode(Node):
         spin_number.setDecimals(3)
         spin_number.setMaximum(float("inf"))
         spin_number.setMinimum(float("-inf"))
+        spin_number.setButtonSymbols(QAbstractSpinBox.NoButtons)
 
         spin_number.valueChanged.connect(changed_function)
 

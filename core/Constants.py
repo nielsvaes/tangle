@@ -10,6 +10,7 @@ class IO():
 
 
 class Colors():
+    # core colors
     node_normal_border       = QColor(36, 66, 114, 255)
     node_hover_border        = QColor(110, 155, 85, 255)
     node_selected_border     = QColor(110, 155, 85, 255)
@@ -36,14 +37,15 @@ class Colors():
     node_scene_computed      = QColor(43, 43, 43, 255)
     node_scene_dirty         = QColor(53, 43, 43, 255)
 
+    # image node colors
     load_image               = QColor(90, 112, 35)
     save_image               = QColor(90, 112, 35)
     split_channel            = QColor(35, 112, 68)
     combine_channel          = QColor(35, 112, 68)
     color_to_gray            = QColor(24, 77, 89)
     gray_to_color            = QColor(24, 77, 89)
-    rgb_to_rgba                = QColor(43, 143, 166)
-    rgba_to_rgb                = QColor(43, 143, 166)
+    rgb_to_rgba               = QColor(43, 143, 166)
+    rgba_to_rgb               = QColor(43, 143, 166)
     blur                     = QColor(24, 89, 62)
     brightness               = QColor(24, 43, 89)
     combine                  = QColor(81, 24, 89)
@@ -58,7 +60,12 @@ class Colors():
     mirror                   = QColor(42, 82, 80)
     rotate                   = QColor(27, 62, 143)
 
-    float                    = QColor(48, 89, 48)
+    # math colors
+    float                    = QColor(93, 179, 71)
+    add_float                = QColor(24, 92, 23)
+    multiply_float           = QColor(23, 92, 75)
+    subtract_float           = QColor(23, 55, 92)
+    divide_float             = QColor(32, 23, 92)
 
 
 class NumberConstants():
@@ -74,6 +81,7 @@ class NumberConstants():
 
     socket_size = 20
     socket_label_spacing = socket_size * 1.1
+    socket_spacing = 5
 
     execution_socket_size = socket_size * 1.3
 
