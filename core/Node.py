@@ -234,7 +234,6 @@ class Node(QGraphicsRectItem):
 
             connected_input_nodes += self.get_connected_input_nodes_recursive(node=input_node)
 
-        [print(each.get_uuid()) for each in connected_input_nodes]
         return connected_input_nodes
 
     def is_child_of(self, parent_node, recursive=True):
