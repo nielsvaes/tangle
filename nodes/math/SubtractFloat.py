@@ -15,7 +15,7 @@ class SubtractFloat(BaseNode):
         self.lbl_result = self.add_label("0")
         self.btn_add_input = self.add_button("Add input", clicked_function=self.add_new_input)
 
-        self.inputs = [self.input_01, self.input_02]
+        self.inputs = [self.input_02]
 
         self.set_auto_compute_on_connect(True)
 
@@ -27,7 +27,8 @@ class SubtractFloat(BaseNode):
 
     def compute(self):
         if self.is_dirty():
-            result = 0.0
+            self.input_01.fetch_connected_value()
+            result = self.input_01.get_value()
 
             for each in self.inputs:
                 each.fetch_connected_value()
