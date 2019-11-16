@@ -189,18 +189,17 @@ if __name__ == "__main__":
     splash_pixmap = QPixmap(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ui", "icons", "splashscreen.png"))
     splash_screen = QSplashScreen(splash_pixmap)
 
-    # splash_screen.show()
+    splash_screen.show()
 
     app.processEvents()
 
-    time.sleep(1.5)
     tangle_window = TangleWindow()
 
     # modern_window = qtmodern.windows.ModernWindow(tangle_window)
     # modern_window.show()
 
     tangle_window.show()
-    # splash_screen.finish(tangle_window)
+    splash_screen.finish(tangle_window)
 
 
     app.exec_()

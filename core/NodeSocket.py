@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
+import uuid
 
 from .SocketConnection import SocketConnection
 from .DragConnection import DragConnection
@@ -34,6 +35,8 @@ class NodeSocket(QGraphicsEllipseItem):
 
         self.color = self.socket_type.color
 
+        self.__uuid = self.__uuid = uuid.uuid4()
+
         #todo change list to function
         self.connections = []
 
@@ -49,7 +52,7 @@ class NodeSocket(QGraphicsEllipseItem):
         self.socket_type.set_initial_value(value)
 
     def get_initial_value(self):
-        self.socket_type.get_initial_value()
+        return self.socket_type.get_initial_value()
 
     def reset_to_initial_value(self):
         self.socket_type.reset_to_initial_value()
@@ -67,6 +70,21 @@ class NodeSocket(QGraphicsEllipseItem):
         else:
             # self.set_value(None)
             self.reset_to_initial_value()
+
+    def save(self):
+        save_dict = {}
+        save_dict["label"] = self.label.toPlainText()
+        save_dict["socket_type"] = str(self.socket_type)
+        save_dict["io"] = self.io
+        save_dict["value"] = self.get_value()
+        save_dict["initial_value"] = self.get_initial_value()
+
+        return save_dict
+
+    def get_uuid(self, as_string=False):
+        if as_string:
+            return str(self.__uuid)
+        return self.__uuid
 
     def get_center_point(self):
         if self.io == IO.input:
@@ -127,14 +145,16 @@ class NodeSocket(QGraphicsEllipseItem):
         self.__draw()
 
     def destroy_self(self):
-        print("destorying node")
         all_sockets = self.get_node().get_all_sockets()
 
         all_sockets.remove(self)
 
         self.scene.removeItem(self)
         self.scene.removeItem(self.label)
-        print("done destroying")
+
+    def change_socket_type(self, new_socket_type, new_color):
+        self.socket_type = new_socket_type
+        self.override_color(new_color)
 
     def mousePressEvent(self, event):
         self.connection_start_point = event.scenePos()

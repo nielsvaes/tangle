@@ -6,11 +6,12 @@ class Debug(BaseNode):
         super(Debug, self).__init__(scene, x=x, y=y)
         self.change_title("*DEBUG*")
 
-        self.debug_value = self.add_input(socket_types.DebugSocketType(self), "debug value")
+        self.debug_value = self.add_input(socket_types.DebugSocketType(self), "debug")
 
-        self.lbl_debug = self.add_label_text("Debug value: ")[1]
+        self.txt_debug = self.add_label_text("Debug value: ")[1]
 
         self.set_auto_compute_on_connect(True)
 
     def compute(self):
-        self.lbl_debug.setText(str(self.debug_value.get_value()))
+        self.debug_value.fetch_connected_value()
+        self.txt_debug.setText(str(self.debug_value.get_value()))

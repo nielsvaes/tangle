@@ -37,6 +37,9 @@ class BaseNode(Node):
     def refresh(self):
         pass
 
+    def load(self, state):
+        self.__dict__.update(state)
+
     def compute(self):
         raise NotImplementedError()
 
@@ -50,10 +53,15 @@ class BaseNode(Node):
         # if is_dirty:
         #     self.compute()
 
-    def compute_connected_nodes(self):
-        for node in self.get_connected_output_nodes():
-            node.set_dirty(True)
-            node.compute()
+    def compute_connected_nodes(self, output_socket=None):
+        if output_socket is None:
+            for node in self.get_connected_output_nodes():
+                node.set_dirty(True)
+                node.compute()
+        else:
+            for connected_node in [socket.get_node() for socket in output_socket.get_connected_sockets()]:
+                connected_node.set_dirty(True)
+                connected_node.compute()
 
     def is_dirty(self):
         return self.__is_dirty
@@ -62,10 +70,10 @@ class BaseNode(Node):
         return self.__widget
 
     def get_x(self):
-        return self.__x
+        return self.scenePos().x()
 
     def get_y(self):
-        return self.__y
+        return self.scenePos().y()
 
     def set_auto_compute_on_connect(self, value):
         self.__auto_compute_on_connect = value

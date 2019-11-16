@@ -9,6 +9,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 import nv_utils.utils as utils
+import nv_utils.io as io_utils
 
 from pydoc import locate
 
@@ -38,7 +39,11 @@ class NodeScene(QGraphicsScene):
             except TypeError as err:
                 utils.trace(err)
         else:
-            node_instance = class_name.__class__(self, x, y)
+            try:
+                node_instance = class_name.__class__(self, x, y)
+            except:
+                utils.trace("Can't create node of type %s" % class_name)
+                return None
 
         if node_instance is not None:
             # for socket_type in node_instance.get_all_socket_types():
@@ -56,6 +61,13 @@ class NodeScene(QGraphicsScene):
                 nodes.append(item)
 
         return nodes
+
+    def get_all_connections(self):
+        from core.SocketConnection import SocketConnection
+        connections = []
+        for item in self.items():
+            if type(item) == SocketConnection:
+                connections.append(item)
 
     # def get_all_nodes(self):
     #     from nodes.base_node import BaseNode
@@ -114,17 +126,49 @@ class NodeScene(QGraphicsScene):
         except Exception as err:
             utils.trace(err)
 
-    def map_network(self):
-        node_dict = OrderedDict()
-        for begin_node in self.get_begin_nodes():
-            for attribute in vars(begin_node):
-            # for index, attribute in enumerate(begin_node.__dict__):
-                node_dict[begin_node.get_uuid(as_string=True)] = {}
-                node_dict[begin_node.get_uuid(as_string=True)][attribute] = getattr(begin_node, attribute)
+    def save_network(self):
+        # print("Saving scene")
+        # path = r"C:/deleteme/mapped_scene.json"
+        # mapped_scene = {}
+        # for node in self.get_all_nodes():
+        #     node_dict = node.save()
+        #
+        #     mapped_scene[node.get_uuid(as_string=True)] = node_dict
+        # #
+        # # with open(path, "wb") as out:
+        # #     pickle.dump(mapped_scene, out)
+        #
+        # with open(path, "w") as out:
+        #     json.dump(mapped_scene, out, indent=4)
 
-        for key, value in enumerate(node_dict):
-            print(key)
-            print(value)
+        path = r"C:/deleteme/mapped_scene.json"
+
+        save_dict = {}
+
+        for node in self.get_all_nodes():
+            save_dict[node.get_uuid(as_string=True)] = node.save()
+
+        print(save_dict)
+
+        io_utils.write_json(save_dict, path)
+
+
+
+
+    def open_network(self, path):
+        mapped_scene = pickle.load(path)
+
+
+        # node_dict = OrderedDict()
+        # for begin_node in self.get_begin_nodes():
+        #     for attribute in vars(begin_node):
+        #     # for index, attribute in enumerate(begin_node.__dict__):
+        #         node_dict[begin_node.get_uuid(as_string=True)] = {}
+        #         node_dict[begin_node.get_uuid(as_string=True)][attribute] = getattr(begin_node, attribute)
+        #
+        # for key, value in enumerate(node_dict):
+        #     print(key)
+        #     print(value)
 
     def get_begin_nodes(self):
         start_nodes = []
@@ -235,7 +279,11 @@ class NodeScene(QGraphicsScene):
             self.duplicate_nodes()
 
         if event.key() == Qt.Key_S and event.modifiers() == Qt.ControlModifier:
-            self.map_network()
+            self.save_network()
+
+
+        if event.key() == Qt.Key_O and event.modifiers() == Qt.ControlModifier:
+            self.open_network("D:/mapped_scene")
 
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             self.refresh_network()

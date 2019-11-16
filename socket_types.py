@@ -90,6 +90,14 @@ class IntSocketType(BaseSocketType):
         self.name = "int"
         self.color = QColor(255, 140, 33, 255)
 
+class BooleanSocketType(BaseSocketType):
+    def __init__(self, parent_node):
+        super(BooleanSocketType, self).__init__(parent_node)
+
+        self.name = "bool"
+        self.color = QColor(80, 140, 33, 255)
+        self.set_initial_value(False)
+
 class FloatSocketType(BaseSocketType):
     def __init__(self, parent_node):
         super(FloatSocketType, self).__init__(parent_node)

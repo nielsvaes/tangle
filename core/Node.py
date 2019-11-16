@@ -337,6 +337,19 @@ class Node(QGraphicsRectItem):
             self.boundingRect().top() - title.boundingRect().height() - nc.title_offset)
         self.name = title.toPlainText()
 
+    def save(self):
+        save_dict = {}
+        save_dict["sockets"] = {}
+        for socket in self.get_all_sockets():
+            save_dict["sockets"][socket.get_uuid(as_string=True)] = socket.save()
+
+        save_dict["uuid"] = self.get_uuid(as_string=True)
+        save_dict["x"] = self.get_x()
+        save_dict["y"] = self.get_y()
+        save_dict["title"] = self.title.toPlainText()
+
+        return save_dict
+
     def hoverEnterEvent(self, event):
         self.mouse_over = True
         self.update()
