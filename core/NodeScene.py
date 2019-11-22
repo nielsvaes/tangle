@@ -1,8 +1,7 @@
 import os
 import importlib
 
-from collections import OrderedDict
-import pickle
+import re
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -28,6 +27,7 @@ class NodeScene(QGraphicsScene):
         node_instance = None
 
         if type(class_name) == str:
+            print(class_name)
             module_path = ".".join(["nodes", module, class_name])
             node_module = importlib.import_module(module_path)
             importlib.reload(node_module)
@@ -148,15 +148,21 @@ class NodeScene(QGraphicsScene):
         for node in self.get_all_nodes():
             save_dict[node.get_uuid(as_string=True)] = node.save()
 
-        print(save_dict)
-
         io_utils.write_json(save_dict, path)
 
 
 
 
     def open_network(self, path):
-        mapped_scene = pickle.load(path)
+        mapped_scene = io_utils.read_json(r"C:/deleteme/mapped_scene.json")
+
+        for node_uuid, node_dict in mapped_scene.items():
+            type_string = node_dict.get("node_type")
+            print(type(type_string))
+            other = re.findall(r"'(.*?)'", type_string, re.DOTALL)[0]
+            class_name = other.split(".")[-1]
+            print(class_name)
+
 
 
         # node_dict = OrderedDict()
@@ -274,6 +280,7 @@ class NodeScene(QGraphicsScene):
                     utils.trace(err)
             if len(self.items()) == 0:
                 self.__set_colors_computed()
+        self.refresh_network()
 
         if event.key() == Qt.Key_D and event.modifiers() == Qt.ControlModifier:
             self.duplicate_nodes()

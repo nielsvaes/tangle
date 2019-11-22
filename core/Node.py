@@ -347,6 +347,7 @@ class Node(QGraphicsRectItem):
         save_dict["x"] = self.get_x()
         save_dict["y"] = self.get_y()
         save_dict["title"] = self.title.toPlainText()
+        save_dict["node_type"] = str(type(self))
 
         return save_dict
 
