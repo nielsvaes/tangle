@@ -21,13 +21,6 @@ class Comparison(BaseNode):
             socket.got_connected.signal.connect(partial(self.change_type, socket))
             socket.got_disconnected.signal.connect(partial(self.change_type, socket, socket_types.DebugSocketType(self)))
 
-
-        # self.input_01.got_connected.signal.connect(partial(self.change_type, self.input_01))
-        # self.input_02.got_connected.signal.connect(partial(self.change_type, self.input_02))
-        #
-        # self.value_if_true.got_connected.signal.connect(partial(self.change_type, self.value_if_true))
-        # self.value_if_false.got_connected.signal.connect(partial(self.change_type, self.value_if_false))
-
         self.cb_operation = self.add_combobox(["equal to", "not equal to", "bigger than", "smaller than"], changed_function=self.operation_changed)
 
         self.set_auto_compute_on_connect(True)
@@ -39,16 +32,13 @@ class Comparison(BaseNode):
 
 
     def operation_changed(self):
-        print("changed the operation!")
         self.set_dirty(True)
         self.compute()
 
     def compute(self):
         if self.is_dirty():
             operation = self.cb_operation.currentText()
-            print("computing")
             if self.value_if_true.is_connected() and self.value_if_false.is_connected():
-                print("both values are connected")
 
                 self.value_if_true.fetch_connected_value()
                 self.value_if_false.fetch_connected_value()
@@ -62,18 +52,19 @@ class Comparison(BaseNode):
 
                     result = False
 
-                    if operation == "equal to":
-                        result = True if self.input_01.get_value() == self.input_02.get_value() else False
-                    if operation == "not equal to":
-                        result = True if self.input_01.get_value() != self.input_02.get_value() else False
-                    if operation == "bigger than":
-                        result = True if self.input_01.get_value() > self.input_02.get_value() else False
-                    if operation == "smaller than":
-                        result = True if self.input_01.get_value() < self.input_02.get_value() else False
+                    try:
+                        if operation == "equal to":
+                            result = True if self.input_01.get_value() == self.input_02.get_value() else False
+                        if operation == "not equal to":
+                            result = True if self.input_01.get_value() != self.input_02.get_value() else False
+                        if operation == "bigger than":
+                            result = True if self.input_01.get_value() > self.input_02.get_value() else False
+                        if operation == "smaller than":
+                            result = True if self.input_01.get_value() < self.input_02.get_value() else False
+                    except TypeError as err:
+                        pass
 
                     self.change_title(str(result))
-
-                    print("setting result")
 
                     if result:
                         print(self.value_if_true.get_value())
@@ -84,7 +75,6 @@ class Comparison(BaseNode):
                         self.output.change_socket_type(self.value_if_false.socket_type)
                         self.output.set_value(self.value_if_false.get_value())
 
-                    print("output value is %s" % self.output.get_value())
                     self.compute_connected_nodes()
                     self.set_dirty(False)
             else:

@@ -15,7 +15,10 @@ class Float(BaseNode):
     def number_changed(self):
         if self.txt_number.text() == "":
             self.txt_number.setText("0.0")
-        self.output_float.set_value(float(self.txt_number.text()))
+        try:
+            self.output_float.set_value(float(self.txt_number.text()))
+        except ValueError as err:
+            self.output_float.set_value(0.0)
 
         self.compute_connected_nodes()
 

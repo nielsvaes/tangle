@@ -38,7 +38,8 @@ class ImageViewer(QDockWidget, metaclass=Singleton):
             self.lbl_pixmap.setPixmap(self.pixmap.scaled(self.lbl_pixmap.width(), self.lbl_pixmap.height(),
                                                           Qt.KeepAspectRatio, Qt.SmoothTransformation))
         except AttributeError as err:
-            utils.trace(err)
+            pass
+            # utils.trace(err)
 
     def set_pixmap(self, pixmap):
         self.pixmap = pixmap

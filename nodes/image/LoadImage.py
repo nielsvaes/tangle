@@ -19,10 +19,10 @@ class LoadImage(ImageNode):
 
         self.scene = scene
 
-        self.add_button("Load image", partial(self.load_image, set_dirty=True))
+        self.add_button("Load image", self.load_image)
         self.load_image()
 
-    def load_image(self, set_dirty=False):
+    def load_image(self):
         file_path = QFileDialog.getOpenFileName(caption="Open image", filter="Image files (*.jpg *.png *.tga)")[0]
 
         if file_path != "":
@@ -36,11 +36,7 @@ class LoadImage(ImageNode):
 
         self.scene.get_main_window().load_values_ui()
 
-        if set_dirty:
-            self.set_dirty(True)
-
-            for node in self.get_connected_output_nodes():
-                node.set_dirty(True)
+        self.compute_connected_nodes()
 
     def compute(self):
         if self.is_dirty():

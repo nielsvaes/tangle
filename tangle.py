@@ -63,18 +63,42 @@ class TangleWindow(QMainWindow):
         for i in range(1, 4):
             self.tree_nodes.setColumnHidden(i, True)
 
+        self.txt_search_nodes.textChanged.connect(self.search)
 
         self.action_reload_nodes.triggered.connect(self.load_nodes)
         self.action_show_image_viewer.triggered.connect(partial(self.show_viewer, "image"))
 
-        self.horizontal_splitter.setSizes([500, 400])
-        self.vertical_splitter.setSizes([500, 400, 400])
+        self.horizontal_splitter.setSizes([500, 100])
+        self.vertical_splitter.setSizes([500, 200])
 
         self.scene.selectionChanged.connect(self.load_values_ui)
 
     def normal_node_start(self):
         for node in self.scene.get_begin_nodes():
             pass
+
+    def search(self):
+        # if self.txt_search_nodes.text()
+        search_words = self.txt_search_nodes.text().lower().split(" ")
+
+        root = self.tree_nodes.invisibleRootItem()
+        folder_count = root.childCount()
+        for i in range(folder_count):
+            folder = root.child(i)
+            item_count = folder.childCount()
+            for j in range(item_count):
+                item = folder.child(j)
+
+                hidden = False
+                for word in search_words:
+                    if not word in item.text(0).lower():
+                        hidden = True
+
+                item.setHidden(hidden)
+
+
+
+
 
     def load_nodes(self):
         self.tree_nodes.clear()
