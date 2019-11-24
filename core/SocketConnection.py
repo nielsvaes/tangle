@@ -29,6 +29,7 @@ class SocketConnection(QGraphicsPathItem):
     def update_sockets(self):
         for socket in [self.input_socket, self.output_socket]:
             socket.add_connection(self)
+            socket.got_connected.emit()
 
         self.input_socket.set_value(self.output_socket.get_value())
 
@@ -108,6 +109,7 @@ class SocketConnection(QGraphicsPathItem):
             socket.remove_connection(self)
             # socket.is_connected = False
             socket.set_label_style_connected(False)
+            socket.got_disconnected.emit()
 
         self.input_socket.get_node().set_dirty(True)
         self.input_socket.reset_to_initial_value()

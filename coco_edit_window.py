@@ -10,13 +10,18 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5 import uic
 
-import qtmodern.styles
-import qtmodern.windows
+try:
+    import qtmodern.styles
+    import qtmodern.windows
+    modern = True
+except:
+    print("can't find qtmodern!")
+    modern = False
 
 import nv_utils.file_utils as file_utils
 import nv_utils.qt_utils as qutils
 import nv_utils.utils as utils
-from utils import image as im_utils
+#from utils import image as im_utils
 
 from core.NodeScene import NodeScene
 from core.NodeView import NodeView
@@ -63,6 +68,9 @@ class TangleWindow(QMainWindow):
 
         self.lbl_pixmap.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
+        self.action_reload_nodes.triggered.connect(self.load_nodes)
+        self.action_show_images.triggered.connect(self.toggle_image_label)
+
         self.horizontal_splitter.setSizes([500, 400])
         self.vertical_splitter.setSizes([500, 400, 400])
 
@@ -75,6 +83,7 @@ class TangleWindow(QMainWindow):
             pass
 
     def load_nodes(self):
+        self.tree_nodes.clear()
         for file_path in file_utils.get_files_recursively(self.NODE_FOLDER, filters=".py"):
             if file_path is not None and not "__" in file_path and not "base_node" in file_path and not file_path.endswith(
                     "pyc") and not "image_node" in file_path:
@@ -101,6 +110,9 @@ class TangleWindow(QMainWindow):
 
                 if os.path.isfile(icon_path):
                     file_item.setIcon(0, QIcon(icon_path))
+
+    def toggle_image_label(self):
+        self.lbl_pixmap.setVisible(not self.lbl_pixmap.isVisible())
 
 
     def load_values_ui(self):
@@ -183,7 +195,8 @@ class TitleLabel(QLineEdit):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    qtmodern.styles.dark(app)
+    if modern:
+        qtmodern.styles.dark(app)
 
 
     splash_pixmap = QPixmap(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ui", "icons", "splashscreen.png"))

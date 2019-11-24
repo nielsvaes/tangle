@@ -9,6 +9,7 @@ import uuid
 from .SocketConnection import SocketConnection
 from .DragConnection import DragConnection
 from .Constants import nc, Colors, IO
+from .SignalEmitter import SignalEmitter
 
 import nv_utils.utils as utils
 
@@ -30,15 +31,13 @@ class NodeSocket(QGraphicsEllipseItem):
         self.connection_end_point = None
 
         self.drag_connection = None
-
         self.adjust_color_to_input = True
-
         self.color = self.socket_type.color
-
         self.__uuid = self.__uuid = uuid.uuid4()
-
-        #todo change list to function
         self.connections = []
+
+        self.got_connected = SignalEmitter()
+        self.got_disconnected = SignalEmitter()
 
         self.__draw()
 
@@ -119,6 +118,7 @@ class NodeSocket(QGraphicsEllipseItem):
     def set_label_style_connected(self, value):
         if value == True:
             self.label.font.setBold(True)
+            print("%s socket type is %s" % (self.name, self.socket_type))
             self.label.setDefaultTextColor(self.socket_type.color)
         else:
             if len(self.get_connected_sockets()) == 0:
@@ -142,6 +142,7 @@ class NodeSocket(QGraphicsEllipseItem):
 
     def override_color(self, color):
         self.color = color
+        self.set_label_style_connected(self.is_connected())
         self.__draw()
 
     def destroy_self(self):
@@ -152,9 +153,12 @@ class NodeSocket(QGraphicsEllipseItem):
         self.scene.removeItem(self)
         self.scene.removeItem(self.label)
 
-    def change_socket_type(self, new_socket_type, new_color):
+    def change_socket_type(self, new_socket_type, new_color=QColor(255, 255, 255), auto_color=True):
         self.socket_type = new_socket_type
-        self.override_color(new_color)
+        if auto_color:
+            self.override_color(self.socket_type.get_color())
+        else:
+            self.override_color(new_color)
 
     def mousePressEvent(self, event):
         self.connection_start_point = event.scenePos()

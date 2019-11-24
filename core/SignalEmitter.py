@@ -8,3 +8,6 @@ class SignalEmitter(QObject):
 
         super(SignalEmitter, self).__init__()
 
+    def emit(self):
+        self.signal.emit()
+

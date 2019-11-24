@@ -29,6 +29,9 @@ class BaseSocketType(QObject):
     # def get_ui(self):
     #     raise NotImplementedError()
 
+    def get_color(self):
+        return self.color
+
     def get_parent_node(self):
         return self.__parent_node
 

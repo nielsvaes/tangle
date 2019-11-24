@@ -8,7 +8,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 import nv_utils.utils as utils
-import nv_utils.io as io_utils
+import nv_utils.io_utils as io_utils
 
 from pydoc import locate
 
@@ -112,14 +112,14 @@ class NodeScene(QGraphicsScene):
 
                     child_nodes_are_dirty = False
                     for connected_node in begin_node.get_connected_output_nodes_recursive():
-                        if child_nodes_are_dirty:
-                            print("is a child node, needs computing: ", connected_node.title)
-                            connected_node.compute()
-                            continue
                         if connected_node.is_dirty():
                             print("is dirty, needs computing: ", connected_node.title)
                             connected_node.compute()
                             child_nodes_are_dirty = True
+                        if child_nodes_are_dirty:
+                            print("is a child node, needs computing: ", connected_node.title)
+                            connected_node.compute()
+                            continue
 
             self.__set_colors_computed()
 
@@ -141,7 +141,7 @@ class NodeScene(QGraphicsScene):
         # with open(path, "w") as out:
         #     json.dump(mapped_scene, out, indent=4)
 
-        path = r"C:/deleteme/mapped_scene.json"
+        path = "/home/pi/garbage/scene.json"
 
         save_dict = {}
 
@@ -154,7 +154,7 @@ class NodeScene(QGraphicsScene):
 
 
     def open_network(self, path):
-        mapped_scene = io_utils.read_json(r"C:/deleteme/mapped_scene.json")
+        mapped_scene = io_utils.read_json("/home/pi/garbage/scene.json")
 
         for node_uuid, node_dict in mapped_scene.items():
             type_string = node_dict.get("node_type")

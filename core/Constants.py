@@ -64,6 +64,7 @@ class Colors():
     float                    = QColor(93, 179, 71)
     add_float                = QColor(24, 92, 23)
     multiply_float           = QColor(23, 92, 75)
+    power_float              = QColor(23, 92, 55)
     subtract_float           = QColor(23, 55, 92)
     divide_float             = QColor(32, 23, 92)
 

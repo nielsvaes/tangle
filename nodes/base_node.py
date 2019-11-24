@@ -138,11 +138,31 @@ class BaseNode(Node):
         layout.addWidget(txt_line)
 
         if text_changed_function is not None:
-            txt_line.textChanged.connect(text_changed_function)
+            txt_line.textEdited.connect(text_changed_function)
 
         self.__layout.addLayout(layout)
 
         return[label, txt_line]
+
+    def add_label_float(self, label_text, number=0.000, number_changed_function=None):
+        layout = QHBoxLayout()
+        label = QLabel(label_text)
+
+        float_validator = QDoubleValidator()
+        float_validator.setDecimals(3)
+
+        txt_float = QLineEdit(str(number))
+        txt_float.setValidator(float_validator)
+
+        layout.addWidget(label)
+        layout.addWidget(txt_float)
+
+        if number_changed_function is not None:
+            txt_float.textEdited.connect(number_changed_function)
+
+        self.__layout.addLayout(layout)
+
+        return[label, txt_float]
 
     def add_checkbox(self, label, checked=True, change_checked_function=None):
         checkbox = QCheckBox(label)

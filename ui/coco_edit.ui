@@ -118,8 +118,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1259</width>
-           <height>79</height>
+           <width>1258</width>
+           <height>75</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -147,7 +147,7 @@
      <x>0</x>
      <y>0</y>
      <width>1294</width>
-     <height>21</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -161,9 +161,18 @@
      <string>Edit</string>
     </property>
     <addaction name="actionSettings"/>
+    <addaction name="separator"/>
+    <addaction name="action_reload_nodes"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="action_show_images"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
@@ -174,6 +183,16 @@
   <action name="actionSettings">
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="action_reload_nodes">
+   <property name="text">
+    <string>Reload Nodes</string>
+   </property>
+  </action>
+  <action name="action_show_images">
+   <property name="text">
+    <string>Show Images</string>
    </property>
   </action>
  </widget>

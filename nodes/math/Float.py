@@ -10,18 +10,20 @@ class Float(BaseNode):
         self.change_title("0.0")
 
         self.output_float = self.add_output(socket_types.FloatSocketType(self), "float")
-        self.spin_number = self.add_spinbox(changed_function=self.spin_value_entered)
+        _, self.txt_number = self.add_label_float("number: ", number_changed_function=self.number_changed)
 
-    def spin_value_entered(self):
-        self.output_float.set_value(self.spin_number.value())
+    def number_changed(self):
+        if self.txt_number.text() == "":
+            self.txt_number.setText("0.0")
+        self.output_float.set_value(float(self.txt_number.text()))
 
         self.compute_connected_nodes()
 
         self.set_dirty(True)
-
-        self.title.setPlainText(str(self.spin_number.value()))
-        self.reposition_title()
+        self.compute()
 
     def compute(self):
         if self.is_dirty():
+            self.change_title(str(self.txt_number.text()))
             self.set_dirty(False)
+
