@@ -93,6 +93,8 @@ class TangleWindow(QMainWindow):
                 icon_path = os.path.join(self.ICONS_PATH, file_name_no_ext + ".png")
                 complete_folder = os.path.dirname(file_path)
                 folder_name = complete_folder.split(os.sep)[-1]
+                parent_folder = os.sep.join(complete_folder.split(os.sep)[0:-1])
+                parent_folder_name = parent_folder.split(os.sep)[-1]
                 complete_path = os.path.join(complete_folder, file_name).replace("\\", "/")
 
                 folder_item = qutils.get_item_with_text_from_tree_widget(self.tree_nodes, folder_name, 0)

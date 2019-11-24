@@ -1,25 +1,18 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-
 import itertools
 import operator
-
-import sys
-import traceback
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
 from nodes.image_node import ImageNode
-from nodes.io.LoadImage import LoadImage
+from nodes.image.LoadImage import LoadImage
 import socket_types as socket_types
 from core.Constants import Colors
 
 import nv_utils.utils as utils
 
-import PIL
-from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter, ImageDraw
+from PIL import Image, ImageQt
+
 
 class JoinChannels(ImageNode):
     def __init__(self, scene, x=0, y=0):
