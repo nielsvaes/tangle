@@ -1,5 +1,5 @@
 from nodes.base_node import BaseNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 
 from core.Constants import Colors
 

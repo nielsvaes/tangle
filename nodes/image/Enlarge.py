@@ -1,12 +1,13 @@
 from nodes.image_node import ImageNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 
 import logging
 logging.basicConfig(level=logging.INFO)
 
 
 from core.Constants import Colors
-from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
+from PIL import Image, ImageQt
+
 
 class Enlarge(ImageNode):
     def __init__(self, scene, x=0, y=0):

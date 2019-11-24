@@ -6,7 +6,7 @@ from PIL import Image, ImageQt
 
 from core.Constants import Colors
 from nodes.image_node import ImageNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 
 
 class LoadImage(ImageNode):

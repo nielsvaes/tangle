@@ -1,13 +1,10 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-
 from nodes.image_node import ImageNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 
 from core.Constants import Colors
 
-from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
+from PIL import ImageQt, ImageEnhance
+
 
 class Saturation(ImageNode):
     def __init__(self, scene, x=0, y=0):
@@ -40,6 +37,5 @@ class Saturation(ImageNode):
 
             contrasted_pixmap = ImageQt.toqpixmap(saturated)
             self.set_pixmap(contrasted_pixmap)
-
-            self.get_main_window().set_pixmap(contrasted_pixmap)
+            self.refresh()
             self.set_dirty(False)

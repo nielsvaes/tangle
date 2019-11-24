@@ -1,16 +1,12 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-
 from nodes.image_node import ImageNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 
 import logging
 logging.basicConfig(level=logging.INFO)
 
-import nv_utils.qt_utils as qutils
 from core.Constants import Colors
-from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
+from PIL import Image, ImageQt
+
 
 class Shrink(ImageNode):
     def __init__(self, scene, x=0, y=0):

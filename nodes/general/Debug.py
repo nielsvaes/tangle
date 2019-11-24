@@ -1,5 +1,6 @@
 from nodes.base_node import BaseNode
-import socket_types as socket_types
+from core import socket_types as socket_types
+
 
 class Debug(BaseNode):
     def __init__(self, scene, x=0, y=0):

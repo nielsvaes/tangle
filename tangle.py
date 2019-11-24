@@ -15,17 +15,18 @@ try:
     import qtmodern.windows
     modern = True
 except:
-    print("can't find qtmodern!")
+    logging.warning("Can't find qtmodern!")
     modern = False
 
 import nv_utils.file_utils as file_utils
 import nv_utils.qt_utils as qutils
 import nv_utils.utils as utils
-#from utils import image as im_utils
 
 from core.NodeScene import NodeScene
 from core.NodeView import NodeView
 from core.Constants import ss, IO
+
+from viewers.image_viewer import ImageViewer
 
 
 class TangleWindow(QMainWindow):
@@ -36,7 +37,7 @@ class TangleWindow(QMainWindow):
         self.ICONS_PATH = os.path.join(self.SCRIPT_FOLDER, "ui", "icons")
         self.NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
 
-        uic.loadUi(os.path.join(self.UI_PATH, "coco_edit.ui"), self)
+        uic.loadUi(os.path.join(self.UI_PATH, "tangle.ui"), self)
 
         self.build_ui()
         self.load_nodes()
@@ -48,10 +49,6 @@ class TangleWindow(QMainWindow):
         self.show()
 
         self.setWindowTitle("Tangle")
-
-        #load_node = self.scene.add_node_to_view("LoadImage", "io", 100, 100)
-        # load_node.load_image(r"D:\Google Drive\Tools\CocoEdit\its-a-me_4.jpg")
-        # load_node.set_dirty(True)
 
     def build_ui(self):
         self.setBaseSize(QSize(1920, 1080))
@@ -66,17 +63,14 @@ class TangleWindow(QMainWindow):
         for i in range(1, 4):
             self.tree_nodes.setColumnHidden(i, True)
 
-        self.lbl_pixmap.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
         self.action_reload_nodes.triggered.connect(self.load_nodes)
-        self.action_show_images.triggered.connect(self.toggle_image_label)
+        self.action_show_image_viewer.triggered.connect(partial(self.show_viewer, "image"))
 
         self.horizontal_splitter.setSizes([500, 400])
         self.vertical_splitter.setSizes([500, 400, 400])
 
         self.scene.selectionChanged.connect(self.load_values_ui)
-        self.horizontal_splitter.splitterMoved.connect(self.resize_pixmap)
-        self.vertical_splitter.splitterMoved.connect(self.resize_pixmap)
 
     def normal_node_start(self):
         for node in self.scene.get_begin_nodes():
@@ -113,9 +107,9 @@ class TangleWindow(QMainWindow):
                 if os.path.isfile(icon_path):
                     file_item.setIcon(0, QIcon(icon_path))
 
-    def toggle_image_label(self):
-        self.lbl_pixmap.setVisible(not self.lbl_pixmap.isVisible())
-
+    def show_viewer(self, viewer_type):
+        if viewer_type == "image":
+            ImageViewer(self).show()
 
     def load_values_ui(self):
         from nodes.base_node import BaseNode
@@ -141,17 +135,6 @@ class TangleWindow(QMainWindow):
 
                     self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
-                    try:
-                        self.pixmap = node.get_pixmap()
-                        if self.pixmap is not None:
-                            self.set_pixmap(self.pixmap)
-                    except AttributeError as err:
-                        pass
-                        # utils.trace(err)
-
-        else:
-            if not self.keep_pixmap_on_empty_selection:
-                self.lbl_pixmap.clear()
 
     def clear_values_layout(self):
         for i in reversed(range(self.values_layout.count())):
@@ -166,22 +149,14 @@ class TangleWindow(QMainWindow):
         for node in self.scene.selectedItems():
             node.compute()
 
-    def resize_pixmap(self):
-        try:
-            self.lbl_pixmap.setPixmap(self.pixmap.scaled(self.lbl_pixmap.width(), self.lbl_pixmap.height(),
-                                                          Qt.KeepAspectRatio, Qt.SmoothTransformation))
-        except AttributeError as err:
-            utils.trace(err)
+    # def set_pixmap(self, pixmap):
+    #     ImageViewer(self).set_pixmap(pixmap)
+    #     ImageViewer(self).resize_pixmap()
 
-    def set_pixmap(self, pixmap):
-        self.pixmap = pixmap
-        self.lbl_pixmap.setPixmap(self.pixmap)
-        self.resize_pixmap()
-
-    def resizeEvent(self, event):
-        self.resize_pixmap()
-        super(TangleWindow, self).resizeEvent(event)
-
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_I:
+            logging.info("pressed")
+            self.show_viewer("ignore")
 
 
 class TitleLabel(QLineEdit):

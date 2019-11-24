@@ -1,5 +1,5 @@
 from nodes.base_node import BaseNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 from functools import partial
 
 from core.Constants import Colors
@@ -33,7 +33,6 @@ class Comparison(BaseNode):
         self.set_auto_compute_on_connect(True)
 
     def change_type(self, socket, new_socket_type=None):
-        print("firing !")
         if new_socket_type is None:
             new_socket_type = socket.get_connected_sockets()[0].socket_type
         socket.change_socket_type(new_socket_type)

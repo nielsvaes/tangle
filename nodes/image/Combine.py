@@ -1,8 +1,9 @@
 from nodes.image_node import ImageNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 
 from core.Constants import Colors
-from PIL import ImageQt, ImageOps
+from PIL import ImageQt
+
 
 class Combine(ImageNode):
     def __init__(self, scene, x=0, y=0):
@@ -40,5 +41,4 @@ class Combine(ImageNode):
             combined_pixmap = ImageQt.toqpixmap(combined)
             self.set_pixmap(combined_pixmap)
 
-            self.get_main_window().set_pixmap(combined_pixmap)
             self.set_dirty(False)

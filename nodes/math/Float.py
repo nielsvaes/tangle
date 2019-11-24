@@ -1,8 +1,8 @@
 from nodes.base_node import BaseNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 
 from core.Constants import Colors
-from PIL import ImageQt, ImageOps
+
 
 class Float(BaseNode):
     def __init__(self, scene, x=0, y=0):

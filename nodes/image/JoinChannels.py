@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 from nodes.image_node import ImageNode
 from nodes.image.LoadImage import LoadImage
-import socket_types as socket_types
+from core import socket_types as socket_types
 from core.Constants import Colors
 
 import nv_utils.utils as utils

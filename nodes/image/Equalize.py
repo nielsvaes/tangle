@@ -1,5 +1,5 @@
 from nodes.image_node import ImageNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 
 from core.Constants import Colors
 from PIL import ImageQt, ImageOps
@@ -31,5 +31,4 @@ class Equalize(ImageNode):
             contrasted_pixmap = ImageQt.toqpixmap(equalize)
             self.set_pixmap(contrasted_pixmap)
 
-            self.get_main_window().set_pixmap(contrasted_pixmap)
             self.set_dirty(False)

@@ -1,14 +1,9 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-
 from nodes.image_node import ImageNode
-import socket_types as socket_types
-
-from functools import partial
+from core import socket_types as socket_types
 
 from core.Constants import Colors
-from PIL import Image, ImageQt, ImageOps, ImageEnhance, ImageFilter
+from PIL import ImageQt, ImageEnhance
+
 
 class Contrast(ImageNode):
     def __init__(self, scene, x=0, y=0):
@@ -43,5 +38,5 @@ class Contrast(ImageNode):
             contrasted_pixmap = ImageQt.toqpixmap(contrasted)
             self.set_pixmap(contrasted_pixmap)
 
-            self.get_main_window().set_pixmap(contrasted_pixmap)
+            self.refresh()
             self.set_dirty(False)

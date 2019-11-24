@@ -118,7 +118,6 @@ class NodeSocket(QGraphicsEllipseItem):
     def set_label_style_connected(self, value):
         if value == True:
             self.label.font.setBold(True)
-            print("%s socket type is %s" % (self.name, self.socket_type))
             self.label.setDefaultTextColor(self.socket_type.color)
         else:
             if len(self.get_connected_sockets()) == 0:

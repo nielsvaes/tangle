@@ -1,12 +1,8 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
 from nodes.image_node import ImageNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 from core.Constants import Colors
 
 from PIL import ImageQt

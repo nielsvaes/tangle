@@ -1,5 +1,7 @@
 import os
 import importlib
+import logging
+logging.basicConfig(level=logging.INFO)
 
 import re
 
@@ -69,16 +71,6 @@ class NodeScene(QGraphicsScene):
             if type(item) == SocketConnection:
                 connections.append(item)
 
-    # def get_all_nodes(self):
-    #     from nodes.base_node import BaseNode
-    #     nodes = []
-    #     for node in self.items():
-    #         if issubclass(type(node), BaseNode):
-    #             if not node.is_executing_node():
-    #                 nodes.append(node)
-    #
-    #     return nodes
-
     def get_nonexisting_name(self, name):
         for node in self.get_all_nodes():
             if name == node.name:
@@ -113,11 +105,11 @@ class NodeScene(QGraphicsScene):
                     child_nodes_are_dirty = False
                     for connected_node in begin_node.get_connected_output_nodes_recursive():
                         if connected_node.is_dirty():
-                            print("is dirty, needs computing: ", connected_node.title)
+                            logging.info("is dirty, needs computing: %s" % connected_node.title)
                             connected_node.compute()
                             child_nodes_are_dirty = True
                         if child_nodes_are_dirty:
-                            print("is a child node, needs computing: ", connected_node.title)
+                            logging.info("is a child node, needs computing: %s" % connected_node.title)
                             connected_node.compute()
                             continue
 
@@ -212,20 +204,6 @@ class NodeScene(QGraphicsScene):
 
         return end_nodes
 
-    # def is_cyclical(self):
-    #     try:
-    #         self.get_begin_executing_node()
-    #         return False
-    #     except:
-    #         pass
-    #
-    #     result = True
-    #     for node in self.get_all_executing_nodes():
-    #         if not node.is_execution_output_connected() or not node.is_execution_input_connected:
-    #             result = False
-    #
-    #     return result
-
     def save(self, file_path=None):
         if file_path is None:
             file_path = QFileDialog.getSaveFileName(caption="Save Network", filter="Coco Edit Network Files(*.json)")[0]
@@ -243,15 +221,6 @@ class NodeScene(QGraphicsScene):
             y = node.scenePos().y() + 20
 
             new_node = self.add_node_to_view(node, None, x, y)
-
-    # def drawBackground(self, painter, rect):
-    #     super().drawBackground(painter, rect)
-    #     grid_size = 20
-    #
-    #     left = int(rect.left()) - (int(rect.left()) % grid_size)
-    #     top = int(rect.top()) - (int(rect.top()) % grid_size)
-    #
-    #     for x in range(left,
 
     def dragMoveEvent(self, event):
         event.accept()

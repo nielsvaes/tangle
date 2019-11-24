@@ -2,6 +2,7 @@ from PyQt5.QtGui import *
 
 from core.Constants import Colors
 from nodes.base_node import BaseNode
+from viewers.image_viewer import ImageViewer
 
 class ImageNode(BaseNode):
     def __init__(self, scene, title="unnamed_node", title_background_color=Colors.node_selected_border, x=0, y=0):
@@ -14,6 +15,9 @@ class ImageNode(BaseNode):
 
     def set_pixmap(self, pixmap):
         self.__pixmap = pixmap
+
+    def refresh(self):
+        ImageViewer(self.scene.get_main_window()).set_pixmap(self.get_pixmap())
 
 
 

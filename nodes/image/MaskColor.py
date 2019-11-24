@@ -1,9 +1,7 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 
 from nodes.image_node import ImageNode
-import socket_types as socket_types
+from core import socket_types as socket_types
 
 import numpy as np
 
@@ -88,6 +86,5 @@ class MaskColor(ImageNode):
 
             output_pixmap = ImageQt.toqpixmap(mask_image)
             self.set_pixmap(output_pixmap)
-
-            self.get_main_window().set_pixmap(output_pixmap)
+            self.refresh()
             self.set_dirty(False)
