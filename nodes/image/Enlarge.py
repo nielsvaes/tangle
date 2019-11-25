@@ -23,7 +23,7 @@ class Enlarge(ImageNode):
 
     def value_changed(self):
         self.set_dirty(True)
-        self.scene.refresh_network()
+        super().compute()
 
     def compute(self):
         if self.input_image.is_connected():
@@ -41,5 +41,5 @@ class Enlarge(ImageNode):
             self.set_pixmap(resized_pixmap)
 
             self.size.set_value(resized.size)
-
+            super().compute()
             self.set_dirty(False)

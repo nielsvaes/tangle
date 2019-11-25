@@ -29,5 +29,6 @@ class ColorToGray(ImageNode):
             pixmap = ImageQt.toqpixmap(converted)
             self.set_pixmap(pixmap)
 
+            super().compute()
             self.set_dirty(False)
 

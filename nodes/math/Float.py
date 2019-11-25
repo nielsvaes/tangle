@@ -6,7 +6,7 @@ from core.Constants import Colors
 
 class Float(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(Float, self).__init__(scene, title_background_color=Colors.float, x=x, y=y)
+        super().__init__(scene, title_background_color=Colors.float, x=x, y=y)
         self.change_title("0.0")
 
         self.output_float = self.add_output(socket_types.FloatSocketType(self), "float")
@@ -20,13 +20,12 @@ class Float(BaseNode):
         except ValueError as err:
             self.output_float.set_value(0.0)
 
-        self.compute_connected_nodes()
-
         self.set_dirty(True)
         self.compute()
 
     def compute(self):
         if self.is_dirty():
+            super().compute()
             self.change_title(str(self.txt_number.text()))
             self.set_dirty(False)
 

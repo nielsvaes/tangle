@@ -36,9 +36,10 @@ class LoadImage(ImageNode):
 
         self.scene.get_main_window().load_values_ui()
 
-        self.compute_connected_nodes()
+        self.compute()
 
     def compute(self):
         if self.is_dirty():
+            super().compute()
             self.set_dirty(False)
 

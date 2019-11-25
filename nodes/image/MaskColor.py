@@ -44,11 +44,11 @@ class MaskColor(ImageNode):
             self.compute()
 
     def slider_changed(self):
-        self.compute()
+        self.compute(compute_next=False)
         self.set_dirty(True)
 
     def slider_released(self):
-        self.scene.refresh_network()
+        super().compute()
 
     def clamp(self, min_val, max_val, value):
         if value <= min_val:
@@ -57,7 +57,7 @@ class MaskColor(ImageNode):
             return max_val
         return value
 
-    def compute(self):
+    def compute(self, compute_next=True):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 
@@ -87,4 +87,6 @@ class MaskColor(ImageNode):
             output_pixmap = ImageQt.toqpixmap(mask_image)
             self.set_pixmap(output_pixmap)
             self.refresh()
+            if compute_next:
+                super().compute()
             self.set_dirty(False)

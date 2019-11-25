@@ -41,4 +41,5 @@ class Combine(ImageNode):
             combined_pixmap = ImageQt.toqpixmap(combined)
             self.set_pixmap(combined_pixmap)
 
+            super().compute()
             self.set_dirty(False)

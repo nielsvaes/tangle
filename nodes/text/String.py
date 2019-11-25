@@ -6,7 +6,7 @@ from core.Constants import Colors
 
 class String(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(String, self).__init__(scene, title_background_color=Colors.string, x=x, y=y)
+        super().__init__(scene, title_background_color=Colors.string, x=x, y=y)
 
         self.change_title("string")
 
@@ -16,13 +16,11 @@ class String(BaseNode):
     def text_changed(self):
         self.output_string.set_value(self.txt_string.text())
 
-        self.compute_connected_nodes()
-
         self.set_dirty(True)
         self.compute()
 
     def compute(self):
         if self.is_dirty():
-
+            super().compute()
             self.set_dirty(False)
 

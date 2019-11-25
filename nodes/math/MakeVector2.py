@@ -6,7 +6,7 @@ from core.Constants import Colors
 
 class MakeVector2(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(MakeVector2, self).__init__(scene, title_background_color=Colors.vector2, x=x, y=y)
+        super().__init__(scene, title_background_color=Colors.vector2, x=x, y=y)
         self.change_title("[0.0, 0.0]")
 
         self.input_x = self.add_input(socket_types.FloatSocketType(self), "x")
@@ -21,6 +21,6 @@ class MakeVector2(BaseNode):
             self.output_vector.set_value(output_value)
 
             self.change_title(str(output_value))
-            self.compute_connected_nodes()
+            super().compute()
             self.set_dirty(False)
 

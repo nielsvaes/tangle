@@ -40,6 +40,6 @@ class SplitChannels(ImageNode):
             self.set_pixmap(ImageQt.toqpixmap(self.input_image.get_value()))
 
             self.output_image.set_value(self.input_image.get_value())
-
+            super().compute()
             self.set_dirty(False)
 

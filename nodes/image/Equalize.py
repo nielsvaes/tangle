@@ -30,5 +30,6 @@ class Equalize(ImageNode):
 
             contrasted_pixmap = ImageQt.toqpixmap(equalize)
             self.set_pixmap(contrasted_pixmap)
-
+            self.refresh()
+            super().compute()
             self.set_dirty(False)

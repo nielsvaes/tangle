@@ -18,7 +18,7 @@ class Mirror(ImageNode):
 
     def value_changed(self):
         self.set_dirty(True)
-        self.scene.refresh_network()
+        self.compute()
 
     def compute(self):
         if self.input_image.is_connected():
@@ -35,5 +35,6 @@ class Mirror(ImageNode):
 
             mirrored_pixmap = ImageQt.toqpixmap(mirrored)
             self.set_pixmap(mirrored_pixmap)
-
+            self.refresh()
+            super().compute()
             self.set_dirty(False)

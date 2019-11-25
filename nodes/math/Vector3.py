@@ -6,7 +6,7 @@ from core.Constants import Colors
 
 class Vector3(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(Vector3, self).__init__(scene, title_background_color=Colors.vector3, x=x, y=y)
+        super().__init__(scene, title_background_color=Colors.vector3, x=x, y=y)
         self.change_title("[0.0, 0.0, 0.0]")
 
         self.output_vector = self.add_output(socket_types.ListSocketType(self), "vec3")
@@ -30,13 +30,12 @@ class Vector3(BaseNode):
         except ValueError as err:
             self.output_vector.set_value([0.0, 0.0, 0.0])
 
-        self.compute_connected_nodes()
-
         self.set_dirty(True)
         self.compute()
 
     def compute(self):
         if self.is_dirty():
             self.change_title("[%s, %s, %s]" % (self.txt_x.text(), self.txt_y.text(), self.txt_z.text()))
+            super().compute()
             self.set_dirty(False)
 

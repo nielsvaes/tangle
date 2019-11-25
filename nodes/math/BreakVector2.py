@@ -6,7 +6,7 @@ from core.Constants import Colors
 
 class BreakVector2(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(BreakVector2, self).__init__(scene, title_background_color=Colors.vector2, x=x, y=y)
+        super().__init__(scene, title_background_color=Colors.vector2, x=x, y=y)
         self.change_title("[0.0, 0.0]")
 
         self.input_vector = self.add_input(socket_types.ListSocketType(self), "vec2")
@@ -15,7 +15,6 @@ class BreakVector2(BaseNode):
 
     def compute(self):
         if self.input_vector.is_connected():
-            print("yeah connected")
             self.input_vector.fetch_connected_value()
 
             print(self.input_vector.get_value())
@@ -29,4 +28,4 @@ class BreakVector2(BaseNode):
             self.change_title(str(self.input_vector.get_value()))
             self.compute_connected_nodes()
 
-
+            super().compute()

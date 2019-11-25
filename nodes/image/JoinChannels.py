@@ -72,9 +72,6 @@ class JoinChannels(ImageNode):
 
     def compute(self):
         if self.input_r.is_connected() or self.input_r.is_connected() or self.input_r.is_connected() or self.input_r.is_connected():
-
-            print("there's a connected input")
-
             self.input_r.fetch_connected_value()
             self.input_g.fetch_connected_value()
             self.input_b.fetch_connected_value()
@@ -110,6 +107,8 @@ class JoinChannels(ImageNode):
 
             self.output_image.set_value(combined_image)
             self.set_pixmap(ImageQt.toqpixmap(combined_image))
+            self.refresh()
+            super().compute()
             self.set_dirty(False)
 
 

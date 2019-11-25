@@ -23,7 +23,7 @@ class Invert(ImageNode):
 
             output_pixmap = ImageQt.toqpixmap(inverted_image)
             self.set_pixmap(output_pixmap)
-
+            super().compute()
             self.set_dirty(False)
 
 

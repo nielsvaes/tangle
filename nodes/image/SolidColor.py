@@ -40,17 +40,15 @@ class SolidColor(ImageNode):
         self.scene.get_main_window().load_values_ui()
 
         self.set_dirty(True)
+        self.compute()
 
-        for node in self.get_connected_output_nodes():
-            node.set_dirty(True)
-            self.scene.refresh_network()
 
     def get_size(self):
         return self.input_size.get_value() or (100, 100)
 
     def update_node(self):
         self.set_dirty(True)
-        self.scene.refresh_network()
+        self.compute()
 
     def compute(self):
         if self.input_size.is_connected():
@@ -63,4 +61,5 @@ class SolidColor(ImageNode):
                 pixmap = ImageQt.toqpixmap(self.solid_color_image)
 
             self.set_pixmap(pixmap)
+            super().compute()
             self.set_dirty(False)

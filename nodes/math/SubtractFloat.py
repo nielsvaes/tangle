@@ -5,7 +5,7 @@ from core.Constants import Colors
 
 class SubtractFloat(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(SubtractFloat, self).__init__(scene, title_background_color=Colors.subtract_float, x=x, y=y)
+        super().__init__(scene, title_background_color=Colors.subtract_float, x=x, y=y)
         self.change_title("0.0")
 
         self.input_01, self.output_float = self.add_input_output(socket_types.FloatSocketType(self), "A")
@@ -39,7 +39,7 @@ class SubtractFloat(BaseNode):
             self.output_float.set_value(result)
             self.lbl_result.setText(str(result))
 
-            self.compute_connected_nodes()
+            super().compute()
             self.set_dirty(False)
 
             self.title.setPlainText(str(result))

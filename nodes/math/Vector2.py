@@ -6,7 +6,7 @@ from core.Constants import Colors
 
 class Vector2(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(Vector2, self).__init__(scene, title_background_color=Colors.vector2, x=x, y=y)
+        super().__init__(scene, title_background_color=Colors.vector2, x=x, y=y)
 
         self.output_vector = self.add_output(socket_types.ListSocketType(self), "vec2")
         self.output_x = self.add_output(socket_types.FloatSocketType(self), "x")
@@ -42,6 +42,6 @@ class Vector2(BaseNode):
 
     def compute(self):
         self.change_title("[%s, %s]" % (self.txt_x.text(), self.txt_y.text()))
-        self.compute_connected_nodes()
+        super().compute()
         self.set_dirty(False)
 

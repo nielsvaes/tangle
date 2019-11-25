@@ -17,7 +17,11 @@ class ImageNode(BaseNode):
         self.__pixmap = pixmap
 
     def refresh(self):
-        ImageViewer(self.scene.get_main_window()).set_pixmap(self.get_pixmap())
+        main_window = self.scene.get_main_window()
+        try:
+            ImageViewer(main_window).set_pixmap(self.get_pixmap())
+        except TypeError as err:
+            ImageViewer(main_window).set_pixmap(QPixmap())
 
 
 

@@ -19,13 +19,13 @@ class Sharpen(ImageNode):
         self.set_auto_compute_on_connect(True)
 
     def slider_changed(self):
-        self.compute()
+        self.compute(compute_next=False)
         self.set_dirty(True)
 
     def slider_released(self):
-        self.scene.refresh_network()
+        super().compute()
 
-    def compute(self):
+    def compute(self, compute_next=True):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 
@@ -39,6 +39,8 @@ class Sharpen(ImageNode):
             self.set_pixmap(contrasted_pixmap)
 
             self.refresh()
+            if compute_next:
+                super().compute()
             self.set_dirty(False)
 
     # def compute_thread(self):

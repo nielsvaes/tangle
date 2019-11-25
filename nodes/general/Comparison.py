@@ -6,7 +6,7 @@ from core.Constants import Colors
 
 class Comparison(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super(Comparison, self).__init__(scene, title_background_color=Colors.subtract_float, x=x, y=y)
+        super().__init__(scene, title_background_color=Colors.subtract_float, x=x, y=y)
         self.change_title("comparison")
 
         self.input_01 = self.add_input(socket_types.DebugSocketType(self), "value 1")
@@ -75,7 +75,7 @@ class Comparison(BaseNode):
                         self.output.change_socket_type(self.value_if_false.socket_type)
                         self.output.set_value(self.value_if_false.get_value())
 
-                    self.compute_connected_nodes()
+                    super().compute()
                     self.set_dirty(False)
             else:
                 self.change_title("comparison")

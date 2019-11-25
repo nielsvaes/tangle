@@ -35,5 +35,6 @@ class Rotate(ImageNode):
 
             rotated_pixmap = ImageQt.toqpixmap(rotated)
             self.set_pixmap(rotated_pixmap)
-
+            self.refresh()
+            super().compute()
             self.set_dirty(False)

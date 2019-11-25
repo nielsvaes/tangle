@@ -41,7 +41,7 @@ class BaseNode(Node):
         self.__dict__.update(state)
 
     def compute(self):
-        raise NotImplementedError()
+        self.compute_connected_nodes()
 
     def set_dirty(self, is_dirty, emit=False):
         #
