@@ -44,8 +44,8 @@ class Colors():
     combine_channel          = QColor(35, 112, 68)
     color_to_gray            = QColor(24, 77, 89)
     gray_to_color            = QColor(24, 77, 89)
-    rgb_to_rgba               = QColor(43, 143, 166)
-    rgba_to_rgb               = QColor(43, 143, 166)
+    rgb_to_rgba              = QColor(43, 143, 166)
+    rgba_to_rgb              = QColor(43, 143, 166)
     blur                     = QColor(24, 89, 62)
     brightness               = QColor(24, 43, 89)
     combine                  = QColor(81, 24, 89)
@@ -61,13 +61,20 @@ class Colors():
     rotate                   = QColor(27, 62, 143)
 
     # math colors
-    float                    = QColor(93, 179, 71)
+    float                    = QColor(68, 99, 71)
     add_float                = QColor(24, 92, 23)
     multiply_float           = QColor(23, 92, 75)
     power_float              = QColor(23, 92, 55)
     subtract_float           = QColor(23, 55, 92)
     divide_float             = QColor(32, 23, 92)
+    vector2                  = QColor(32, 66, 92)
+    vector3                  = QColor(32, 86, 92)
 
+    # text colors
+    string                   = QColor(127, 127, 255)
+
+    # others
+    lists                    = QColor(127, 127, 255)
 
 class NumberConstants():
     connection_width_normal    = 2

@@ -192,7 +192,8 @@ class NodeSocket(QGraphicsEllipseItem):
             if connection.is_valid:
                 output_socket.set_label_style_connected(True)
                 input_socket.set_label_style_connected(True)
-                self.scene.refresh_network()
+                self.get_node().compute_connected_nodes(output_socket=self)
+                # self.scene.refresh_network()
                 logging.info(str(connection))
             else:
                 del connection

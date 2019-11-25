@@ -60,11 +60,16 @@ class BaseSocketType(QObject):
     def get_initial_value(self):
         return self.__initial_value
 
-    def set_initial_value(self, value):
+    def set_initial_value(self, value, also_set_value=True):
         self.__initial_value = value
+        if also_set_value:
+            self.__value = value
 
     def reset_to_initial_value(self):
         self.__value = self.__initial_value
+
+    def set_accept_multiple(self, value):
+        self.accept_multiple = value
 
 class PictureSocketType(BaseSocketType):
     def __init__(self, parent_node):
@@ -110,40 +115,24 @@ class FloatSocketType(BaseSocketType):
         self.set_initial_value(0.0)
         self.reset_to_initial_value()
 
-    #     self.spin_number = QDoubleSpinBox()
-    #     self.spin_number.setKeyboardTracking(False)
-    #     self.spin_number.setDecimals(3)
-    #     self.spin_number.setMaximum(float("inf"))
-    #     self.spin_number.setMinimum(float("-inf"))
-    #
-    #     self.layout = QHBoxLayout()
-    #     self.label = QLabel(label_name)
-    #
-    #     # self.label_name = label_name
-    #     self.set_value(0.0)
-    #
-    # def get_ui(self):
-    #     self.ui_widget.setLayout(self.layout)
-    #
-    #     self.layout.addWidget(self.label)
-    #     self.layout.addWidget(self.spin_number)
-    #
-    #     self.spin_number.setValue(self.get_value())
-    #
-    #     self.spin_number.valueChanged.connect(self.enter_value)
-    #
-    #     return self.ui_widget
-    #
-    # def enter_value(self):
-    #     self.set_value(self.spin_number.value())
-
 
 class StringSocketType(BaseSocketType):
-    def __init__(self):
-        super(StringSocketType, self).__init__()
+    def __init__(self, parent_node):
+        super(StringSocketType, self).__init__(parent_node)
 
         self.name = "string"
-        self.color = QColor(206, 234, 145, 255)
+        self.color = Colors.string
+        self.set_initial_value("")
+        self.reset_to_initial_value()
+
+class ListSocketType(BaseSocketType):
+    def __init__(self, parent_node):
+        super(ListSocketType, self).__init__(parent_node)
+
+        self.name = "list"
+        self.color = Colors.lists
+        self.set_initial_value([])
+        self.reset_to_initial_value()
 
 class Vector3SocketType(BaseSocketType):
     def __init__(self, parent_node):
@@ -243,7 +232,6 @@ class ListSocketType(BaseSocketType):
 
         self.name = "list"
         self.color = QColor(255, 30, 172, 255)
-        self.accept_multiple = True
 
         self.layout = QHBoxLayout()
 
