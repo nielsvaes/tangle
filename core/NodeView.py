@@ -53,7 +53,7 @@ class NodeView(QGraphicsView):
                 self.zoom += 1
                 self.scale(1.1, 1.1)
         else:
-            if self.zoom > 1:
+            if self.zoom > 0.8:
                 self.zoom -= 1
                 self.scale(0.9, 0.9)
 
