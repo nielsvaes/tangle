@@ -32,6 +32,7 @@ class BaseNode(Node):
 
         self.__widget.setLayout(self.__layout)
 
+        self.add_label(str(type(self)))
         self.add_label(str(self.get_uuid()))
 
     def refresh(self):
