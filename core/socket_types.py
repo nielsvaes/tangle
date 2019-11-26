@@ -136,119 +136,23 @@ class ListSocketType(BaseSocketType):
 
 class Vector3SocketType(BaseSocketType):
     def __init__(self, parent_node):
-        super(Vector3SocketType, self).__init__(parent_node)
+        super().__init__(parent_node)
 
-        self.name = "vec3"
-        self.color = QColor(19, 46, 104, 255)
-
-        self.x_label = QLabel("X")
-        self.y_label = QLabel("Y")
-        self.z_label = QLabel("Z")
-
-        self.x_spin = QDoubleSpinBox()
-        self.y_spin = QDoubleSpinBox()
-        self.z_spin = QDoubleSpinBox()
-
-        for spinbox in [self.x_spin, self.y_spin, self.z_spin]:
-            spinbox.setKeyboardTracking(False)
-            spinbox.setDecimals(3)
-            spinbox.setMaximum(float("inf"))
-            spinbox.setMinimum(float("-inf"))
-
-        self.layout = QHBoxLayout()
-
-        self.set_value([0.0, 0.0, 0.0])
-
-    def get_ui(self):
-        self.ui_widget.setLayout(self.layout)
-
-        self.layout.addWidget(self.x_label)
-        self.layout.addWidget(self.x_spin)
-        self.layout.addWidget(self.y_label)
-        self.layout.addWidget(self.y_spin)
-        self.layout.addWidget(self.z_label)
-        self.layout.addWidget(self.z_spin)
-
-        self.x_spin.setValue(self.get_value()[0])
-        self.y_spin.setValue(self.get_value()[1])
-        self.z_spin.setValue(self.get_value()[2])
-
-        return self.ui_widget
-
-    def enter_value(self):
-        x = self.x_spin.value()
-        y = self.y_spin.value()
-        z = self.z_spin.value()
-
-        print("Setting value to ", [x, y, z])
-
-        self.set_value([x, y, z])
+        self.name = "vector3"
+        self.color = Colors.vector3
+        self.set_initial_value([0.0, 0.0, 0.0])
+        self.reset_to_initial_value()
 
 class Vector2SocketType(BaseSocketType):
     def __init__(self, parent_node):
-        super(Vector2SocketType, self).__init__(parent_node)
+        super().__init__(parent_node)
 
-        self.name = "vec2"
-        self.color = QColor(173, 127, 198, 255)
-
-        self.x_label = QLabel("X")
-        self.y_label = QLabel("Y")
-
-        self.x_spin = QDoubleSpinBox()
-        self.y_spin = QDoubleSpinBox()
-
-        for spinbox in [self.x_spin, self.y_spin]:
-            spinbox.setKeyboardTracking(False)
-            spinbox.setDecimals(3)
-            spinbox.setMaximum(float("inf"))
-            spinbox.setMinimum(float("-inf"))
-
-        self.layout = QHBoxLayout()
-
-        self.set_value([0.0, 0.0])
-
-    def get_ui(self):
-        self.ui_widget.setLayout(self.layout)
-
-        self.layout.addWidget(self.x_label)
-        self.layout.addWidget(self.x_spin)
-        self.layout.addWidget(self.y_label)
-        self.layout.addWidget(self.y_spin)
-
-        self.x_spin.setValue(self.get_value()[0])
-        self.y_spin.setValue(self.get_value()[1])
-
-        return self.ui_widget
-
-    def enter_value(self):
-        x = self.x_spin.value()
-        y = self.y_spin.value()
-
-        self.set_value([x, y])
-
-class ListSocketType(BaseSocketType):
-    def __init__(self, parent_node):
-        super(ListSocketType, self).__init__(parent_node)
-
-        self.name = "list"
-        self.color = QColor(255, 30, 172, 255)
-
-        self.layout = QHBoxLayout()
-
-        self.list_widget = QListWidget()
-        self.list_widget.model().rowsInserted.connect(self.enter_value)
+        self.name = "vector2"
+        self.color = Colors.vector2
+        self.set_initial_value([0.0, 0.0])
+        self.reset_to_initial_value()
 
 
-    def get_ui(self):
-        self.ui_widget.setLayout(self.layout)
-        self.layout.addWidget(self.list_widget)
-
-        qutils.add_items_to_list_widget(self.list_widget, self.get_value(), clear=True)
-
-        return self.ui_widget
-
-    def enter_value(self):
-        self.set_value(qutils.get_all_items_in_list_widget(self.list_widget))
 
 class EnumSocketType(BaseSocketType):
     def __init__(self, parent_node, options=[]):

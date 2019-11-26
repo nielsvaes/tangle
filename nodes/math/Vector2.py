@@ -8,7 +8,7 @@ class Vector2(BaseNode):
     def __init__(self, scene, x=0, y=0):
         super().__init__(scene, title_background_color=Colors.vector2, x=x, y=y)
 
-        self.output_vector = self.add_output(socket_types.ListSocketType(self), "vec2")
+        self.output_vector = self.add_output(socket_types.Vector2SocketType(self), "vec2")
         self.output_x = self.add_output(socket_types.FloatSocketType(self), "x")
         self.output_y = self.add_output(socket_types.FloatSocketType(self), "y")
         _, self.txt_x = self.add_label_float("x: ", number_changed_function=self.number_changed)

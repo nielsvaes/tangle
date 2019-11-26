@@ -67,8 +67,8 @@ class Colors():
     power_float              = QColor(75, 92, 150)
     subtract_float           = QColor(100, 92, 175)
     divide_float             = QColor(150, 92, 200)
-    vector2                  = QColor(32, 66, 92)
-    vector3                  = QColor(32, 86, 92)
+    vector2                  = QColor(62, 96, 92)
+    vector3                  = QColor(62, 106, 92)
 
     # text colors
     string                   = QColor(127, 127, 255)

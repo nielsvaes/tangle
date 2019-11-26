@@ -12,14 +12,14 @@ class MakeVector3(BaseNode):
         self.input_x = self.add_input(socket_types.FloatSocketType(self), "x")
         self.input_y = self.add_input(socket_types.FloatSocketType(self), "y")
         self.input_z = self.add_input(socket_types.FloatSocketType(self), "z")
-        self.output_vector = self.add_output(socket_types.ListSocketType(self), "vec3")
+        self.output_vector = self.add_output(socket_types.Vector3SocketType(self), "vec3")
 
     def compute(self):
         if self.is_dirty():
             self.input_x.fetch_connected_value()
             self.input_y.fetch_connected_value()
             self.input_z.fetch_connected_value()
-            output_value = [self.input_x.get_value(), self.input_y.get_value(), self.input_y.get_value()]
+            output_value = [self.input_x.get_value(), self.input_y.get_value(), self.input_z.get_value()]
             self.output_vector.set_value(output_value)
 
             self.change_title(str(output_value))

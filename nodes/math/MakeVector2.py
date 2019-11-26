@@ -11,7 +11,7 @@ class MakeVector2(BaseNode):
 
         self.input_x = self.add_input(socket_types.FloatSocketType(self), "x")
         self.input_y = self.add_input(socket_types.FloatSocketType(self), "y")
-        self.output_vector = self.add_output(socket_types.ListSocketType(self), "vec2")
+        self.output_vector = self.add_output(socket_types.Vector2SocketType(self), "vec2")
 
     def compute(self):
         if self.is_dirty():

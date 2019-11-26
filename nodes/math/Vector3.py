@@ -9,7 +9,7 @@ class Vector3(BaseNode):
         super().__init__(scene, title_background_color=Colors.vector3, x=x, y=y)
         self.change_title("[0.0, 0.0, 0.0]")
 
-        self.output_vector = self.add_output(socket_types.ListSocketType(self), "vec3")
+        self.output_vector = self.add_output(socket_types.Vector3SocketType(self), "vec3")
         self.output_x = self.add_output(socket_types.FloatSocketType(self), "x")
         self.output_y = self.add_output(socket_types.FloatSocketType(self), "y")
         self.output_z = self.add_output(socket_types.FloatSocketType(self), "z")
