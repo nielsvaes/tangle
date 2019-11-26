@@ -12,16 +12,16 @@ class IO():
 class Colors():
     # core colors
     node_normal_border       = QColor(36, 66, 114, 255)
-    node_hover_border        = QColor(110, 155, 85, 255)
-    node_selected_border     = QColor(110, 155, 85, 255)
+    node_hover_border        = QColor(199, 168, 58, 255)
+    node_selected_border     = QColor(255, 216, 74, 255)
 
-    node_normal_background   = QColor(60, 60, 60, 255)
+    node_normal_background   = QColor(65, 65, 65, 255)
     node_hover_background    = QColor(75, 75, 75, 255)
     node_selected_background = QColor(75, 75, 75, 255)
 
     connection_normal        = QColor(150, 150, 150, 255)
-    connection_hover         = QColor(214, 93, 19, 255)
-    connection_selected      = QColor(110, 155, 85, 255)
+    connection_hover         = QColor(199, 168, 58, 255)
+    connection_selected      = QColor(255, 216, 74, 255)
 
     socket_output            = QColor(255, 220, 105, 255)
     socket_input             = QColor(105, 255, 110, 255)
@@ -61,17 +61,18 @@ class Colors():
     rotate                   = QColor(27, 62, 143)
 
     # math colors
-    float                    = QColor(68, 99, 71)
-    add_float                = QColor(24, 92, 23)
-    multiply_float           = QColor(23, 92, 75)
-    power_float              = QColor(23, 92, 55)
-    subtract_float           = QColor(23, 55, 92)
-    divide_float             = QColor(32, 23, 92)
+    float                    = QColor(83, 158, 68)
+    add_float                = QColor(25, 92, 100)
+    multiply_float           = QColor(50, 92, 125)
+    power_float              = QColor(75, 92, 150)
+    subtract_float           = QColor(100, 92, 175)
+    divide_float             = QColor(150, 92, 200)
     vector2                  = QColor(32, 66, 92)
     vector3                  = QColor(32, 86, 92)
 
     # text colors
     string                   = QColor(127, 127, 255)
+    replace_string           = QColor(127, 127, 127)
 
     # others
     lists                    = QColor(127, 127, 255)
@@ -87,9 +88,9 @@ class NumberConstants():
     title_label_size = 18
     title_background_height = 30
 
-    socket_size = 20
+    socket_size          = 20
     socket_label_spacing = socket_size * 1.1
-    socket_spacing = 5
+    socket_spacing       = 5
 
     execution_socket_size = socket_size * 1.3
 
@@ -101,8 +102,8 @@ class NumberConstants():
     connection_cv_offset = 30
 
     node_item_border_width_selected = 4
-    node_item_height = socket_size
-    node_item_width = node_item_height * 5
+    node_item_height                = socket_size
+    node_item_width                 = node_item_height * 7
 
 nc = NumberConstants
 

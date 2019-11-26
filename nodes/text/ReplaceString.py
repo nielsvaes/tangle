@@ -7,7 +7,7 @@ import re
 
 class ReplaceString(BaseNode):
     def __init__(self, scene, x=0, y=0):
-        super().__init__(scene, title_background_color=Colors.string, x=x, y=y)
+        super().__init__(scene, title_background_color=Colors.replace_string, x=x, y=y)
 
         self.change_title("replace")
 
