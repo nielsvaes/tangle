@@ -118,10 +118,12 @@ class NodeSocket(QGraphicsEllipseItem):
     def set_label_style_connected(self, value):
         if value == True:
             self.label.font.setBold(True)
+            self.label.font.setItalic(True)
             self.label.setDefaultTextColor(self.socket_type.color)
         else:
             if len(self.get_connected_sockets()) == 0:
                 self.label.font.setBold(False)
+                self.label.font.setItalic(False)
                 self.label.setDefaultTextColor(Colors.text_default)
         self.label.draw()
 
