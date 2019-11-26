@@ -15,6 +15,7 @@ class ReplaceString(BaseNode):
         _, self.txt_find = self.add_label_text("find", "", text_changed_function=self.text_changed)
         _, self.txt_replace = self.add_label_text("replace", "", text_changed_function=self.text_changed)
         self.chk_ignore_case = self.add_checkbox("ignore case", checked=True, change_checked_function=self.text_changed)
+        self.lbl_replaced_text = self.add_label("")
 
     def text_changed(self):
         self.set_dirty(True)
@@ -30,6 +31,8 @@ class ReplaceString(BaseNode):
             new_string = self.input_string.get_value().replace(find, replace)
             if self.chk_ignore_case.isChecked():
                 new_string = re.sub(find, replace, self.input_string.get_value(), flags=re.I)
+
+            self.lbl_replaced_text.setText(new_string)
 
             self.output_string.set_value(new_string)
             super().compute()
