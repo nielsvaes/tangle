@@ -13,7 +13,7 @@ class Contrast(ImageNode):
         self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
 
         self.add_label("Contrast amount")
-        self.sld_contrast_amount = self.add_slider(0, 200, 100, changed_function=self.slider_changed, released_function=self.slider_released)
+        self.sld_contrast_amount = self.add_slider(0, 500, 100, changed_function=self.slider_changed, released_function=self.slider_released)
 
         self.set_auto_compute_on_connect(True)
 
