@@ -22,14 +22,11 @@ class NodeScene(QGraphicsScene):
 
     def __init__(self):
         super(NodeScene, self).__init__()
-        self.__set_colors_computed()
-
 
     def add_node_to_view(self, class_name, module, x=0, y=0):
         node_instance = None
 
         if type(class_name) == str:
-            print(class_name)
             module_path = ".".join(["nodes", module, class_name])
             node_module = importlib.import_module(module_path)
             importlib.reload(node_module)
@@ -51,7 +48,7 @@ class NodeScene(QGraphicsScene):
             # for socket_type in node_instance.get_all_socket_types():
             #     socket_type.is_dirty.connect(self.set_colors_dirty)
 
-            node_instance.dirty_signal.signal.connect(self.set_colors_dirty)
+            #node_instance.dirty_signal.signal.connect(self.set_colors_dirty)
             return node_instance
 
 
