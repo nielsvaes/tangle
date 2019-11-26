@@ -19,6 +19,7 @@ class NodeTitle(QGraphicsTextItem):
 
     def draw(self):
         self.font.setPixelSize(self.font_size)
+        self.font.setBold(True)
         self.setFont(self.font)
 
         self.setZValue(100)
