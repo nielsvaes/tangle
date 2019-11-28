@@ -185,8 +185,14 @@ class NodeScene(QGraphicsScene):
                         node.compute()
 
     def duplicate_nodes(self):
-        save_dict = self.save_network(selected_nodes_only=True, to_memory=True)
-        self.open_network(save_dict=save_dict, with_values=True)
+        try:
+            for node in self.get_selected_nodes():
+                node.duplicate()
+        except Exception as err:
+            utils.trace(err)
+
+        # save_dict = self.save_network(selected_nodes_only=True, to_memory=True)
+        # self.open_network(save_dict=save_dict, with_values=True)
 
     def get_begin_nodes(self):
         start_nodes = []

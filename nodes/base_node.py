@@ -144,7 +144,7 @@ class BaseNode(Node):
         layout.addWidget(txt_line)
 
         if text_changed_function is not None:
-            txt_line.textEdited.connect(text_changed_function)
+            txt_line.textChanged.connect(text_changed_function)
 
         self.__layout.addLayout(layout)
 
@@ -164,7 +164,7 @@ class BaseNode(Node):
         layout.addWidget(txt_float)
 
         if number_changed_function is not None:
-            txt_float.textEdited.connect(number_changed_function)
+            txt_float.textChanged.connect(number_changed_function)
 
         self.__layout.addLayout(layout)
 
@@ -276,24 +276,26 @@ class BaseNode(Node):
         return widget
 
     def save(self):
-        save_dict = {}
-        save_dict["sockets"] = {}
+        node_dict = {}
+        node_dict["sockets"] = {}
         for socket in self.get_all_sockets():
-            save_dict["sockets"][socket.get_uuid(as_string=True)] = socket.save()
+            node_dict["sockets"][socket.get_uuid(as_string=True)] = socket.save()
 
-        save_dict["uuid"] = self.get_uuid(as_string=True)
-        save_dict["x"] = self.get_x()
-        save_dict["y"] = self.get_y()
-        # save_dict["title"] = self.title.toPlainText()
-        save_dict["module_path"] = self.get_module_path()
-        save_dict["class_name"] = self.get_module_path().split(".")[-1]
-        save_dict["module_name"] = self.get_module_path().split(".")[-2]
+        node_dict["uuid"] = self.get_uuid(as_string=True)
+        node_dict["x"] = self.get_x()
+        node_dict["y"] = self.get_y()
+        node_dict["module_path"] = self.get_module_path()
+        node_dict["class_name"] = self.get_module_path().split(".")[-1]
+        node_dict["module_name"] = self.get_module_path().split(".")[-2]
 
-        return save_dict
+        return node_dict
 
     def duplicate(self):
-        save_dict = self.save()
-        self.scene.open_network(save_dict=save_dict, with_values=True)
+        node_dict = self.save()
+        scene_dict = {}
+        scene_dict[node_dict.get("uuid")] = node_dict
+        self.scene.open_network(save_dict=scene_dict,  with_values=True)
+        return node_dict
 
     def error(self, socket, text):
         logging.error("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))

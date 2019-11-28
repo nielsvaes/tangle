@@ -14,7 +14,8 @@ class Float(BaseNode):
 
     def number_changed(self):
         if self.txt_number.text() == "":
-            self.txt_number.setText("0.0")
+            self.output_float.set_value(0.0)
+            # self.txt_number.setText("0.0")
         try:
             self.output_float.set_value(float(self.txt_number.text()))
         except ValueError as err:
@@ -28,4 +29,11 @@ class Float(BaseNode):
             super().compute()
             self.change_title(str(self.output_float.get_value()))
             self.set_dirty(False)
+
+    def duplicate(self):
+        node_dict = super().duplicate()
+        for socket_uuid, socket_dict in node_dict.get("sockets").items():
+            if socket_uuid == self.output_float.get_uuid(as_string=True):
+                self.txt_number.setText(str(socket_dict.get("value")))
+
 
