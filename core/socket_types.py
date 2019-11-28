@@ -71,6 +71,9 @@ class BaseSocketType(QObject):
     def set_accept_multiple(self, value):
         self.accept_multiple = value
 
+    def __str__(self):
+        return self.__class__.__name__
+
 class PictureSocketType(BaseSocketType):
     def __init__(self, parent_node):
         super(PictureSocketType, self).__init__(parent_node)
