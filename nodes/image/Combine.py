@@ -24,17 +24,14 @@ class Combine(ImageNode):
             self.background_input.fetch_connected_value()
             self.foreground_input.fetch_connected_value()
             self.input_mask.fetch_connected_value()
+            self.input_mask.get_value().convert("L")
 
             combined = self.background_input.get_value().copy()
 
             if self.input_mask.get_value() is None:
-                print("mask is none")
                 combined.paste(self.foreground_input.get_value(), (0,0))
-                print(combined)
             else:
                 combined.paste(self.foreground_input.get_value(), (0, 0), self.input_mask.get_value())
-
-            # combined = combined.paste(self.foreground_input.get_value(), (0, 0), self.input_mask.get_value())
 
             self.output_image.set_value(combined)
 
