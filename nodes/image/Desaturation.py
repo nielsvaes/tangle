@@ -6,15 +6,15 @@ from core.Constants import Colors
 from PIL import ImageQt, ImageEnhance
 
 
-class Saturation(ImageNode):
+class Desaturation(ImageNode):
     def __init__(self, scene, x=0, y=0):
-        super(Saturation, self).__init__(scene, title_background_color=Colors.saturation, x=x, y=y)
-        self.change_title("saturation")
+        super().__init__(scene, title_background_color=Colors.saturation, x=x, y=y)
+        self.change_title("desaturation")
 
         self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
 
-        self.add_label("Saturation amount")
-        self.sld_contrast_amount = self.add_slider(100, 800, 100, changed_function=self.slider_changed, released_function=self.slider_released)
+        self.add_label("Desaturation amount")
+        self.sld_contrast_amount = self.add_slider(0, 100, 100, changed_function=self.slider_changed, released_function=self.slider_released)
 
         self.set_auto_compute_on_connect(True)
 
