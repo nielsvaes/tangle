@@ -33,7 +33,7 @@ class NodeSocket(QGraphicsEllipseItem):
         self.drag_connection = None
         self.adjust_color_to_input = True
         self.color = self.socket_type.color
-        self.__uuid = self.__uuid = uuid.uuid4()
+        self.__uuid = uuid.uuid4()
         self.connections = []
 
         self.got_connected = SignalEmitter()
@@ -160,6 +160,11 @@ class NodeSocket(QGraphicsEllipseItem):
             self.override_color(self.socket_type.get_color())
         else:
             self.override_color(new_color)
+
+    def set_uuid(self, new_uuid):
+        if type(new_uuid) == str:
+            new_uuid = uuid.UUID(new_uuid)
+        self.__uuid = new_uuid
 
     def mousePressEvent(self, event):
         self.connection_start_point = event.scenePos()

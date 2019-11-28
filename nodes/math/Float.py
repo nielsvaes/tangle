@@ -26,6 +26,6 @@ class Float(BaseNode):
     def compute(self):
         if self.is_dirty():
             super().compute()
-            self.change_title(str(self.txt_number.text()))
+            self.change_title(str(self.output_float.get_value()))
             self.set_dirty(False)
 

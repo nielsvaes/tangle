@@ -1,4 +1,5 @@
 import os
+import sys
 import importlib
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -11,11 +12,14 @@ from PyQt5.QtCore import *
 
 import nv_utils.utils as utils
 import nv_utils.io_utils as io_utils
+import core.socket_types as socket_types
 
 from pydoc import locate
 
 from core.Constants import Colors
 from core.Node import Node
+
+path = os.path.join(os.path.dirname(os.path.basename(os.path.realpath(__file__))), "saved_network.json")
 
 class NodeScene(QGraphicsScene):
     refreshed = pyqtSignal()
@@ -23,7 +27,7 @@ class NodeScene(QGraphicsScene):
     def __init__(self):
         super(NodeScene, self).__init__()
 
-    def add_node_to_view(self, class_name, module, x=0, y=0):
+    def add_node_to_view(self, class_name, module, x=0, y=0, uuid_string=None):
         node_instance = None
 
         if type(class_name) == str:
@@ -39,16 +43,15 @@ class NodeScene(QGraphicsScene):
                 utils.trace(err)
         else:
             try:
+                module_file_path = sys.modules[class_name.__module__].__file__
+                module_path = utils.get_clean_module_path(module_file_path, "nodes")
                 node_instance = class_name.__class__(self, x, y)
             except:
                 utils.trace("Can't create node of type %s" % class_name)
                 return None
 
         if node_instance is not None:
-            # for socket_type in node_instance.get_all_socket_types():
-            #     socket_type.is_dirty.connect(self.set_colors_dirty)
-
-            #node_instance.dirty_signal.signal.connect(self.set_colors_dirty)
+            node_instance.set_module_path(module_path)
             return node_instance
 
 
@@ -115,55 +118,75 @@ class NodeScene(QGraphicsScene):
         except Exception as err:
             utils.trace(err)
 
-    def save_network(self):
-        # print("Saving scene")
-        # path = r"C:/deleteme/mapped_scene.json"
-        # mapped_scene = {}
-        # for node in self.get_all_nodes():
-        #     node_dict = node.save()
-        #
-        #     mapped_scene[node.get_uuid(as_string=True)] = node_dict
-        # #
-        # # with open(path, "wb") as out:
-        # #     pickle.dump(mapped_scene, out)
-        #
-        # with open(path, "w") as out:
-        #     json.dump(mapped_scene, out, indent=4)
+    def save_network(self, selected_nodes_only=False, to_memory=False, file_path=None):
+        try:
+            save_dict = {}
 
-        path = "/home/pi/garbage/scene.json"
+            if selected_nodes_only:
+                nodes = self.get_selected_nodes()
+            else:
+                nodes = self.get_all_nodes()
 
-        save_dict = {}
+            for node in nodes:
+                save_dict[node.get_uuid(as_string=True)] = node.save()
 
-        for node in self.get_all_nodes():
-            save_dict[node.get_uuid(as_string=True)] = node.save()
+            if to_memory:
+                return save_dict
 
-        io_utils.write_json(save_dict, path)
+            if file_path is not None:
+                io_utils.write_json(save_dict, file_path)
+
+        except Exception as err:
+            utils.trace(err)
 
 
-
-
-    def open_network(self, path):
-        mapped_scene = io_utils.read_json("/home/pi/garbage/scene.json")
+    def open_network(self, save_dict=None, file_path=None, with_values=True):
+        if save_dict is not None:
+            mapped_scene = save_dict
+        else:
+            if file_path is not None:
+                mapped_scene = io_utils.read_json(file_path)
 
         for node_uuid, node_dict in mapped_scene.items():
-            type_string = node_dict.get("node_type")
-            print(type(type_string))
-            other = re.findall(r"'(.*?)'", type_string, re.DOTALL)[0]
-            class_name = other.split(".")[-1]
-            print(class_name)
+            x = node_dict.get("x")
+            y = node_dict.get("y")
+            if save_dict:
+                x += 20
+                y += 20
+            module_path = node_dict.get("module_path")
+            class_name = node_dict.get("class_name")
+            module_name = node_dict.get("module_name")
+            node = self.add_node_to_view(class_name, module_name, x, y)
 
+            if node is not None:
+                node.set_uuid(node_uuid)
 
+                for socket_uuid, socket_dict in node_dict.get("sockets").items():
+                    label = socket_dict.get("label")
+                    io = socket_dict.get("io")
+                    value = socket_dict.get("value")
+                    initial_value = socket_dict.get("initial_value")
+                    socket_type_name = socket_dict.get("socket_type")
+                    socket_type = getattr(socket_types, socket_type_name)(node)
 
-        # node_dict = OrderedDict()
-        # for begin_node in self.get_begin_nodes():
-        #     for attribute in vars(begin_node):
-        #     # for index, attribute in enumerate(begin_node.__dict__):
-        #         node_dict[begin_node.get_uuid(as_string=True)] = {}
-        #         node_dict[begin_node.get_uuid(as_string=True)][attribute] = getattr(begin_node, attribute)
-        #
-        # for key, value in enumerate(node_dict):
-        #     print(key)
-        #     print(value)
+                    socket = node.get_socket(label, io)
+
+                    if socket is None:
+                        if io == "output":
+                            socket = node.add_output(socket_type, label)
+                        elif io == "input":
+                            socket = node.add_input(socket_type, label)
+
+                    socket.set_uuid(socket_uuid)
+
+                    if with_values:
+                        socket.set_initial_value(initial_value)
+                        socket.set_value(value)
+                        node.compute()
+
+    def duplicate_nodes(self):
+        save_dict = self.save_network(selected_nodes_only=True, to_memory=True)
+        self.open_network(save_dict=save_dict, with_values=True)
 
     def get_begin_nodes(self):
         start_nodes = []
@@ -201,23 +224,10 @@ class NodeScene(QGraphicsScene):
 
         return end_nodes
 
-    def save(self, file_path=None):
-        if file_path is None:
-            file_path = QFileDialog.getSaveFileName(caption="Save Network", filter="Coco Edit Network Files(*.json)")[0]
-
-
-    def duplicate_nodes(self, nodes=None):
+    def get_selected_nodes(self):
         from nodes.base_node import BaseNode
-        if nodes is None:
-            nodes = [item for item in self.selectedItems() if issubclass(type(item), BaseNode)]
+        return [item for item in self.selectedItems() if issubclass(type(item), BaseNode)]
 
-        self.clearSelection()
-
-        for node in nodes:
-            x = node.scenePos().x() + 20
-            y = node.scenePos().y() + 20
-
-            new_node = self.add_node_to_view(node, None, x, y)
 
     def dragMoveEvent(self, event):
         event.accept()
@@ -252,11 +262,12 @@ class NodeScene(QGraphicsScene):
             self.duplicate_nodes()
 
         if event.key() == Qt.Key_S and event.modifiers() == Qt.ControlModifier:
-            self.save_network()
+            print("saving_network")
+            self.save_network(file_path=path)
 
 
         if event.key() == Qt.Key_O and event.modifiers() == Qt.ControlModifier:
-            self.open_network("D:/mapped_scene")
+            self.open_network(path)
 
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             self.refresh_network()

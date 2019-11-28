@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 from functools import partial
+import uuid
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -21,6 +22,8 @@ class BaseNode(Node):
         self.__x = x
         self.__y = y
 
+        self.__module_path = None
+
         self.dirty_signal = SignalEmitter()
         self.compute_time = None
 
@@ -32,27 +35,23 @@ class BaseNode(Node):
 
         self.__widget.setLayout(self.__layout)
 
-        self.add_label(str(type(self)))
-        self.add_label(str(self.get_uuid()))
+        self.lbl_node_type = self.add_label(str(type(self)))
+        self.lbl_uuid = self.add_label(str(self.get_uuid()))
 
     def refresh(self):
         pass
 
-    def load(self, state):
-        self.__dict__.update(state)
+    def set_module_path(self, module_path):
+        self.__module_path = module_path
+
+    def get_module_path(self):
+        return self.__module_path
 
     def compute(self):
         self.compute_connected_nodes()
 
     def set_dirty(self, is_dirty, emit=False):
-        #
-        # curframe = inspect.currentframe()
-        # calframe = inspect.getouterframes(curframe, 2)
-        # print('caller name:', calframe[1][3])
         self.__is_dirty = is_dirty
-
-        # if is_dirty:
-        #     self.compute()
 
     def compute_connected_nodes(self, output_socket=None):
         if output_socket is None:
@@ -84,6 +83,12 @@ class BaseNode(Node):
 
     def get_main_window(self):
         return self.scene.get_main_window()
+
+    def set_uuid(self, new_uuid):
+        if type(new_uuid) == str:
+            new_uuid = uuid.UUID(new_uuid)
+        self.lbl_uuid.setText(str(new_uuid))
+        self.__uuid = new_uuid
 
     def add_button(self, button_text, clicked_function):
         button = QPushButton(button_text)
@@ -202,8 +207,6 @@ class BaseNode(Node):
 
         self.__layout.addLayout(layout)
 
-
-
         return slider
 
     def add_combobox(self, items=[], changed_function=None):
@@ -271,6 +274,26 @@ class BaseNode(Node):
         self.__layout.addWidget(widget)
 
         return widget
+
+    def save(self):
+        save_dict = {}
+        save_dict["sockets"] = {}
+        for socket in self.get_all_sockets():
+            save_dict["sockets"][socket.get_uuid(as_string=True)] = socket.save()
+
+        save_dict["uuid"] = self.get_uuid(as_string=True)
+        save_dict["x"] = self.get_x()
+        save_dict["y"] = self.get_y()
+        # save_dict["title"] = self.title.toPlainText()
+        save_dict["module_path"] = self.get_module_path()
+        save_dict["class_name"] = self.get_module_path().split(".")[-1]
+        save_dict["module_name"] = self.get_module_path().split(".")[-2]
+
+        return save_dict
+
+    def duplicate(self):
+        save_dict = self.save()
+        self.scene.open_network(save_dict=save_dict, with_values=True)
 
     def error(self, socket, text):
         logging.error("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))
