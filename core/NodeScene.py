@@ -246,7 +246,7 @@ class NodeScene(QGraphicsScene):
                     utils.trace(err)
             if len(self.items()) == 0:
                 self.__set_colors_computed()
-        self.refresh_network()
+        #self.refresh_network()
 
         if event.key() == Qt.Key_D and event.modifiers() == Qt.ControlModifier:
             self.duplicate_nodes()
