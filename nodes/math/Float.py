@@ -30,10 +30,9 @@ class Float(BaseNode):
             self.change_title(str(self.output_float.get_value()))
             self.set_dirty(False)
 
-    def duplicate(self):
-        node_dict = super().duplicate()
+    def load(self, node_dict, x=None, y=None):
+        super().load(node_dict, x=x, y=y)
         for socket_uuid, socket_dict in node_dict.get("sockets").items():
-            if socket_uuid == self.output_float.get_uuid(as_string=True):
-                self.txt_number.setText(str(socket_dict.get("value")))
+            self.txt_number.setText(str(socket_dict.get("value")))
 
 

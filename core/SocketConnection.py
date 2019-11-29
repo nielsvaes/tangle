@@ -114,6 +114,12 @@ class SocketConnection(QGraphicsPathItem):
         self.input_socket.get_node().set_dirty(True)
         self.input_socket.reset_to_initial_value()
 
+    def get_input_socket(self):
+        return self.input_socket
+
+    def get_output_socket(self):
+        return self.output_socket
+
     def hoverEnterEvent(self, event):
         self.mouse_over = True
         super(SocketConnection, self).hoverEnterEvent(event)
