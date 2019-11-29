@@ -294,8 +294,23 @@ class BaseNode(Node):
         node_dict = self.save()
         scene_dict = {}
         scene_dict[node_dict.get("uuid")] = node_dict
-        self.scene.open_network(save_dict=scene_dict,  with_values=True)
+        self.scene.open_network(scene_dict=scene_dict, with_values=True)
         return node_dict
+
+    def load(self, node_dict, x=None, y=None):
+        if x is not None:
+            x_pos = x
+        else:
+            x_pos = node_dict.get("x")
+        if y is not None:
+            y_pos = y
+        else:
+            y_pos = node_dict.get("y")
+
+        self.setPos(x_pos, y_pos)
+        self.set_uuid(node_dict.get("uuid"))
+
+        pass
 
     def error(self, socket, text):
         logging.error("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))

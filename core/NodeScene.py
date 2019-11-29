@@ -139,10 +139,9 @@ class NodeScene(QGraphicsScene):
         except Exception as err:
             utils.trace(err)
 
-
-    def open_network(self, save_dict=None, file_path=None, with_values=True):
-        if save_dict is not None:
-            mapped_scene = save_dict
+    def open_network(self, scene_dict=None, file_path=None, with_values=True):
+        if scene_dict is not None:
+            mapped_scene = scene_dict
         else:
             if file_path is not None:
                 mapped_scene = io_utils.read_json(file_path)
@@ -150,7 +149,7 @@ class NodeScene(QGraphicsScene):
         for node_uuid, node_dict in mapped_scene.items():
             x = node_dict.get("x")
             y = node_dict.get("y")
-            if save_dict:
+            if scene_dict:
                 x += 20
                 y += 20
             module_path = node_dict.get("module_path")
@@ -159,30 +158,31 @@ class NodeScene(QGraphicsScene):
             node = self.add_node_to_view(class_name, module_name, x, y)
 
             if node is not None:
-                node.set_uuid(node_uuid)
+                node.load(node_dict, x=x, y=y)
 
-                for socket_uuid, socket_dict in node_dict.get("sockets").items():
-                    label = socket_dict.get("label")
-                    io = socket_dict.get("io")
-                    value = socket_dict.get("value")
-                    initial_value = socket_dict.get("initial_value")
-                    socket_type_name = socket_dict.get("socket_type")
-                    socket_type = getattr(socket_types, socket_type_name)(node)
+                if node_dict.get("sockets")is not None:
+                    for socket_uuid, socket_dict in node_dict.get("sockets").items():
+                        label = socket_dict.get("label")
+                        io = socket_dict.get("io")
+                        value = socket_dict.get("value")
+                        initial_value = socket_dict.get("initial_value")
+                        socket_type_name = socket_dict.get("socket_type")
+                        socket_type = getattr(socket_types, socket_type_name)(node)
 
-                    socket = node.get_socket(label, io)
+                        socket = node.get_socket(label, io)
 
-                    if socket is None:
-                        if io == "output":
-                            socket = node.add_output(socket_type, label)
-                        elif io == "input":
-                            socket = node.add_input(socket_type, label)
+                        if socket is None:
+                            if io == "output":
+                                socket = node.add_output(socket_type, label)
+                            elif io == "input":
+                                socket = node.add_input(socket_type, label)
 
-                    socket.set_uuid(socket_uuid)
+                        socket.set_uuid(socket_uuid)
 
-                    if with_values:
-                        socket.set_initial_value(initial_value)
-                        socket.set_value(value)
-                        node.compute()
+                        if with_values:
+                            socket.set_initial_value(initial_value)
+                            socket.set_value(value)
+                            node.compute()
 
     def duplicate_nodes(self):
         try:
@@ -273,7 +273,10 @@ class NodeScene(QGraphicsScene):
 
 
         if event.key() == Qt.Key_O and event.modifiers() == Qt.ControlModifier:
-            self.open_network(path)
+            try:
+                self.open_network(file_path=path)
+            except Exception as err:
+                utils.trace(err)
 
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             self.refresh_network()

@@ -2,13 +2,9 @@ from nodes.image_node import ImageNode
 from core import socket_types as socket_types
 
 from core.Constants import Colors
-from PIL import ImageQt, ImageFilter, Image
+from PIL import ImageQt, Image
 
 import numpy as np
-import colorsys
-
-# rgb_to_hsv = np.vectorize(colorsys.rgb_to_hsv)
-# hsv_to_rgb = np.vectorize(colorsys.hsv_to_rgb)
 
 class HueShift(ImageNode):
     def __init__(self, scene, x=0, y=0):
@@ -51,6 +47,18 @@ class HueShift(ImageNode):
             if compute_next:
                 super().compute()
             self.set_dirty(False)
+
+    def save(self):
+        node_dict = super().save()
+        node_dict["sld_hue_value"] = self.sld_hue_value.value()
+
+        return node_dict
+
+    def load(self, node_dict, x=None, y=None):
+        super().load(node_dict, x=x, y=y)
+        self.sld_hue_value.setValue(node_dict.get("sld_hue_value"))
+
+
 
 
 
