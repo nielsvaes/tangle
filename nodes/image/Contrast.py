@@ -40,3 +40,13 @@ class Contrast(ImageNode):
             if compute_next:
                 super().compute()
             self.set_dirty(False)
+
+    def save(self):
+        node_dict = super().save()
+        node_dict["sld_contrast_value"] = self.sld_contrast_amount.value()
+
+        return node_dict
+
+    def load(self, node_dict, x=None, y=None):
+        super().load(node_dict, x=x, y=y)
+        self.sld_contrast_amount.setValue(node_dict.get("sld_contrast_value"))

@@ -176,14 +176,15 @@
     <property name="title">
      <string>Scene</string>
     </property>
-    <addaction name="action_clear_scene"/>
     <addaction name="action_save_scene"/>
+    <addaction name="action_load"/>
+    <addaction name="action_clear_scene"/>
     <addaction name="separator"/>
+    <addaction name="action_save_selected_nodes"/>
     <addaction name="action_duplicate_nodes"/>
     <addaction name="action_delete_nodes"/>
-    <addaction name="action_save_selected_nodes"/>
     <addaction name="separator"/>
-    <addaction name="action_load"/>
+    <addaction name="action_recompute_entire_network"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuScene"/>
@@ -209,6 +210,12 @@
   <action name="action_show_image_viewer">
    <property name="text">
     <string>Image</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="action_clear_scene">
@@ -275,6 +282,11 @@
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="action_recompute_entire_network">
+   <property name="text">
+    <string>Re-compute entire network</string>
    </property>
   </action>
  </widget>

@@ -282,10 +282,10 @@ class BaseNode(Node):
             node_dict["sockets"][socket.get_uuid(as_string=True)] = socket.save(save_value=save_value)
 
         for socket in self.get_connected_output_sockets():
-            node_dict["connections"] = {}
+            node_dict["sockets"][socket.get_uuid(as_string=True)]["connections"] = {}
             for index, socket_connection in enumerate(socket.get_connections()):
                 connected_input_socket = socket_connection.get_input_socket()
-                node_dict["connections"][index] = [socket.get_uuid(as_string=True), connected_input_socket.get_uuid(as_string=True)]
+                node_dict["sockets"][socket.get_uuid(as_string=True)]["connections"][index] = [socket.get_uuid(as_string=True), connected_input_socket.get_uuid(as_string=True)]
 
         node_dict["uuid"] = self.get_uuid(as_string=True)
         node_dict["x"] = self.get_x()

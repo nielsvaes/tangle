@@ -174,15 +174,14 @@ class NodeScene(QGraphicsScene):
                 self.refresh_network()
 
     def load_connections(self, mapped_scene):
-        for node_uuid, node_dict in mapped_scene.items():
-            node = self.get_node_by_uuid(node_uuid)
-
-            if node_dict.get("connections") is not None:
-                for connection_index, input_output_socket_list in node_dict.get("connections").items():
-                    output_socket = self.get_socket_by_uuid(input_output_socket_list[0])
-                    input_socket = self.get_socket_by_uuid(input_output_socket_list[1])
-
+        try:
+            for connection_dict in utils.value_extract("connections", mapped_scene):
+                for index, connection_list in connection_dict.items():
+                    output_socket = self.get_socket_by_uuid(connection_list[0])
+                    input_socket = self.get_socket_by_uuid(connection_list[1])
                     SocketConnection(output_socket, input_socket, self, auto_compute_on_connect=False)
+        except Exception as err:
+            utils.trace(err)
 
     def load_nodes(self, mapped_scene, offset_nodes, with_values, new_socket_uuids=False):
         for node_uuid, node_dict in mapped_scene.items():
@@ -273,11 +272,11 @@ class NodeScene(QGraphicsScene):
         return [item for item in self.selectedItems() if issubclass(type(item), BaseNode)]
 
     def delete_nodes(self):
-        selected_nodes = self.get_selected_nodes()
+        items = self.selectedItems()
         self.clearSelection()
-        for node in selected_nodes:
+        for item in items:
             try:
-                node.destroy_self()
+                item.destroy_self()
             except Exception as err:
                 utils.trace(err)
 
