@@ -176,5 +176,5 @@ class SocketConnection(QGraphicsPathItem):
 
     def __str__(self):
         return "SocketConnection: %s.%s -> %s.%s" % \
-               (self.output_socket.parentItem().name, self.output_socket.name,
-                self.input_socket.parentItem().name, self.input_socket.name)
+               (self.output_socket.get_uuid(True), self.output_socket.name,
+                self.input_socket.get_uuid(True), self.input_socket.name)

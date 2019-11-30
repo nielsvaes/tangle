@@ -34,7 +34,7 @@
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
           <widget class="QLineEdit" name="txt_search_nodes">
@@ -111,8 +111,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1194</width>
-           <height>73</height>
+           <width>1258</width>
+           <height>80</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -140,7 +140,7 @@
      <x>0</x>
      <y>0</y>
      <width>1294</width>
-     <height>28</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -169,7 +169,24 @@
     </widget>
     <addaction name="menuViewers"/>
    </widget>
+   <widget class="QMenu" name="menuScene">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>Scene</string>
+    </property>
+    <addaction name="action_clear_scene"/>
+    <addaction name="action_save_scene"/>
+    <addaction name="separator"/>
+    <addaction name="action_duplicate_nodes"/>
+    <addaction name="action_delete_nodes"/>
+    <addaction name="action_save_selected_nodes"/>
+    <addaction name="separator"/>
+    <addaction name="action_load"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuScene"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
   </widget>
@@ -192,6 +209,72 @@
   <action name="action_show_image_viewer">
    <property name="text">
     <string>Image</string>
+   </property>
+  </action>
+  <action name="action_clear_scene">
+   <property name="text">
+    <string>Clear scene</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="action_duplicate_nodes">
+   <property name="text">
+    <string>Duplicate nodes</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="action_delete_nodes">
+   <property name="text">
+    <string>Delete nodes</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="action_save_scene">
+   <property name="text">
+    <string>Save scene...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="action_load">
+   <property name="text">
+    <string>Load...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="action_save_selected_nodes">
+   <property name="text">
+    <string>Save selected nodes...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
  </widget>

@@ -156,20 +156,19 @@ class NodeScene(QGraphicsScene):
         except Exception as err:
             utils.trace(err)
 
-    def open_network(self, scene_dict=None, file_path=None, with_connections=True, with_values=True):
+    def open_network(self, scene_dict=None, file_path=None, with_connections=True, with_values=True, is_duplicate=False):
         offset_nodes = False
 
-        if scene_dict is not None:
-            mapped_scene = scene_dict
+        if is_duplicate:
             offset_nodes = True
-        else:
-            if file_path is not None:
-                mapped_scene = io_utils.read_json(file_path)
 
-        self.load_nodes(mapped_scene, offset_nodes, with_values)
+        if file_path is not None:
+            scene_dict = io_utils.read_json(file_path)
+
+        self.load_nodes(scene_dict, offset_nodes, with_values, new_socket_uuids=is_duplicate)
 
         if with_connections:
-            self.load_connections(mapped_scene)
+            self.load_connections(scene_dict)
 
     def load_connections(self, mapped_scene):
         for node_uuid, node_dict in mapped_scene.items():
@@ -182,7 +181,7 @@ class NodeScene(QGraphicsScene):
 
                     SocketConnection(output_socket, input_socket, self, auto_compute_on_connect=False)
 
-    def load_nodes(self, mapped_scene, offset_nodes, with_values):
+    def load_nodes(self, mapped_scene, offset_nodes, with_values, new_socket_uuids=False):
         for node_uuid, node_dict in mapped_scene.items():
             x = node_dict.get("x")
             y = node_dict.get("y")
@@ -214,6 +213,8 @@ class NodeScene(QGraphicsScene):
                             elif io == "input":
                                 socket = node.add_input(socket_type, label)
 
+                        if new_socket_uuids:
+                            socket_uuid = uuid.uuid4()
                         socket.set_uuid(socket_uuid)
 
                         if with_values:

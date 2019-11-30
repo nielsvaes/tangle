@@ -300,7 +300,7 @@ class BaseNode(Node):
         node_dict = self.save()
         scene_dict = {}
         scene_dict[node_dict.get("uuid")] = node_dict
-        self.scene.open_network(scene_dict=scene_dict, with_values=True, with_connections=False)
+        self.scene.open_network(scene_dict=scene_dict, with_values=True, with_connections=False, is_duplicate=True)
         return node_dict
 
     def load(self, node_dict, x=None, y=None):
