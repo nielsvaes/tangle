@@ -57,7 +57,6 @@ class NodeScene(QGraphicsScene):
             node_instance.set_module_path(module_path)
             return node_instance
 
-
     def get_all_nodes(self):
         from nodes.base_node import BaseNode
         nodes = []
@@ -158,7 +157,6 @@ class NodeScene(QGraphicsScene):
 
     def open_network(self, scene_dict=None, file_path=None, with_connections=True, with_values=True, is_duplicate=False):
         offset_nodes = False
-
         if is_duplicate:
             offset_nodes = True
 
@@ -169,6 +167,11 @@ class NodeScene(QGraphicsScene):
 
         if with_connections:
             self.load_connections(scene_dict)
+
+        if not is_duplicate:
+            answer = QMessageBox.question(self.get_main_window(), "Tangle", "Compute network now?", QMessageBox.No, QMessageBox.Yes)
+            if answer == QMessageBox.Yes:
+                self.refresh_network()
 
     def load_connections(self, mapped_scene):
         for node_uuid, node_dict in mapped_scene.items():
@@ -269,6 +272,32 @@ class NodeScene(QGraphicsScene):
         from nodes.base_node import BaseNode
         return [item for item in self.selectedItems() if issubclass(type(item), BaseNode)]
 
+    def delete_nodes(self):
+        selected_nodes = self.get_selected_nodes()
+        self.clearSelection()
+        for node in selected_nodes:
+            try:
+                node.destroy_self()
+            except Exception as err:
+                utils.trace(err)
+
+    def clear(self):
+        for node in self.get_all_nodes():
+            node.destroy_self()
+
+    def browse_for_save_location(self, selected_nodes_only=False):
+        file_path = QFileDialog.getSaveFileName(caption="Save Tangle network", filter="Tangle files (*.tngl)")[0]
+        if file_path != "":
+            if selected_nodes_only:
+                self.save_network(selected_nodes_only=True, file_path=file_path)
+            else:
+                self.save_network(selected_nodes_only=False, file_path=file_path)
+
+    def browse_for_saved_scene(self):
+        file_path = QFileDialog.getOpenFileName(caption="Open Tangle Network", filter="Tangle files (*.tngl)")[0]
+        if file_path != "":
+            self.open_network(file_path=file_path)
+
     def dragMoveEvent(self, event):
         event.accept()
 
@@ -286,32 +315,22 @@ class NodeScene(QGraphicsScene):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Delete:
-            selected_nodes = self.selectedItems()
-            self.clearSelection()
-            for item in selected_nodes:
-                try:
-                    item.destroy_self()
-                except Exception as err:
-                    utils.trace(err)
-            if len(self.items()) == 0:
-                self.__set_colors_computed()
-        #self.refresh_network()
+            self.delete_nodes()
 
         if event.key() == Qt.Key_D and event.modifiers() == Qt.ControlModifier:
             self.duplicate_nodes()
 
         if event.key() == Qt.Key_S and event.modifiers() == Qt.ControlModifier:
-            print("saving_network")
-            self.save_network(file_path=path)
+            self.browse_for_save_location()
 
         if event.key() == Qt.Key_O and event.modifiers() == Qt.ControlModifier:
-            try:
-                self.open_network(file_path=path)
-            except Exception as err:
-                utils.trace(err)
+            self.browse_for_saved_scene()
 
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             self.refresh_network()
+
+        if event.key() == Qt.Key_I:
+            self.get_main_window().show_viewer("image")
 
     def set_colors_dirty(self):
         dirty_node_exists = False

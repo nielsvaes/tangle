@@ -28,7 +28,6 @@ from core.Constants import ss, IO
 
 from viewers.image_viewer import ImageViewer
 
-
 class TangleWindow(QMainWindow):
     def __init__(self):
         super(TangleWindow, self).__init__()
@@ -40,19 +39,13 @@ class TangleWindow(QMainWindow):
         uic.loadUi(os.path.join(self.UI_PATH, "tangle.ui"), self)
 
         self.build_ui()
-        self.load_nodes()
-
-        self.pixmap = QPixmap()
-
-        self.keep_pixmap_on_empty_selection = False
+        self.load_node_tree()
 
         self.show()
 
         self.setWindowTitle("Tangle")
 
     def build_ui(self):
-        self.setBaseSize(QSize(1920, 1080))
-
         self.scene = NodeScene()
         self.scene.setObjectName('Scene')
         self.scene.setSceneRect(0, 0, 50000, 28000)
@@ -63,21 +56,28 @@ class TangleWindow(QMainWindow):
         for i in range(1, 4):
             self.tree_nodes.setColumnHidden(i, True)
 
-        self.txt_search_nodes.textChanged.connect(self.search)
+        self.connect_ui_elements()
 
-        self.action_reload_nodes.triggered.connect(self.load_nodes)
+    def connect_ui_elements(self):
+        self.txt_search_nodes.textChanged.connect(self.search_node_tree)
+
+        self.action_save_scene.triggered.connect(self.scene.browse_for_save_location)
+        self.action_load.triggered.connect(self.scene.browse_for_saved_scene)
+        self.action_clear_scene.triggered.connect(self.scene.clear)
+        self.action_save_selected_nodes.triggered.connect(partial(self.scene.browse_for_save_location, True))
+        self.action_duplicate_nodes.triggered.connect(self.scene.duplicate_nodes)
+        self.action_delete_nodes.triggered.connect(self.scene.delete_nodes)
+        self.action_recompute_entire_network.triggered.connect(self.scene.refresh_network)
+
+        self.action_reload_nodes.triggered.connect(self.load_node_tree)
         self.action_show_image_viewer.triggered.connect(partial(self.show_viewer, "image"))
+
+        self.scene.selectionChanged.connect(self.load_values_ui)
 
         self.horizontal_splitter.setSizes([500, 100])
         self.vertical_splitter.setSizes([500, 200])
 
-        self.scene.selectionChanged.connect(self.load_values_ui)
-
-    def normal_node_start(self):
-        for node in self.scene.get_begin_nodes():
-            pass
-
-    def search(self):
+    def search_node_tree(self):
         # if self.txt_search_nodes.text()
         search_words = self.txt_search_nodes.text().lower().split(" ")
 
@@ -96,11 +96,7 @@ class TangleWindow(QMainWindow):
 
                 item.setHidden(hidden)
 
-
-
-
-
-    def load_nodes(self):
+    def load_node_tree(self):
         self.tree_nodes.clear()
         for file_path in file_utils.get_files_recursively(self.NODE_FOLDER, filters=".py"):
             if file_path is not None and not "__" in file_path and not "base_node" in file_path and not file_path.endswith(
@@ -159,7 +155,6 @@ class TangleWindow(QMainWindow):
 
                     self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
-
     def clear_values_layout(self):
         for i in reversed(range(self.values_layout.count())):
             self.values_layout.takeAt(i).widget().setParent(None)
@@ -173,14 +168,9 @@ class TangleWindow(QMainWindow):
         for node in self.scene.selectedItems():
             node.compute()
 
-    # def set_pixmap(self, pixmap):
-    #     ImageViewer(self).set_pixmap(pixmap)
-    #     ImageViewer(self).resize_pixmap()
-
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_I:
-            logging.info("pressed")
-            self.show_viewer("ignore")
+        if event.key() == Qt.Key_I:
+            self.show_viewer("image")
 
 
 class TitleLabel(QLineEdit):
