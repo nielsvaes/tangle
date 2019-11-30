@@ -18,6 +18,8 @@ except:
     logging.warning("Can't find qtmodern!")
     modern = False
 
+import EZSettings.ez_settings as ez_settings
+
 import nv_utils.file_utils as file_utils
 import nv_utils.qt_utils as qutils
 import nv_utils.utils as utils
@@ -33,10 +35,13 @@ class TangleWindow(QMainWindow):
         super(TangleWindow, self).__init__()
         self.SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
         self.UI_PATH = os.path.join(self.SCRIPT_FOLDER, "ui")
+        self.SETTINGS_PATH = os.path.join(self.SCRIPT_FOLDER, "settings", "tangle_settings.json")
         self.ICONS_PATH = os.path.join(self.SCRIPT_FOLDER, "ui", "icons")
         self.NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
 
         uic.loadUi(os.path.join(self.UI_PATH, "tangle.ui"), self)
+
+        self.settings = ez_settings.EasySettings(self.SETTINGS_PATH)
 
         self.build_ui()
         self.load_node_tree()
@@ -189,7 +194,6 @@ if __name__ == "__main__":
     if modern:
         qtmodern.styles.dark(app)
 
-
     splash_pixmap = QPixmap(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ui", "icons", "splashscreen.png"))
     splash_screen = QSplashScreen(splash_pixmap)
 
@@ -203,7 +207,6 @@ if __name__ == "__main__":
     # modern_window.show()
 
     tangle_window.showMaximized()
-    # tangle_window.show()
     splash_screen.finish(tangle_window)
 
 

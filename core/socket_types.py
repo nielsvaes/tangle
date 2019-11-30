@@ -14,9 +14,9 @@ class BaseSocketType(QObject):
     def __init__(self, parent_node):
         super(BaseSocketType, self).__init__()
 
-        self.__value = None
-        self.__initial_value = None
-        self.__parent_node = parent_node
+        self.value = None
+        self.initial_value = None
+        self.parent_node = parent_node
 
         self.name = "base"
         self.accepted_inputs = []
@@ -33,7 +33,7 @@ class BaseSocketType(QObject):
         return self.color
 
     def get_parent_node(self):
-        return self.__parent_node
+        return self.parent_node
 
     def destroy_ui(self):
         for child in self.ui_widget.findChildren(QWidget):
@@ -43,30 +43,30 @@ class BaseSocketType(QObject):
             del layout
 
     def get_value(self):
-        return self.__value
+        return self.value
 
     def set_value(self, value):
         if type(value) == np.ndarray:
-            if np.all(value) == np.all(self.__value):
+            if np.all(value) == np.all(self.value):
                 return
         else:
-            if self.__value == value:
+            if self.value == value:
                 return
 
-        self.__value = value
+        self.value = value
         # self.is_dirty.emit()
         self.get_parent_node().set_dirty(True)
 
     def get_initial_value(self):
-        return self.__initial_value
+        return self.initial_value
 
     def set_initial_value(self, value, also_set_value=True):
-        self.__initial_value = value
+        self.initial_value = value
         if also_set_value:
-            self.__value = value
+            self.value = value
 
     def reset_to_initial_value(self):
-        self.__value = self.__initial_value
+        self.value = self.initial_value
 
     def set_accept_multiple(self, value):
         self.accept_multiple = value
@@ -117,6 +117,13 @@ class FloatSocketType(BaseSocketType):
         self.color = Colors.float
         self.set_initial_value(0.0)
         self.reset_to_initial_value()
+
+    def set_value(self, value):
+        super().set_value(round(value, 4))
+
+    def get_value(self):
+        return round(super().get_value(), 4)
+
 
 
 class StringSocketType(BaseSocketType):

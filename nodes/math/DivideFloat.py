@@ -32,12 +32,13 @@ class DivideFloat(BaseNode):
 
             if self.input_02.get_value() != 0:
                 result = self.input_01.get_value() / self.input_02.get_value()
+                # result = self.round_float(result)
 
                 self.output_float.set_value(result)
-                self.lbl_result.setText(str(result))
+                self.lbl_result.setText(str(self.output_float.get_value()))
 
                 super().compute()
                 self.set_dirty(False)
 
-                self.title.setPlainText(str(result))
+                self.title.setPlainText(str(self.output_float.get_value()))
                 self.reposition_title()
