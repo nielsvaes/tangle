@@ -94,10 +94,6 @@ class JoinChannels(ImageNode):
                     combined_image = Image.merge("RGB", checked_channels[:-1])
             except ValueError as err:
                 utils.trace(err)
-                logging.error("R: ", self.input_r.get_value().size)
-                logging.error("G: ", self.input_g.get_value().size)
-                logging.error("B: ", self.input_b.get_value().size)
-                logging.error("A: ", self.input_a.get_value().size)
 
                 if self.chk_rgba.isChecked():
                     combined_image = Image.merge("RGBA", [self.black_image, self.black_image, self.black_image, self.black_image])
