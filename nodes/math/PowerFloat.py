@@ -19,7 +19,6 @@ class PowerFloat(BaseNode):
 
         self.inputs = [self.input_01, self.input_02]
 
-        self.set_auto_compute_on_connect(True)
 
 
     def compute(self):

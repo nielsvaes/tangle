@@ -19,7 +19,6 @@ class SolidColor(ImageNode):
         self.chk_rgba = self.add_checkbox("Output is RGBA image", checked=False)
         self.add_button("Pick color", self.pick_color)
 
-        self.set_auto_compute_on_connect(True)
 
     def pick_color(self):
         color_dialog = QColorDialog()

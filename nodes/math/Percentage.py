@@ -15,7 +15,6 @@ class Percentage(BaseNode):
         self.lbl_result = self.add_label("0.0")
 
 
-        self.set_auto_compute_on_connect(True)
 
     def compute(self):
         if self.is_dirty():

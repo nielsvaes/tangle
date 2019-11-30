@@ -15,7 +15,6 @@ class Contrast(ImageNode):
         self.add_label("Contrast amount")
         self.sld_contrast_amount = self.add_slider(0, 500, 100, changed_function=self.slider_changed, released_function=self.slider_released)
 
-        self.set_auto_compute_on_connect(True)
 
     def slider_changed(self):
         self.compute(compute_next=False)

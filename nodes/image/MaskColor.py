@@ -30,7 +30,6 @@ class MaskColor(ImageNode):
         self.picked_g = 0
         self.picked_b = 0
 
-        self.set_auto_compute_on_connect(True)
 
     def pick_color(self):
         color_dialog = QColorDialog()

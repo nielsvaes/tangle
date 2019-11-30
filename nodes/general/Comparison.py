@@ -23,7 +23,6 @@ class Comparison(BaseNode):
 
         self.cb_operation = self.add_combobox(["equal to", "not equal to", "bigger than", "smaller than"], changed_function=self.operation_changed)
 
-        self.set_auto_compute_on_connect(True)
 
     def change_type(self, socket, new_socket_type=None):
         if new_socket_type is None:

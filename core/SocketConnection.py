@@ -7,18 +7,18 @@ import logging
 from .Constants import nc, Colors, IO
 
 class SocketConnection(QGraphicsPathItem):
-    def __init__(self, output_socket, input_socket, scene):
+    def __init__(self, output_socket, input_socket, scene, auto_compute_on_connect=True):
         # super(SocketConnection, self).__init__()
         super(SocketConnection, self).__init__()
 
+        self.output_socket = output_socket
+        self.input_socket = input_socket
         self.scene = scene
+        self.auto_compute_on_connect = auto_compute_on_connect
 
         self.mouse_over = False
 
         self.force_connection = True
-
-        self.output_socket = output_socket
-        self.input_socket = input_socket
 
         self.order_sockets()
         self.is_valid = self.check_validity()
@@ -36,7 +36,7 @@ class SocketConnection(QGraphicsPathItem):
         input_node = self.input_socket.get_node()
         input_node.set_dirty(True)
 
-        if input_node.auto_compute_on_connect():
+        if self.auto_compute_on_connect:
             input_node.compute()
 
         if self.input_socket.adjust_color_to_input:

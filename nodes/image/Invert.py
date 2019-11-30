@@ -11,7 +11,6 @@ class Invert(ImageNode):
 
         self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
 
-        self.set_auto_compute_on_connect(True)
 
     def compute(self):
         if self.input_image.is_connected():

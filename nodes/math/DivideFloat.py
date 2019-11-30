@@ -16,7 +16,6 @@ class DivideFloat(BaseNode):
 
         self.inputs = [self.input_01, self.input_02]
 
-        self.set_auto_compute_on_connect(True)
 
     def add_new_input(self):
         next_letter = chr(ord(self.inputs[-1].name) + 1)

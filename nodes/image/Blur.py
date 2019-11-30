@@ -13,7 +13,6 @@ class Blur(ImageNode):
 
         self.sld_blur_amount = self.add_slider(0, 50, 0, changed_function=self.slider_changed, released_function=self.slider_released)
 
-        self.set_auto_compute_on_connect(True)
 
     def slider_changed(self):
         self.compute(compute_next=False)

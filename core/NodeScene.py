@@ -5,6 +5,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 import re
+import uuid
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -13,6 +14,8 @@ from PyQt5.QtCore import *
 import nv_utils.utils as utils
 import nv_utils.io_utils as io_utils
 import core.socket_types as socket_types
+
+from .SocketConnection import SocketConnection
 
 from pydoc import locate
 
@@ -83,10 +86,22 @@ class NodeScene(QGraphicsScene):
                 return node
         return None
 
-    def get_node_by_uuid(self, uuid):
+    def get_node_by_uuid(self, search_uuid):
+        if type(search_uuid) == str:
+            search_uuid = uuid.UUID(search_uuid)
         for node in self.get_all_nodes():
-            if node.uuid == uuid:
+            if node.get_uuid() == search_uuid:
                 return node
+        return None
+
+    def get_socket_by_uuid(self, search_uuid):
+        if type(search_uuid) == str:
+            search_uuid = uuid.UUID(search_uuid)
+        for node in self.get_all_nodes():
+            socket_uuid = node.get_socket_by_uuid(search_uuid)
+            socket = node.get_socket_by_uuid(search_uuid)
+            if socket is not None:
+                return socket
         return None
 
     def get_view(self):
@@ -99,21 +114,23 @@ class NodeScene(QGraphicsScene):
         try:
             if node is None:
                 for begin_node in self.get_begin_nodes():
-                    if begin_node.is_dirty():
-                        begin_node.compute()
+                    # if begin_node.is_dirty():
+                    print("computing begin node %s " % begin_node)
+                    begin_node.set_dirty(True)
+                    begin_node.compute()
 
-                    child_nodes_are_dirty = False
-                    for connected_node in begin_node.get_connected_output_nodes_recursive():
-                        if connected_node.is_dirty():
-                            logging.info("is dirty, needs computing: %s" % connected_node.title)
-                            connected_node.compute()
-                            child_nodes_are_dirty = True
-                        if child_nodes_are_dirty:
-                            logging.info("is a child node, needs computing: %s" % connected_node.title)
-                            connected_node.compute()
-                            continue
+                    # child_nodes_are_dirty = False
+                    # for connected_node in begin_node.get_connected_output_nodes_recursive():
+                    #     if connected_node.is_dirty():
+                    #         logging.info("is dirty, needs computing: %s" % connected_node.title)
+                    #         connected_node.compute()
+                    #         child_nodes_are_dirty = True
+                    #     if child_nodes_are_dirty:
+                    #         logging.info("is a child node, needs computing: %s" % connected_node.title)
+                    #         connected_node.compute()
+                    #         continue
 
-            self.__set_colors_computed()
+            # self.__set_colors_computed()
 
         except Exception as err:
             utils.trace(err)
@@ -139,17 +156,37 @@ class NodeScene(QGraphicsScene):
         except Exception as err:
             utils.trace(err)
 
-    def open_network(self, scene_dict=None, file_path=None, with_values=True):
+    def open_network(self, scene_dict=None, file_path=None, with_connections=True, with_values=True):
+        offset_nodes = False
+
         if scene_dict is not None:
             mapped_scene = scene_dict
+            offset_nodes = True
         else:
             if file_path is not None:
                 mapped_scene = io_utils.read_json(file_path)
 
+        self.load_nodes(mapped_scene, offset_nodes, with_values)
+
+        if with_connections:
+            self.load_connections(mapped_scene)
+
+    def load_connections(self, mapped_scene):
+        for node_uuid, node_dict in mapped_scene.items():
+            node = self.get_node_by_uuid(node_uuid)
+
+            if node_dict.get("connections") is not None:
+                for connection_index, input_output_socket_list in node_dict.get("connections").items():
+                    output_socket = self.get_socket_by_uuid(input_output_socket_list[0])
+                    input_socket = self.get_socket_by_uuid(input_output_socket_list[1])
+
+                    SocketConnection(output_socket, input_socket, self, auto_compute_on_connect=False)
+
+    def load_nodes(self, mapped_scene, offset_nodes, with_values):
         for node_uuid, node_dict in mapped_scene.items():
             x = node_dict.get("x")
             y = node_dict.get("y")
-            if scene_dict:
+            if offset_nodes:
                 x += 20
                 y += 20
             module_path = node_dict.get("module_path")
@@ -160,7 +197,7 @@ class NodeScene(QGraphicsScene):
             if node is not None:
                 node.load(node_dict, x=x, y=y)
 
-                if node_dict.get("sockets")is not None:
+                if node_dict.get("sockets") is not None:
                     for socket_uuid, socket_dict in node_dict.get("sockets").items():
                         label = socket_dict.get("label")
                         io = socket_dict.get("io")
@@ -190,9 +227,6 @@ class NodeScene(QGraphicsScene):
                 node.duplicate()
         except Exception as err:
             utils.trace(err)
-
-        # save_dict = self.save_network(selected_nodes_only=True, to_memory=True)
-        # self.open_network(save_dict=save_dict, with_values=True)
 
     def get_begin_nodes(self):
         start_nodes = []
@@ -234,7 +268,6 @@ class NodeScene(QGraphicsScene):
         from nodes.base_node import BaseNode
         return [item for item in self.selectedItems() if issubclass(type(item), BaseNode)]
 
-
     def dragMoveEvent(self, event):
         event.accept()
 
@@ -251,7 +284,6 @@ class NodeScene(QGraphicsScene):
             utils.trace(err)
 
     def keyPressEvent(self, event):
-        #from nodes.base_node import BaseNode
         if event.key() == Qt.Key_Delete:
             selected_nodes = self.selectedItems()
             self.clearSelection()
@@ -270,7 +302,6 @@ class NodeScene(QGraphicsScene):
         if event.key() == Qt.Key_S and event.modifiers() == Qt.ControlModifier:
             print("saving_network")
             self.save_network(file_path=path)
-
 
         if event.key() == Qt.Key_O and event.modifiers() == Qt.ControlModifier:
             try:

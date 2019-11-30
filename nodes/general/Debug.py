@@ -11,7 +11,6 @@ class Debug(BaseNode):
 
         self.txt_debug = self.add_label_text("Debug value: ")[1]
 
-        self.set_auto_compute_on_connect(True)
 
     def compute(self):
         self.debug_value.fetch_connected_value()

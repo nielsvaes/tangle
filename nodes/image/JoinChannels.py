@@ -38,7 +38,6 @@ class JoinChannels(ImageNode):
         self.chk_rgba = self.add_checkbox("Output is RGBA image", checked=False)
         self.black_image = Image.new("L", (100, 100))
 
-        self.set_auto_compute_on_connect(True)
 
     def get_input_image_size(self):
         self.get_input_nodes_of_type(LoadImage)

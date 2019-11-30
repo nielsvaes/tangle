@@ -157,6 +157,14 @@ class Node(QGraphicsRectItem):
             return str(self.__uuid)
         return self.__uuid
 
+    def get_socket_by_uuid(self, search_uuid):
+        if type(search_uuid) == str:
+            search_uuid = uuid.UUID(search_uuid)
+        for socket in self.get_all_sockets():
+            if socket.get_uuid() == search_uuid:
+                return socket
+        return None
+
     def get_all_sockets(self):
         return self.__output_sockets + self.__input_sockets
 

@@ -15,7 +15,6 @@ class Float(BaseNode):
     def number_changed(self):
         if self.txt_number.text() == "":
             self.output_float.set_value(0.0)
-            # self.txt_number.setText("0.0")
         try:
             self.output_float.set_value(float(self.txt_number.text()))
         except ValueError as err:

@@ -14,7 +14,6 @@ class Equalize(ImageNode):
 
         self.input_mask.override_color(Colors.black)
 
-        self.set_auto_compute_on_connect(True)
 
     def compute(self):
         if self.input_image.is_connected():

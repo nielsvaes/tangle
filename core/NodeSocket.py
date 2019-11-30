@@ -70,13 +70,14 @@ class NodeSocket(QGraphicsEllipseItem):
             # self.set_value(None)
             self.reset_to_initial_value()
 
-    def save(self):
+    def save(self, save_value=True):
         save_dict = {}
         save_dict["label"] = self.label.toPlainText()
         save_dict["socket_type"] = str(self.socket_type)
         save_dict["io"] = self.io
-        save_dict["value"] = self.get_value()
-        save_dict["initial_value"] = self.get_initial_value()
+        if save_value:
+            save_dict["value"] = self.get_value()
+            save_dict["initial_value"] = self.get_initial_value()
 
         return save_dict
 

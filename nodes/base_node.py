@@ -75,11 +75,11 @@ class BaseNode(Node):
     def get_y(self):
         return self.scenePos().y()
 
-    def set_auto_compute_on_connect(self, value):
-        self.__auto_compute_on_connect = value
-
-    def auto_compute_on_connect(self):
-        return self.__auto_compute_on_connect
+    # def set_auto_compute_on_connect(self, value):
+    #     self.__auto_compute_on_connect = value
+    #
+    # def auto_compute_on_connect(self):
+    #     return self.__auto_compute_on_connect
 
     def get_main_window(self):
         return self.scene.get_main_window()
@@ -275,17 +275,17 @@ class BaseNode(Node):
 
         return widget
 
-    def save(self):
+    def save(self, save_value=True):
         node_dict = {}
         node_dict["sockets"] = {}
         for socket in self.get_all_sockets():
-            node_dict["sockets"][socket.get_uuid(as_string=True)] = socket.save()
+            node_dict["sockets"][socket.get_uuid(as_string=True)] = socket.save(save_value=save_value)
 
         for socket in self.get_connected_output_sockets():
-            node_dict["sockets"]["outgoing_connections"] = {}
-            for socket_connection in socket.get_connections():
+            node_dict["connections"] = {}
+            for index, socket_connection in enumerate(socket.get_connections()):
                 connected_input_socket = socket_connection.get_input_socket()
-                node_dict["sockets"]["outgoing_connections"][socket.get_uuid(as_string=True)] = connected_input_socket.get_uuid(as_string=True)
+                node_dict["connections"][index] = [socket.get_uuid(as_string=True), connected_input_socket.get_uuid(as_string=True)]
 
         node_dict["uuid"] = self.get_uuid(as_string=True)
         node_dict["x"] = self.get_x()
@@ -300,7 +300,7 @@ class BaseNode(Node):
         node_dict = self.save()
         scene_dict = {}
         scene_dict[node_dict.get("uuid")] = node_dict
-        self.scene.open_network(scene_dict=scene_dict, with_values=True)
+        self.scene.open_network(scene_dict=scene_dict, with_values=True, with_connections=False)
         return node_dict
 
     def load(self, node_dict, x=None, y=None):
@@ -316,8 +316,6 @@ class BaseNode(Node):
         self.setPos(x_pos, y_pos)
         self.set_uuid(node_dict.get("uuid"))
 
-        pass
-
     def error(self, socket, text):
         logging.error("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))
 
@@ -327,7 +325,8 @@ class BaseNode(Node):
     def info(self, socket, text):
         logging.info("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))
 
-
+    def __str__(self):
+        return "%s - %s" % (self.__class__.__name__, self.get_uuid(as_string=True))
 
 
 

@@ -24,7 +24,6 @@ class SplitChannels(ImageNode):
         self.output_b.override_color(Colors.blue)
         self.output_a.override_color(Colors.gray)
 
-        self.set_auto_compute_on_connect(True)
 
     def compute(self):
         if self.input_image.is_connected():

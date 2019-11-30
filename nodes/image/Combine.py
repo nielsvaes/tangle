@@ -17,7 +17,6 @@ class Combine(ImageNode):
 
         self.input_mask.override_color(Colors.black)
 
-        self.set_auto_compute_on_connect(True)
 
     def compute(self):
         if self.background_input.is_connected() and self.foreground_input.is_connected():

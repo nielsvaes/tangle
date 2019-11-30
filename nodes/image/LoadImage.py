@@ -43,3 +43,7 @@ class LoadImage(ImageNode):
             super().compute()
             self.set_dirty(False)
 
+    def load(self, node_dict, x=None, y=None):
+        super().load(node_dict, x=x, y=y)
+
+

@@ -16,7 +16,6 @@ class Saturation(ImageNode):
         self.add_label("Saturation amount")
         self.sld_contrast_amount = self.add_slider(100, 800, 100, changed_function=self.slider_changed, released_function=self.slider_released)
 
-        self.set_auto_compute_on_connect(True)
 
     def slider_changed(self):
         self.compute(compute_next=False)
