@@ -81,7 +81,6 @@ class NodeScene(QGraphicsScene):
         if type(search_uuid) == str:
             search_uuid = uuid.UUID(search_uuid)
         for node in self.get_all_nodes():
-            socket_uuid = node.get_socket_by_uuid(search_uuid)
             socket = node.get_socket_by_uuid(search_uuid)
             if socket is not None:
                 return socket
@@ -203,13 +202,13 @@ class NodeScene(QGraphicsScene):
 
     def get_begin_nodes(self):
         start_nodes = []
-        non_executing_nodes = self.get_all_nodes()
+        all_nodes = self.get_all_nodes()
 
-        if len(non_executing_nodes) == 1:
-            return non_executing_nodes
+        if len(all_nodes) == 1:
+            return all_nodes
 
-        if len(non_executing_nodes) > 1:
-            for node in non_executing_nodes:
+        if len(all_nodes) > 1:
+            for node in all_nodes:
                 if len(node.get_connected_output_sockets()) > 0:
                     if len(node.get_connected_input_sockets()) == 0:
                         start_nodes.append(node)
@@ -221,13 +220,13 @@ class NodeScene(QGraphicsScene):
 
     def get_end_nodes(self):
         end_nodes = []
-        non_executing_nodes = self.get_all_nodes()
+        all_nodes = self.get_all_nodes()
 
-        if len(non_executing_nodes) == 1:
-            return non_executing_nodes
+        if len(all_nodes) == 1:
+            return all_nodes
 
-        if len(non_executing_nodes) > 1:
-            for node in non_executing_nodes:
+        if len(all_nodes) > 1:
+            for node in all_nodes:
                 if len(node.get_connected_input_sockets()) > 0:
                     if len(node.get_connected_output_sockets()) == 0:
                         end_nodes.append(node)
@@ -250,7 +249,7 @@ class NodeScene(QGraphicsScene):
             except Exception as err:
                 utils.trace(err)
 
-    def clear(self):
+    def clear_scene(self):
         for node in self.get_all_nodes():
             node.destroy_self()
 

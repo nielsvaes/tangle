@@ -18,7 +18,7 @@ except:
     logging.warning("Can't find qtmodern!")
     modern = False
 
-import EZSettings.ez_settings as ez_settings
+import ez_settings.ez_settings as ez_settings
 
 import nv_utils.file_utils as file_utils
 import nv_utils.qt_utils as qutils
@@ -68,7 +68,7 @@ class TangleWindow(QMainWindow):
 
         self.action_save_scene.triggered.connect(self.scene.browse_for_save_location)
         self.action_load.triggered.connect(self.scene.browse_for_saved_scene)
-        self.action_clear_scene.triggered.connect(self.scene.clear)
+        self.action_clear_scene.triggered.connect(self.scene.clear_scene)
         self.action_save_selected_nodes.triggered.connect(partial(self.scene.browse_for_save_location, True))
         self.action_duplicate_nodes.triggered.connect(self.scene.duplicate_nodes)
         self.action_delete_nodes.triggered.connect(self.scene.delete_nodes)

@@ -148,11 +148,11 @@ class BaseNode(Node):
         layout = QHBoxLayout()
         label = QLabel(label_text)
 
-        float_validator = QDoubleValidator()
-        float_validator.setDecimals(3)
+        # float_validator = QDoubleValidator()
+        # float_validator.setDecimals(3)
 
         txt_float = QLineEdit(str(number))
-        txt_float.setValidator(float_validator)
+        # txt_float.setValidator(float_validator)
 
         layout.addWidget(label)
         layout.addWidget(txt_float)
