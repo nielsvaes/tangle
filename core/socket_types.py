@@ -119,6 +119,7 @@ class FloatSocketType(BaseSocketType):
         self.reset_to_initial_value()
 
     def set_value(self, value):
+        value = round(value, 4)
         super().set_value(round(value, 4))
 
     def get_value(self):

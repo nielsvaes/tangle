@@ -18,7 +18,7 @@ except:
     logging.warning("Can't find qtmodern!")
     modern = False
 
-import ez_settings.ez_settings as ez_settings
+import EZSettings.ez_settings as ez_settings
 
 import nv_utils.file_utils as file_utils
 import nv_utils.qt_utils as qutils

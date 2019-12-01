@@ -5,7 +5,7 @@ from core import socket_types as socket_types
 class Debug(BaseNode):
     def __init__(self, scene, x=0, y=0):
         super().__init__(scene, x=x, y=y)
-        self.change_title("*DEBUG*")
+        self.change_title("Debug")
 
         self.debug_value = self.add_input(socket_types.DebugSocketType(self), "debug")
 
@@ -14,4 +14,5 @@ class Debug(BaseNode):
 
     def compute(self):
         self.debug_value.fetch_connected_value()
-        self.txt_debug.setText(str(self.debug_value.get_value()))
+        # self.txt_debug.setText(str(self.debug_value.get_value()))
+        self.txt_debug.setText(f"{self.debug_value.get_value()}")
