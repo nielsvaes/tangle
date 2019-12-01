@@ -75,12 +75,6 @@ class BaseNode(Node):
     def get_y(self):
         return self.scenePos().y()
 
-    # def set_auto_compute_on_connect(self, value):
-    #     self.__auto_compute_on_connect = value
-    #
-    # def auto_compute_on_connect(self):
-    #     return self.__auto_compute_on_connect
-
     def get_main_window(self):
         return self.scene.get_main_window()
 

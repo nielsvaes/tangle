@@ -23,7 +23,6 @@ class AddFloat(BaseNode):
         input = self.add_input(socket_types.FloatSocketType(self), next_letter)
         self.inputs.append(input)
 
-
     def compute(self):
         if self.is_dirty():
             result = 0.0
@@ -42,3 +41,10 @@ class AddFloat(BaseNode):
             self.title.setPlainText(str(result))
             self.reposition_title()
             super().compute()
+
+    def save(self):
+        node_dict = super().save()
+        node_dict["extra_inputs"] = self.inputs[1:]
+
+    def load(self, node_dict, x=None, y=None):
+        super().load(node_dict, x=x, y=y)
