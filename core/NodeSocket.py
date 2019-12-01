@@ -71,6 +71,12 @@ class NodeSocket(QGraphicsEllipseItem):
             self.reset_to_initial_value()
 
     def save(self, save_value=True):
+        """
+        Saves the socket so it can be serialized
+
+        :param save_value: [bool]  if set to yes, the value of the socket will also be saved
+        :return: a dictionary with the serialized data
+        """
         save_dict = {}
         save_dict["label"] = self.label.toPlainText()
         save_dict["socket_type"] = str(self.socket_type)
