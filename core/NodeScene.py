@@ -17,16 +17,9 @@ import core.socket_types as socket_types
 
 from .SocketConnection import SocketConnection
 
-from pydoc import locate
-
 from core.Constants import Colors
-from core.Node import Node
-
-path = os.path.join(os.path.dirname(os.path.basename(os.path.realpath(__file__))), "saved_network.json")
 
 class NodeScene(QGraphicsScene):
-    refreshed = pyqtSignal()
-
     def __init__(self):
         super(NodeScene, self).__init__()
 
@@ -37,11 +30,8 @@ class NodeScene(QGraphicsScene):
             module_path = ".".join(["nodes", module, class_name])
             node_module = importlib.import_module(module_path)
             importlib.reload(node_module)
-            # class_path = ".".join([os.path.basename(self.get_main_window().SCRIPT_FOLDER), "nodes", module, class_name, class_name])
-            # node_class = locate(class_path)
             try:
                 node_instance = getattr(node_module, class_name)(self, x, y)
-                # node_instance = node_class(self, x, y)
             except TypeError as err:
                 utils.trace(err)
         else:
@@ -72,12 +62,6 @@ class NodeScene(QGraphicsScene):
         for item in self.items():
             if type(item) == SocketConnection:
                 connections.append(item)
-
-    def get_nonexisting_name(self, name):
-        for node in self.get_all_nodes():
-            if name == node.name:
-                pass
-            #TODO: generate unique name, now battlefield
 
     def get_node_by_name(self, name):
         for node in self.get_all_nodes():
@@ -113,23 +97,9 @@ class NodeScene(QGraphicsScene):
         try:
             if node is None:
                 for begin_node in self.get_begin_nodes():
-                    # if begin_node.is_dirty():
                     print("computing begin node %s " % begin_node)
                     begin_node.set_dirty(True)
                     begin_node.compute()
-
-                    # child_nodes_are_dirty = False
-                    # for connected_node in begin_node.get_connected_output_nodes_recursive():
-                    #     if connected_node.is_dirty():
-                    #         logging.info("is dirty, needs computing: %s" % connected_node.title)
-                    #         connected_node.compute()
-                    #         child_nodes_are_dirty = True
-                    #     if child_nodes_are_dirty:
-                    #         logging.info("is a child node, needs computing: %s" % connected_node.title)
-                    #         connected_node.compute()
-                    #         continue
-
-            # self.__set_colors_computed()
 
         except Exception as err:
             utils.trace(err)
