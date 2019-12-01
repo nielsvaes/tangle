@@ -29,6 +29,7 @@ class NodeScene(QGraphicsScene):
     def add_node_to_view(self, class_name, module, x=0, y=0):
         """
         Adds a new node to the scene.
+
         :param class_name: [string/node instance] Either the name of the node or the actual instance of the node to
         be added to the scene
         :param module: [string] name of the module the node is part of (name of parent directory)
@@ -62,6 +63,7 @@ class NodeScene(QGraphicsScene):
     def get_all_nodes(self):
         """
         Returns a list of all the nodes that are currently in the scene. Nodes have to derive from BaseNode.
+
         :return: [list] BaseNode
         """
         from nodes.base_node import BaseNode
@@ -75,6 +77,7 @@ class NodeScene(QGraphicsScene):
     def get_all_connections(self):
         """
         Returns a list of all the connections that are currently in the scene
+
         :return: [list] SocketConnection
         """
         from core.SocketConnection import SocketConnection
@@ -86,6 +89,7 @@ class NodeScene(QGraphicsScene):
     def get_node_by_name(self, name):
         """
         Returns the first node that has the given name as title
+
         :param name: [string] name to search for
         :return: [BaseNode] with the given name as title or [None]
         """
@@ -97,6 +101,7 @@ class NodeScene(QGraphicsScene):
     def get_node_by_uuid(self, search_uuid):
         """
         Returns the node with the given uuid if it exists
+
         :param search_uuid: [string/uuid]
         :return: [BaseNode] or [None]
         """
@@ -110,6 +115,7 @@ class NodeScene(QGraphicsScene):
     def get_socket_by_uuid(self, search_uuid):
         """
         Returns the socket with the given uuid if it exists
+
         :param search_uuid: [string/uuid]
         :return: [NodeSocket] or [None]
         """
@@ -124,6 +130,7 @@ class NodeScene(QGraphicsScene):
     def get_view(self):
         """
         Returns the view this NodeScene is part of
+
         :return: [NodeView]
         """
         return self.views()[0]
@@ -131,6 +138,7 @@ class NodeScene(QGraphicsScene):
     def get_main_window(self):
         """
         Returns the main Tangle window
+
         :return: [QMainWindow]
         """
         return self.get_view().window()
@@ -138,6 +146,7 @@ class NodeScene(QGraphicsScene):
     def refresh_network(self, node=None):
         """
         Starts with all the starting nodes in the scene and computes all child nodes
+
         :param node: [BaseNode] if this is not None, the function will use this node as the only begin node
         :return:
         """
@@ -157,6 +166,7 @@ class NodeScene(QGraphicsScene):
     def save_network(self, selected_nodes_only=False, to_memory=False, file_path=None):
         """
         Saves the Tangle network
+
         :param selected_nodes_only: [bool] will only save the selected files
         :param to_memory: [bool] will not write the file to disk, but returns a [dict] of the mapped network. If this
         is set to True, file_path is ignored
@@ -186,6 +196,7 @@ class NodeScene(QGraphicsScene):
     def open_network(self, scene_dict=None, file_path=None, with_connections=True, with_values=True, is_duplicate=False):
         """
         Opens a Tangle network and adds the nodes to the NodeScene
+
         :param scene_dict: [dict] if file_path is set to None, the function will use this dictionary to load the scene
         :param file_path: [string] location of the .tngl file
         :param with_connections: [bool] if set to True, will also connect the nodes as they were saved
@@ -217,6 +228,7 @@ class NodeScene(QGraphicsScene):
     def load_connections(self, mapped_scene):
         """
         Will recursively find all values of the key "connections" in the given dictionary
+
         :param mapped_scene: [dictionary] to load the connections from
         :return:
         """
@@ -232,6 +244,7 @@ class NodeScene(QGraphicsScene):
     def load_nodes(self, mapped_scene, offset_nodes, with_values, new_socket_uuids=False):
         """
         Loads the nodes that are saved in the mapped_scene dictionary
+
         :param mapped_scene: [dict] that holds a saved Tangle network
         :param offset_nodes: [bool] if set to True, will add 20 pixels to the X and Y position of the node when it loads
         :param with_values: [bool] if set to True, will set the values on the sockets
@@ -281,6 +294,7 @@ class NodeScene(QGraphicsScene):
     def duplicate_nodes(self):
         """
         Duplicates the selected nodes
+
         :return:
         """
         try:
@@ -292,6 +306,7 @@ class NodeScene(QGraphicsScene):
     def get_begin_nodes(self):
         """
         Returns a list of all BaseNodes that have no input connections
+
         :return: [list]
         """
         start_nodes = []
@@ -314,6 +329,7 @@ class NodeScene(QGraphicsScene):
     def get_end_nodes(self):
         """
         Returns a list of all BaseNodes that have no output connections
+
         :return: [list]
         """
         end_nodes = []
@@ -336,6 +352,7 @@ class NodeScene(QGraphicsScene):
     def get_selected_nodes(self):
         """
         Returns all selected BaseNodes
+
         :return: [list]
         """
         from nodes.base_node import BaseNode
@@ -344,6 +361,7 @@ class NodeScene(QGraphicsScene):
     def delete_nodes(self):
         """
         Deletes the selected BaseNodes by calling destroy_self on them
+
         :return:
         """
         items = self.selectedItems()
@@ -357,6 +375,7 @@ class NodeScene(QGraphicsScene):
     def clear_scene(self):
         """
         Destroys all BaseNodes by calling destroy_self on them
+
         :return:
         """
         for node in self.get_all_nodes():
@@ -365,6 +384,7 @@ class NodeScene(QGraphicsScene):
     def browse_for_save_location(self, selected_nodes_only=False):
         """
         Opens a QFileDialog to save the Tangle network to and then saves the network
+
         :param selected_nodes_only: [bool] Only saves the selected BaseNodes
         :return:
         """
@@ -378,6 +398,7 @@ class NodeScene(QGraphicsScene):
     def browse_for_saved_scene(self):
         """
         Open a QFileDialog to open a saved Tangle network and then opens it
+
         :return:
         """
         file_path = QFileDialog.getOpenFileName(caption="Open Tangle Network", filter="Tangle files (*.tngl)")[0]
