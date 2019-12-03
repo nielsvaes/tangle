@@ -35,72 +35,7 @@
         <enum>Qt::Vertical</enum>
        </property>
        <widget class="QWidget" name="layoutWidget">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QLineEdit" name="txt_search_nodes">
-           <property name="placeholderText">
-            <string>Search node</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTreeWidget" name="tree_nodes">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>150</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">font: 9pt &quot;MS Shell Dlg 2&quot;;</string>
-           </property>
-           <property name="dragEnabled">
-            <bool>true</bool>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>false</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::SingleSelection</enum>
-           </property>
-           <property name="sortingEnabled">
-            <bool>true</bool>
-           </property>
-           <property name="animated">
-            <bool>true</bool>
-           </property>
-           <column>
-            <property name="text">
-             <string>Nodes</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>CompletePath</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>FolderName</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>ParentFolder</string>
-            </property>
-           </column>
-          </widget>
-         </item>
-        </layout>
+        <layout class="QVBoxLayout" name="node_tree_layout"/>
        </widget>
        <widget class="QScrollArea" name="scrollArea">
         <property name="widgetResizable">
@@ -111,8 +46,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1258</width>
-           <height>80</height>
+           <width>1259</width>
+           <height>75</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -140,7 +75,7 @@
      <x>0</x>
      <y>0</y>
      <width>1294</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

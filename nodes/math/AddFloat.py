@@ -44,7 +44,8 @@ class AddFloat(BaseNode):
 
     def save(self):
         node_dict = super().save()
-        node_dict["extra_inputs"] = self.inputs[1:]
+        return node_dict
+        #node_dict["extra_inputs"] = self.inputs[1:]
 
     def load(self, node_dict, x=None, y=None):
         super().load(node_dict, x=x, y=y)

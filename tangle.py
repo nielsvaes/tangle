@@ -18,7 +18,7 @@ except:
     logging.warning("Can't find qtmodern!")
     modern = False
 
-import EZSettings.ez_settings as ez_settings
+import ez_settings.ez_settings as ez_settings
 
 import nv_utils.file_utils as file_utils
 import nv_utils.qt_utils as qutils
@@ -28,27 +28,28 @@ from core.NodeScene import NodeScene
 from core.NodeView import NodeView
 from core.Constants import ss, IO
 
+from widgets.node_tree import NodeTree
+
 from viewers.image_viewer import ImageViewer
+
+SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
+UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
+SETTINGS_PATH = os.path.join(SCRIPT_FOLDER, "settings", "tangle_settings.json")
+ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
+NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
+
 
 class TangleWindow(QMainWindow):
     def __init__(self):
         super(TangleWindow, self).__init__()
-        self.SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
-        self.UI_PATH = os.path.join(self.SCRIPT_FOLDER, "ui")
-        self.SETTINGS_PATH = os.path.join(self.SCRIPT_FOLDER, "settings", "tangle_settings.json")
-        self.ICONS_PATH = os.path.join(self.SCRIPT_FOLDER, "ui", "icons")
-        self.NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
 
-        uic.loadUi(os.path.join(self.UI_PATH, "tangle.ui"), self)
+        uic.loadUi(os.path.join(UI_PATH, "tangle.ui"), self)
+        self.setWindowTitle("Tangle")
 
-        self.settings = ez_settings.EasySettings(self.SETTINGS_PATH)
+        self.settings = ez_settings.EasySettings(SETTINGS_PATH)
 
         self.build_ui()
-        self.load_node_tree()
-
         self.show()
-
-        self.setWindowTitle("Tangle")
 
     def build_ui(self):
         self.scene = NodeScene()
@@ -58,13 +59,16 @@ class TangleWindow(QMainWindow):
         self.view = NodeView(self.scene, self)
         self.main_vertical_layout.addWidget(self.view)
 
+        self.node_tree = NodeTree()
+        self.node_tree_layout.addWidget(self.node_tree)
+
         for i in range(1, 4):
-            self.tree_nodes.setColumnHidden(i, True)
+            self.node_tree.ui.tree_nodes.setColumnHidden(i, True)
 
         self.connect_ui_elements()
 
     def connect_ui_elements(self):
-        self.txt_search_nodes.textChanged.connect(self.search_node_tree)
+
 
         self.action_save_scene.triggered.connect(self.scene.browse_for_save_location)
         self.action_load.triggered.connect(self.scene.browse_for_saved_scene)
@@ -74,7 +78,7 @@ class TangleWindow(QMainWindow):
         self.action_delete_nodes.triggered.connect(self.scene.delete_nodes)
         self.action_recompute_entire_network.triggered.connect(self.scene.refresh_network)
 
-        self.action_reload_nodes.triggered.connect(self.load_node_tree)
+        self.action_reload_nodes.triggered.connect(self.node_tree.ui.load_node_tree)
         self.action_show_image_viewer.triggered.connect(partial(self.show_viewer, "image"))
 
         self.scene.selectionChanged.connect(self.load_values_ui)
@@ -82,55 +86,7 @@ class TangleWindow(QMainWindow):
         self.horizontal_splitter.setSizes([500, 100])
         self.vertical_splitter.setSizes([500, 200])
 
-    def search_node_tree(self):
-        # if self.txt_search_nodes.text()
-        search_words = self.txt_search_nodes.text().lower().split(" ")
 
-        root = self.tree_nodes.invisibleRootItem()
-        folder_count = root.childCount()
-        for i in range(folder_count):
-            folder = root.child(i)
-            item_count = folder.childCount()
-            for j in range(item_count):
-                item = folder.child(j)
-
-                hidden = False
-                for word in search_words:
-                    if not word in item.text(0).lower():
-                        hidden = True
-
-                item.setHidden(hidden)
-
-    def load_node_tree(self):
-        self.tree_nodes.clear()
-        for file_path in file_utils.get_files_recursively(self.NODE_FOLDER, filters=".py"):
-            if file_path is not None and not "__" in file_path and not "base_node" in file_path and not file_path.endswith(
-                    "pyc") and not "image_node" in file_path:
-
-                file_name = os.path.basename(file_path)
-                file_name_no_ext = os.path.splitext(file_name)[0]
-                icon_path = os.path.join(self.ICONS_PATH, file_name_no_ext + ".png")
-                complete_folder = os.path.dirname(file_path)
-                folder_name = complete_folder.split(os.sep)[-1]
-                parent_folder = os.sep.join(complete_folder.split(os.sep)[0:-1])
-                parent_folder_name = parent_folder.split(os.sep)[-1]
-                complete_path = os.path.join(complete_folder, file_name).replace("\\", "/")
-
-                folder_item = qutils.get_item_with_text_from_tree_widget(self.tree_nodes, folder_name, 0)
-
-                if folder_item is None:
-                    folder_item = QTreeWidgetItem(self.tree_nodes, [folder_name])
-                    font = QFont()
-                    font.setBold(True)
-                    font.setPointSize(12)
-                    folder_item.setFont(0, font)
-                    folder_item.setExpanded(True)
-
-                file_item = QTreeWidgetItem(folder_item,
-                                            [file_name_no_ext, complete_path, complete_folder, folder_name])
-
-                if os.path.isfile(icon_path):
-                    file_item.setIcon(0, QIcon(icon_path))
 
     def show_viewer(self, viewer_type):
         if viewer_type == "image":
@@ -187,6 +143,7 @@ class TitleLabel(QLineEdit):
     def delete_ui(self):
         self.setParent(None)
         self.deleteLater()
+
 
 
 if __name__ == "__main__":

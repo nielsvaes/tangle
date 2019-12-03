@@ -17,6 +17,8 @@ import core.socket_types as socket_types
 
 from .SocketConnection import SocketConnection
 
+from widgets.node_tree import NodeTree
+
 from core.Constants import Colors
 
 class NodeScene(QGraphicsScene):
@@ -405,6 +407,9 @@ class NodeScene(QGraphicsScene):
         if file_path != "":
             self.open_network(file_path=file_path)
 
+    def show_node_tree_widget(self):
+        pass
+
     def dragMoveEvent(self, event):
         event.accept()
 
@@ -438,6 +443,9 @@ class NodeScene(QGraphicsScene):
 
         if event.key() == Qt.Key_I:
             self.get_main_window().show_viewer("image")
+
+        if event.key() == Qt.Key_F and event.modifiers() == Qt.ControlModifier:
+            self.show_node_tree_widget()
 
     def set_colors_dirty(self):
         dirty_node_exists = False
