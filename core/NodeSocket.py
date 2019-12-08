@@ -94,9 +94,9 @@ class NodeSocket(QGraphicsEllipseItem):
 
     def get_center_point(self):
         if self.io == IO.input:
-            return QPointF(self.scenePos().x() + self.rect.left(), self.scenePos().y() + self.rect.bottom() / 2)
+            return QPointF(self.scenePos().x(), self.scenePos().y() + nc.socket_size / 2)
         else:
-            return QPointF(self.scenePos().x() + self.rect.right(), self.scenePos().y() + self.rect.bottom() / 2)
+            return QPointF(self.scenePos().x() + nc.socket_size, self.scenePos().y() + nc.socket_size / 2)
 
     def get_connected_sockets(self):
         connected_sockets = []
