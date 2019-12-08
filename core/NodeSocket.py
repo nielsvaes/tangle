@@ -256,6 +256,6 @@ class NodeSocket(QGraphicsEllipseItem):
 
         self.setPos(self.position)
 
-        self.setZValue(nc.node_z_depth)
+        self.setZValue(nc.socket_z_depth)
 
         self.scene.addItem(self)

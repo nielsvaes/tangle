@@ -24,11 +24,13 @@ class GroupNode(QGraphicsRectItem):
         self.horizontal_offset = self.offset / 2
         self.vertical_offset = nc.title_background_height + (self.offset / 2)
 
-        self.__draw()
+        self.draw()
 
         self.scene.addItem(self)
+        self.setZValue(nc.group_z_depth)
 
         self.parent_nodes()
+        # self.setFlag(QGraphicsItem.ItemStacksBehindParent)
 
     def parent_nodes(self):
         for node in self.nodes:
@@ -36,7 +38,6 @@ class GroupNode(QGraphicsRectItem):
             for socket in node.get_all_connected_sockets():
                 for connection in socket.get_connections():
                     connection.setParentItem(self)
-
 
     def get_group_rect(self):
         rect = QRectF()
@@ -48,16 +49,17 @@ class GroupNode(QGraphicsRectItem):
         rect.setLeft(rect.left() - self.horizontal_offset)
         rect.setTop(rect.top() - self.vertical_offset)
 
-        return rect
+        return [rect.x(), rect.y(), rect.width(), rect.height()]
 
-    def __draw(self, ):
-        self.setRect(self.get_group_rect())
+    def draw(self, ):
+        x, y, width, height = self.get_group_rect()
+        self.setRect(0, 0, width, height)
 
         self.setFlag(QGraphicsRectItem.ItemIsSelectable)
         self.setFlag(QGraphicsRectItem.ItemIsMovable)
         self.setFlag(QGraphicsRectItem.ItemSendsGeometryChanges)
 
-        self.setZValue(nc.group_z_depth)
+        self.setPos(x, y)
 
         self.setAcceptHoverEvents(True)
 
@@ -76,14 +78,4 @@ class GroupNode(QGraphicsRectItem):
         brush.setColor(Colors.group_background)
         self.setBrush(brush)
 
-
         super().paint(painter, option, widget)
-
-    # def itemChange(self, change, value):
-    #     # for node in self.nodes:
-    #     #     node.itemChange(change, value)
-    #         # for socket in node.get_all_sockets():
-    #         #     for connection in socket.get_connections():
-    #         #         connection.redraw()
-    #
-    #     return QGraphicsRectItem.itemChange(self, change, value)

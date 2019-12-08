@@ -16,6 +16,7 @@ import nv_utils.io_utils as io_utils
 import core.socket_types as socket_types
 
 from .SocketConnection import SocketConnection
+from .GroupNode import GroupNode
 
 from widgets.node_tree import NodeTree
 
@@ -407,8 +408,11 @@ class NodeScene(QGraphicsScene):
         if file_path != "":
             self.open_network(file_path=file_path)
 
-    def show_node_tree_widget(self):
-        pass
+    def group_nodes(self):
+        try:
+            group_node = GroupNode(self, self.get_selected_nodes())
+        except Exception as err:
+            utils.trace(err)
 
     def dragMoveEvent(self, event):
         event.accept()
@@ -444,8 +448,8 @@ class NodeScene(QGraphicsScene):
         if event.key() == Qt.Key_I:
             self.get_main_window().show_viewer("image")
 
-        if event.key() == Qt.Key_F and event.modifiers() == Qt.ControlModifier:
-            self.show_node_tree_widget()
+        if event.key() == Qt.Key_G and event.modifiers() == Qt.ControlModifier:
+            self.group_nodes()
 
     def set_colors_dirty(self):
         dirty_node_exists = False

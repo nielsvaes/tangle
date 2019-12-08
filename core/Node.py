@@ -29,7 +29,7 @@ class Node(QGraphicsRectItem):
         self.start_x_pos = x
         self.start_y_pos = y
 
-        self.__draw()
+        self.draw()
 
         self.title_background_color = title_background_color
         self.title = self.__add_title(title)
@@ -359,20 +359,9 @@ class Node(QGraphicsRectItem):
 
     def itemChange(self, change, value):
         try:
-            for socket in self.__output_sockets:
-                for connection in socket.connections:
+            for socket in self.get_all_sockets():
+                for connection in socket.get_connections():
                     connection.redraw()
-
-            for socket in self.__input_sockets:
-                for connection in socket.connections:
-                    connection.redraw()
-
-            if self.execution_input_socket.connection is not None:
-                self.execution_input_socket.connection.redraw()
-
-            if self.execution_output_socket.connection is not None:
-                self.execution_output_socket.connection.redraw()
-
 
         except Exception  as err:
             pass
@@ -392,7 +381,7 @@ class Node(QGraphicsRectItem):
 
         super(Node, self).paint(painter, option, widget)
 
-    def __draw(self, ):
+    def draw(self):
         self.node_rect = QRectF(0, 0, nc.node_item_width, self.height)
         self.setRect(self.node_rect)
 
@@ -402,7 +391,7 @@ class Node(QGraphicsRectItem):
         self.setFlag(QGraphicsRectItem.ItemIsMovable)
         self.setFlag(QGraphicsRectItem.ItemSendsGeometryChanges)
 
-        self.setZValue(100)
+        self.setZValue(nc.node_item_z_depth)
         self.setPos(self.start_x_pos, self.start_y_pos)
 
         self.setAcceptHoverEvents(True)
