@@ -73,6 +73,7 @@ class TangleWindow(QMainWindow):
         self.action_clear_scene.triggered.connect(self.scene.clear_scene)
         self.action_save_selected_nodes.triggered.connect(partial(self.scene.browse_for_save_location, True))
         self.action_duplicate_nodes.triggered.connect(self.scene.duplicate_nodes)
+        self.action_group_ungroup_nodes.triggered.connect(self.scene.group_nodes)
         self.action_delete_nodes.triggered.connect(self.scene.delete_nodes)
         self.action_recompute_entire_network.triggered.connect(self.scene.refresh_network)
 
@@ -92,24 +93,25 @@ class TangleWindow(QMainWindow):
 
     def load_values_ui(self):
         from nodes.base_node import BaseNode
+        from core.GroupNode import GroupNode
         qutils.clear_layout(self.values_layout)
 
         selected_items = self.scene.selectedItems()
         if len(selected_items) > 0:
             for node in selected_items:
-                if issubclass(type(node), BaseNode):
+                if issubclass(type(node), BaseNode) or type(node) == GroupNode:
                     node.refresh()
 
-                    title_label = TitleLabel()
-                    title_label.setText(node.name)
-                    title_label.setStyleSheet(ss.values_title)
-                    title_label.setAlignment(Qt.AlignCenter)
-                    title_label.node = node
+                    # title_label = TitleLabel()
+                    # title_label.setText(node.name)
+                    # title_label.setStyleSheet(ss.values_title)
+                    # title_label.setAlignment(Qt.AlignCenter)
+                    # title_label.node = node
+                    #
+                    # title_label.textChanged.connect(partial(self.change_node_title, title_label))
+                    # title_label.returnPressed.connect(title_label.node.reposition_title)
 
-                    title_label.textChanged.connect(partial(self.change_node_title, title_label))
-                    title_label.returnPressed.connect(title_label.node.reposition_title)
-
-                    self.values_layout.insertWidget(self.values_layout.count(), title_label)
+                    # self.values_layout.insertWidget(self.values_layout.count(), title_label)
                     widget = node.get_ui()
 
                     self.values_layout.insertWidget(self.values_layout.count() + 1, widget)

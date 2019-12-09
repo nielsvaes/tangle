@@ -1,10 +1,8 @@
-import os
 import sys
 import importlib
 import logging
 logging.basicConfig(level=logging.INFO)
 
-import re
 import uuid
 
 from PyQt5.QtWidgets import *
@@ -17,8 +15,7 @@ import core.socket_types as socket_types
 
 from .SocketConnection import SocketConnection
 from .GroupNode import GroupNode
-
-from widgets.node_tree import NodeTree
+from nodes.base_node import BaseNode
 
 from core.Constants import Colors
 
@@ -358,8 +355,10 @@ class NodeScene(QGraphicsScene):
 
         :return: [list]
         """
-        from nodes.base_node import BaseNode
         return [item for item in self.selectedItems() if issubclass(type(item), BaseNode)]
+
+    def get_selected_group_nodes(self):
+        return [item for item in self.selectedItems() if type(item) == GroupNode]
 
     def delete_nodes(self):
         """
@@ -410,9 +409,10 @@ class NodeScene(QGraphicsScene):
 
     def group_nodes(self):
         try:
-            selected_nodes = self.get_selected_nodes()
-            self.clearSelection()
-            group_node = GroupNode(self, selected_nodes)
+            for group_node in self.get_selected_group_nodes():
+                group_node.destroy_self()
+
+            group_node = GroupNode(self, self.get_selected_nodes())
         except Exception as err:
             utils.trace(err)
 

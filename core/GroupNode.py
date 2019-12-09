@@ -2,13 +2,14 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+import uuid
+
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
 import nv_utils.utils as utils
 
 from .Constants import nc, Colors, IO
-from nodes.base_node import BaseNode
 
 class GroupNode(QGraphicsRectItem):
     def __init__(self, scene, nodes, x=0, y=0):
@@ -16,7 +17,9 @@ class GroupNode(QGraphicsRectItem):
         self.mouse_over = False
 
         self.scene = scene
-        self.nodes = nodes
+        self.__nodes = nodes
+
+        self.__uuid = uuid.uuid4()
 
         self.offset = 30
         self.horizontal_offset = self.offset / 2
@@ -26,7 +29,7 @@ class GroupNode(QGraphicsRectItem):
         self.scene.addItem(self)
         self.setZValue(nc.group_z_depth)
 
-        self.color = QColor(127, 0, 0, 35)
+        self.__color = QColor(127, 0, 0, 35)
 
         self.parent_nodes()
 
@@ -46,12 +49,20 @@ class GroupNode(QGraphicsRectItem):
         return widget
 
     def get_nodes(self):
-        return self.nodes
+        return self.__nodes
+
+    def get_uuid(self, as_string=False):
+        if as_string:
+            return str(self.__uuid)
+        return self.__uuid
+
+    def get_color(self):
+        return self.__color
 
     def pick_color(self):
         color_dialog = QColorDialog()
         color = color_dialog.getColor()
-        self.color = QColor(color.red(), color.green(), color.blue(), 35)
+        self.__color = QColor(color.red(), color.green(), color.blue(), 35)
 
         self.__set_normal_colors()
 
@@ -102,7 +113,7 @@ class GroupNode(QGraphicsRectItem):
         self.setPen(pen)
         brush = QBrush()
         brush.setStyle(Qt.SolidPattern)
-        brush.setColor(self.color)
+        brush.setColor(self.__color)
         self.setBrush(brush)
 
     def __set_hover_colors(self):
@@ -113,7 +124,7 @@ class GroupNode(QGraphicsRectItem):
         self.setPen(pen)
         brush = QBrush()
         brush.setStyle(Qt.SolidPattern)
-        brush.setColor(self.color)
+        brush.setColor(self.__color)
         self.setBrush(brush)
 
     def __set_selected_colors(self):
@@ -124,7 +135,7 @@ class GroupNode(QGraphicsRectItem):
         self.setPen(pen)
         brush = QBrush()
         brush.setStyle(Qt.SolidPattern)
-        brush.setColor(self.color)
+        brush.setColor(self.__color)
         self.setBrush(brush)
 
     def itemChange(self, *args, **kwargs):

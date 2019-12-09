@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>coco_edit_window</class>
- <widget class="QMainWindow" name="coco_edit_window">
+ <class>tangle_window</class>
+ <widget class="QMainWindow" name="tangle_window">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Coco Edit by @cocoyosoy</string>
+   <string>Tangle by Niels Vaes</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -46,8 +46,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1259</width>
-           <height>75</height>
+           <width>1170</width>
+           <height>784</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -75,7 +75,7 @@
      <x>0</x>
      <y>0</y>
      <width>1294</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -91,6 +91,8 @@
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="action_reload_nodes"/>
+    <addaction name="separator"/>
+    <addaction name="action_about"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -118,6 +120,8 @@
     <addaction name="action_save_selected_nodes"/>
     <addaction name="action_duplicate_nodes"/>
     <addaction name="action_delete_nodes"/>
+    <addaction name="separator"/>
+    <addaction name="action_group_ungroup_nodes"/>
     <addaction name="separator"/>
     <addaction name="action_recompute_entire_network"/>
    </widget>
@@ -222,6 +226,22 @@
   <action name="action_recompute_entire_network">
    <property name="text">
     <string>Re-compute entire network</string>
+   </property>
+  </action>
+  <action name="action_group_ungroup_nodes">
+   <property name="text">
+    <string>Group/ungroup selected nodes</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>About...</string>
    </property>
   </action>
  </widget>
