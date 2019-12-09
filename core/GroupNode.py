@@ -8,6 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 import nv_utils.utils as utils
 
 from .Constants import nc, Colors, IO
+from nodes.base_node import BaseNode
 
 class GroupNode(QGraphicsRectItem):
     def __init__(self, scene, nodes, x=0, y=0):
@@ -18,24 +19,60 @@ class GroupNode(QGraphicsRectItem):
         self.nodes = nodes
 
         self.offset = 30
-
         self.horizontal_offset = self.offset / 2
         self.vertical_offset = nc.title_background_height + (self.offset / 2)
 
         self.draw()
-
         self.scene.addItem(self)
         self.setZValue(nc.group_z_depth)
 
+        self.color = QColor(127, 0, 0, 35)
+
         self.parent_nodes()
 
+    def get_ui(self):
+        widget = QWidget()
+        layout = QVBoxLayout()
+        widget.setLayout(layout)
+
+        btn_pick_color = QPushButton("Pick color")
+        btn_pick_color.clicked.connect(self.pick_color)
+        layout.addWidget(btn_pick_color)
+
+        btn_ungroup = QPushButton("Ungroup")
+        btn_ungroup.clicked.connect(self.destroy_self)
+        layout.addWidget(btn_ungroup)
+
+        return widget
+
+    def get_nodes(self):
+        return self.nodes
+
+    def pick_color(self):
+        color_dialog = QColorDialog()
+        color = color_dialog.getColor()
+        self.color = QColor(color.red(), color.green(), color.blue(), 35)
+
+        self.__set_normal_colors()
+
+    def destroy_self(self):
+        for node in self.get_nodes():
+            scene_pos = node.scenePos()
+            node.setParentItem(None)
+            node.setPos(scene_pos)
+
+        self.scene.removeItem(self)
+
+    def refresh(self):
+        pass
+
     def parent_nodes(self):
-        for node in self.nodes:
+        for node in self.get_nodes():
             node.setParentItem(self)
 
     def get_group_rect(self):
         rect = QRectF()
-        for node in self.nodes:
+        for node in self.get_nodes():
             rect = rect.united(node.mapRectToScene(node.rect()))
 
         rect.setHeight(rect.height() + nc.title_background_height + self.offset)
@@ -65,7 +102,7 @@ class GroupNode(QGraphicsRectItem):
         self.setPen(pen)
         brush = QBrush()
         brush.setStyle(Qt.SolidPattern)
-        brush.setColor(Colors.group_background)
+        brush.setColor(self.color)
         self.setBrush(brush)
 
     def __set_hover_colors(self):
@@ -76,7 +113,7 @@ class GroupNode(QGraphicsRectItem):
         self.setPen(pen)
         brush = QBrush()
         brush.setStyle(Qt.SolidPattern)
-        brush.setColor(Colors.group_background)
+        brush.setColor(self.color)
         self.setBrush(brush)
 
     def __set_selected_colors(self):
@@ -87,13 +124,12 @@ class GroupNode(QGraphicsRectItem):
         self.setPen(pen)
         brush = QBrush()
         brush.setStyle(Qt.SolidPattern)
-        brush.setColor(Colors.group_background)
+        brush.setColor(self.color)
         self.setBrush(brush)
-
 
     def itemChange(self, *args, **kwargs):
         try:
-            for node in self.nodes:
+            for node in self.get_nodes():
                 node.itemChange(*args, **kwargs)
         except Exception as err:
             utils.trace(err)
