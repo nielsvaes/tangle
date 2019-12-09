@@ -68,8 +68,6 @@ class TangleWindow(QMainWindow):
         self.connect_ui_elements()
 
     def connect_ui_elements(self):
-
-
         self.action_save_scene.triggered.connect(self.scene.browse_for_save_location)
         self.action_load.triggered.connect(self.scene.browse_for_saved_scene)
         self.action_clear_scene.triggered.connect(self.scene.clear_scene)

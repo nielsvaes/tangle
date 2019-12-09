@@ -170,7 +170,7 @@ class Node(QGraphicsRectItem):
 
     def get_all_input_sockets(self):
         return self.__input_sockets
-    
+
     def get_all_output_sockets(self):
         return self.__output_sockets
 
@@ -281,7 +281,7 @@ class Node(QGraphicsRectItem):
         for socket in self.get_all_input_sockets():
             input_socket_types.append(socket.socket_type)
         return input_socket_types
-        
+
     def get_output_socket_types(self):
         output_socket_types = []
         for socket in self.get_all_output_sockets():
@@ -300,9 +300,6 @@ class Node(QGraphicsRectItem):
         for socket in self.get_all_sockets():
             for connection in socket.connections:
                 all_connections.append(connection)
-
-            #socket.socket_type.destroy_ui()
-            #del socket.socket_type
 
         for connection in all_connections:
             logging.info("Destroying %s" % connection)

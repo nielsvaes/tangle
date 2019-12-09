@@ -4,18 +4,16 @@ from PyQt5.QtCore import *
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
-import uuid
 
 import nv_utils.utils as utils
 
 from .Constants import nc, Colors, IO
-from .NodeTitle import NodeTitle
-from .NodeSocket import NodeSocket
-from .NodeTitleBackground import NodeTitleBackground
 
 class GroupNode(QGraphicsRectItem):
     def __init__(self, scene, nodes, x=0, y=0):
         super().__init__()
+        self.mouse_over = False
+
         self.scene = scene
         self.nodes = nodes
 
@@ -30,14 +28,10 @@ class GroupNode(QGraphicsRectItem):
         self.setZValue(nc.group_z_depth)
 
         self.parent_nodes()
-        # self.setFlag(QGraphicsItem.ItemStacksBehindParent)
 
     def parent_nodes(self):
         for node in self.nodes:
             node.setParentItem(self)
-            for socket in node.get_all_connected_sockets():
-                for connection in socket.get_connections():
-                    connection.setParentItem(self)
 
     def get_group_rect(self):
         rect = QRectF()
@@ -53,29 +47,79 @@ class GroupNode(QGraphicsRectItem):
 
     def draw(self, ):
         x, y, width, height = self.get_group_rect()
-        self.setRect(0, 0, width, height)
+        self.setRect(x, y, width, height)
 
         self.setFlag(QGraphicsRectItem.ItemIsSelectable)
         self.setFlag(QGraphicsRectItem.ItemIsMovable)
         self.setFlag(QGraphicsRectItem.ItemSendsGeometryChanges)
 
-        self.setPos(x, y)
-
         self.setAcceptHoverEvents(True)
 
         self.update()
 
-    def paint(self, painter, option, widget):
-        option.state = QStyle.State_NoChange
-
+    def __set_normal_colors(self):
         pen = QPen()
         pen.setStyle(Qt.DotLine)
         pen.setWidth(1)
+        pen.setColor(Colors.node_normal_border)
+        self.setPen(pen)
+        brush = QBrush()
+        brush.setStyle(Qt.SolidPattern)
+        brush.setColor(Colors.group_background)
+        self.setBrush(brush)
+
+    def __set_hover_colors(self):
+        pen = QPen()
+        pen.setStyle(Qt.DotLine)
+        pen.setWidth(1)
+        pen.setColor(Colors.node_hover_border)
+        self.setPen(pen)
+        brush = QBrush()
+        brush.setStyle(Qt.SolidPattern)
+        brush.setColor(Colors.group_background)
+        self.setBrush(brush)
+
+    def __set_selected_colors(self):
+        pen = QPen()
+        pen.setStyle(Qt.DotLine)
+        pen.setWidth(nc.node_item_border_width_selected)
         pen.setColor(Colors.node_selected_border)
         self.setPen(pen)
         brush = QBrush()
         brush.setStyle(Qt.SolidPattern)
         brush.setColor(Colors.group_background)
         self.setBrush(brush)
+
+
+    def itemChange(self, *args, **kwargs):
+        try:
+            for node in self.nodes:
+                node.itemChange(*args, **kwargs)
+        except Exception as err:
+            utils.trace(err)
+        finally:
+            return QGraphicsRectItem.itemChange(self, *args, **kwargs)
+
+    def hoverEnterEvent(self, event):
+        self.mouse_over = True
+        self.update()
+
+        super().hoverEnterEvent(event)
+
+    def hoverLeaveEvent(self, event):
+        self.mouse_over = False
+        self.update()
+
+        super().hoverLeaveEvent(event)
+
+    def paint(self, painter, option, widget):
+        option.state = QStyle.State_NoChange
+
+        if self.isSelected():
+            self.__set_selected_colors()
+        elif self.mouse_over:
+            self.__set_hover_colors()
+        else:
+            self.__set_normal_colors()
 
         super().paint(painter, option, widget)

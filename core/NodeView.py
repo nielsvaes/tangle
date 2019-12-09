@@ -17,8 +17,8 @@ class NodeView(QGraphicsView):
 
         self.zoom = 5
 
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        # self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        # self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.setDragMode(QGraphicsView.RubberBandDrag)
 

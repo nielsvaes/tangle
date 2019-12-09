@@ -19,7 +19,7 @@ class Colors():
     node_hover_background    = QColor(75, 75, 75, 255)
     node_selected_background = QColor(75, 75, 75, 255)
 
-    group_background         = QColor(55, 55, 55, 150)
+    group_background         = QColor(50, 0, 0, 127)
 
     connection_normal        = QColor(150, 150, 150, 255)
     connection_hover         = QColor(199, 168, 58, 255)
@@ -93,12 +93,12 @@ class NumberConstants():
     socket_size          = 20
     socket_label_spacing = socket_size * 1.1
     socket_spacing       = 5
-    socket_z_depth = 110
+    socket_z_depth       = 110
 
     connection_z_depth_normal = 1
     connection_z_depth_hover  = 50
 
-    group_z_depth = -2
+    group_z_depth = 0
 
     connection_cv_offset = 30
 

@@ -410,7 +410,9 @@ class NodeScene(QGraphicsScene):
 
     def group_nodes(self):
         try:
-            group_node = GroupNode(self, self.get_selected_nodes())
+            selected_nodes = self.get_selected_nodes()
+            self.clearSelection()
+            group_node = GroupNode(self, selected_nodes)
         except Exception as err:
             utils.trace(err)
 
@@ -425,7 +427,7 @@ class NodeScene(QGraphicsScene):
             x = event.scenePos().x()
             y = event.scenePos().y()
 
-            self.add_node_to_view(class_name, module, x, y)
+            dropped_node = self.add_node_to_view(class_name, module, x, y)
         except Exception as err:
             utils.trace(err)
 
