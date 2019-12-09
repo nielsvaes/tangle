@@ -29,10 +29,10 @@ class Node(QGraphicsRectItem):
         self.start_x_pos = x
         self.start_y_pos = y
 
-        self.draw()
-
         self.title_background_color = title_background_color
         self.title = self.__add_title(title)
+
+        self.draw()
 
         self.__uuid = uuid.uuid4()
 
@@ -415,6 +415,8 @@ class Node(QGraphicsRectItem):
         brush.setColor(Colors.node_normal_background)
         self.setBrush(brush)
 
+        self.node_title_background.setPen(pen)
+
     def __set_hover_colors(self):
         pen = QPen()
         pen.setStyle(Qt.SolidLine)
@@ -425,6 +427,8 @@ class Node(QGraphicsRectItem):
         brush.setStyle(Qt.SolidPattern)
         brush.setColor(Colors.node_hover_background)
         self.setBrush(brush)
+
+        self.node_title_background.setPen(pen)
 
     def __set_selected_colors(self):
         pen = QPen()
@@ -437,6 +441,8 @@ class Node(QGraphicsRectItem):
         brush.setColor(Colors.node_selected_background)
         self.setBrush(brush)
 
+        self.node_title_background.setPen(pen)
+
     def __add_title(self, title):
         node_title = NodeTitle(title, font_size=self.title_label_size)
 
@@ -445,6 +451,6 @@ class Node(QGraphicsRectItem):
 
         self.reposition_title(title=node_title)
 
-        background = NodeTitleBackground(self.scene, self, self.title_background_color)
+        self.node_title_background = NodeTitleBackground(self.scene, self, self.title_background_color)
 
         return node_title
