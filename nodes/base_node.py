@@ -78,12 +78,6 @@ class BaseNode(Node):
     def get_main_window(self):
         return self.scene.get_main_window()
 
-    def set_uuid(self, new_uuid):
-        if type(new_uuid) == str:
-            new_uuid = uuid.UUID(new_uuid)
-        self.lbl_uuid.setText(str(new_uuid))
-        self.__uuid = new_uuid
-
     def add_button(self, button_text, clicked_function):
         button = QPushButton(button_text)
         button.clicked.connect(clicked_function)

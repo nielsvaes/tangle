@@ -12,9 +12,12 @@ import nv_utils.utils as utils
 from .Constants import nc, Colors, IO
 
 class GroupNode(QGraphicsRectItem):
-    def __init__(self, scene, nodes, x=0, y=0):
+    def __init__(self, scene, nodes):
         super().__init__()
         self.mouse_over = False
+
+        self.x = 0
+        self.y = 0
 
         self.scene = scene
         self.__nodes = nodes
@@ -56,6 +59,9 @@ class GroupNode(QGraphicsRectItem):
             return str(self.__uuid)
         return self.__uuid
 
+    def set_color(self, color):
+        self.__color = color
+
     def get_color(self):
         return self.__color
 
@@ -91,9 +97,12 @@ class GroupNode(QGraphicsRectItem):
         rect.setLeft(rect.left() - self.horizontal_offset)
         rect.setTop(rect.top() - self.vertical_offset)
 
+        self.x = rect.x()
+        self.y = rect.y()
+
         return [rect.x(), rect.y(), rect.width(), rect.height()]
 
-    def draw(self, ):
+    def draw(self):
         x, y, width, height = self.get_group_rect()
         self.setRect(x, y, width, height)
 
@@ -104,6 +113,17 @@ class GroupNode(QGraphicsRectItem):
         self.setAcceptHoverEvents(True)
 
         self.update()
+
+    def save(self):
+        group_node_dict = {}
+        group_node_dict["x"] = self.x
+        group_node_dict["y"] = self.y
+        group_node_dict["color"] = [self.get_color().red(), self.get_color().green(), self.get_color().blue(), self.get_color().alpha()]
+        group_node_dict["uuid"] = self.get_uuid(as_string=True)
+        group_node_dict["nodes"] = [node.get_uuid(as_string=True) for node in self.get_nodes()]
+        group_node_dict["class_name"] = "GroupNode"
+
+        return group_node_dict
 
     def __set_normal_colors(self):
         pen = QPen()

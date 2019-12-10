@@ -60,13 +60,24 @@ class NodeScene(QGraphicsScene):
             node_instance.set_module_path(module_path)
             return node_instance
 
+    def get_all_group_nodes(self):
+        """
+        Returns a list of all the GroupNodes in the scene
+
+        :return: [list] GroupNode
+        """
+        group_nodes = []
+        for item in self.items():
+            if type(item) == GroupNode:
+                group_nodes.append(item)
+        return group_nodes
+
     def get_all_nodes(self):
         """
         Returns a list of all the nodes that are currently in the scene. Nodes have to derive from BaseNode.
 
         :return: [list] BaseNode
         """
-        from nodes.base_node import BaseNode
         nodes = []
         for item in self.items():
             if issubclass(type(item), BaseNode):
@@ -175,14 +186,20 @@ class NodeScene(QGraphicsScene):
         """
         try:
             save_dict = {}
+            save_dict["group_nodes"] = {}
 
             if selected_nodes_only:
                 nodes = self.get_selected_nodes()
+                group_nodes = self.get_selected_group_nodes()
             else:
                 nodes = self.get_all_nodes()
+                group_nodes = self.get_all_group_nodes()
 
             for node in nodes:
                 save_dict[node.get_uuid(as_string=True)] = node.save()
+
+            for group_node in group_nodes:
+                save_dict["group_nodes"][group_node.get_uuid(as_string=True)] = group_node.save()
 
             if to_memory:
                 return save_dict
@@ -216,6 +233,8 @@ class NodeScene(QGraphicsScene):
             scene_dict = io_utils.read_json(file_path)
 
         self.load_nodes(scene_dict, offset_nodes, with_values, new_socket_uuids=is_duplicate)
+        m = self.get_all_nodes()
+        self.load_group_nodes(scene_dict)
 
         if with_connections:
             self.load_connections(scene_dict)
@@ -290,6 +309,20 @@ class NodeScene(QGraphicsScene):
                             socket.set_initial_value(initial_value)
                             socket.set_value(value)
                             node.compute()
+
+    def load_group_nodes(self, mapped_scene):
+        group_nodes_dict = mapped_scene.get("group_nodes")
+        if group_nodes_dict is not None:
+            for _, group_node_dict in group_nodes_dict.items():
+                color = QColor(group_node_dict.get("color")[0],
+                               group_node_dict.get("color")[1],
+                               group_node_dict.get("color")[2],
+                               group_node_dict.get("color")[3])
+                nodes = []
+                for node_uuid in group_node_dict.get("nodes"):
+                    nodes.append(self.get_node_by_uuid(node_uuid))
+                group_node = GroupNode(self, nodes)
+                group_node.set_color(color)
 
     def duplicate_nodes(self):
         """
@@ -383,6 +416,9 @@ class NodeScene(QGraphicsScene):
         for node in self.get_all_nodes():
             node.destroy_self()
 
+        for group_node in self.get_all_group_nodes():
+            group_node.destroy_self()
+
     def browse_for_save_location(self, selected_nodes_only=False):
         """
         Opens a QFileDialog to save the Tangle network to and then saves the network
@@ -413,6 +449,8 @@ class NodeScene(QGraphicsScene):
                 group_node.destroy_self()
 
             group_node = GroupNode(self, self.get_selected_nodes())
+            self.clearSelection()
+            group_node.setSelected(True)
         except Exception as err:
             utils.trace(err)
 
