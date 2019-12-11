@@ -49,7 +49,8 @@ class Node(QGraphicsRectItem):
 
         label = NodeTitle(output_name, font_size=self.socket_label_size)
 
-        socket_y_position = self.boundingRect().top() + ((nc.socket_size + 5) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * nc.socket_size + 5)
+        # socket_y_position = self.boundingRect().top() + (nc.socket_size + 5) - (self.__num_input_output_sockets * nc.socket_size + 5)
+        socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * len(self.get_all_output_sockets())
 
         socket_position = QPointF(self.boundingRect().right() - nc.socket_size / 2, socket_y_position)
         socket = NodeSocket(IO.output, socket_type, label, self.scene, position=socket_position)
@@ -81,7 +82,8 @@ class Node(QGraphicsRectItem):
 
         label = NodeTitle(input_name, font_size=self.socket_label_size)
 
-        socket_y_position = self.boundingRect().top() + ((nc.socket_size + nc.socket_spacing) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * nc.socket_size + nc.socket_spacing)
+        # socket_y_position = self.boundingRect().top() + (nc.socket_size + nc.socket_spacing) - (self.__num_input_output_sockets * nc.socket_size + nc.socket_spacing)
+        socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * len(self.get_all_input_sockets())
 
         socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, socket_y_position)
         socket = NodeSocket(IO.input, socket_type, label, self.scene, position=socket_position)
@@ -113,13 +115,14 @@ class Node(QGraphicsRectItem):
 
         label = NodeTitle(input_output_name, font_size=self.socket_label_size)
 
-        socket_y_position = self.boundingRect().top() + ((nc.socket_size + nc.socket_spacing) * len(self.get_all_sockets()) + self.socket_offset_from_top) - (self.__num_input_output_sockets * (nc.socket_size + nc.socket_spacing))
+        output_socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * len(self.get_all_output_sockets())
+        input_socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * len(self.get_all_input_sockets())
 
-        input_socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, socket_y_position)
+        input_socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, input_socket_y_position)
         input_socket = NodeSocket(IO.input, socket_type, label, self.scene, position=input_socket_position)
         input_socket.socket_type = socket_type
 
-        output_socket_position = QPointF(self.boundingRect().right() - nc.socket_size / 2, socket_y_position)
+        output_socket_position = QPointF(self.boundingRect().right() - nc.socket_size / 2, output_socket_y_position)
         output_socket = NodeSocket(IO.output, socket_type, label, self.scene, position=output_socket_position)
         output_socket.socket_type = socket_type
 
@@ -401,8 +404,10 @@ class Node(QGraphicsRectItem):
         self.update()
 
     def __resize(self):
-        total_sockets = len(self.get_all_sockets())
-        new_height = (nc.socket_size * 1.5 * total_sockets) + self.height + (nc.socket_size * 1.1)  - (self.__num_input_output_sockets * (nc.socket_size + nc.socket_spacing))
+        total_sockets = max(len(self.get_all_input_sockets()), len(self.get_all_output_sockets()))
+        print(total_sockets)
+
+        new_height = self.height + self.socket_offset_from_top + (total_sockets * (nc.socket_size + nc.socket_spacing))
         position = self.pos()
         self.node_rect = QRectF(0, 0, nc.node_item_width, new_height)
         self.setRect(self.node_rect)
