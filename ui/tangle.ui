@@ -115,18 +115,27 @@
     </property>
     <addaction name="action_save_scene"/>
     <addaction name="action_load"/>
+    <addaction name="separator"/>
     <addaction name="action_clear_scene"/>
-    <addaction name="separator"/>
-    <addaction name="action_save_selected_nodes"/>
-    <addaction name="action_duplicate_nodes"/>
-    <addaction name="action_delete_nodes"/>
-    <addaction name="separator"/>
-    <addaction name="action_group_ungroup_nodes"/>
     <addaction name="separator"/>
     <addaction name="action_recompute_entire_network"/>
    </widget>
+   <widget class="QMenu" name="menuNodes">
+    <property name="title">
+     <string>Nodes</string>
+    </property>
+    <addaction name="action_save_selected_nodes"/>
+    <addaction name="action_duplicate_nodes"/>
+    <addaction name="action_group_ungroup_nodes"/>
+    <addaction name="separator"/>
+    <addaction name="action_align_selected_nodes_horizontally"/>
+    <addaction name="action_align_selected_nodes_vertically"/>
+    <addaction name="separator"/>
+    <addaction name="action_delete_nodes"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuScene"/>
+   <addaction name="menuNodes"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
   </widget>
@@ -242,6 +251,28 @@
   <action name="action_about">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="action_align_selected_nodes_vertically">
+   <property name="text">
+    <string>Align selected nodes vertically</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Left</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="action_align_selected_nodes_horizontally">
+   <property name="text">
+    <string>Align selected nodes horizontally</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Up</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
  </widget>
