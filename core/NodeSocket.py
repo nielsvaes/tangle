@@ -41,6 +41,8 @@ class NodeSocket(QGraphicsEllipseItem):
 
         self.__draw()
 
+        self.setAcceptHoverEvents(True)
+
     def get_value(self):
         return self.socket_type.get_value()
 
@@ -215,6 +217,21 @@ class NodeSocket(QGraphicsEllipseItem):
         else:
             logging.warning("Released at %s, there is no socket here" % self.connection_end_point)
 
+    def hoverEnterEvent(self, event):
+        for connection in self.get_connections():
+            connection.mouse_over = True
+            connection.set_hover_colors()
+        self.update()
+
+        super().hoverEnterEvent(event)
+
+    def hoverLeaveEvent(self, event):
+        for connection in self.get_connections():
+            connection.mouse_over = False
+            connection.set_normal_colors()
+        self.update()
+
+        super().hoverLeaveEvent(event)
 
     def __is_output_connected_to_input(self, node_socket):
         if not node_socket.io == self.io:
