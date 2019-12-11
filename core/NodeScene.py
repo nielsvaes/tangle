@@ -186,6 +186,7 @@ class NodeScene(QGraphicsScene):
         """
         try:
             save_dict = {}
+            save_dict["nodes"] = {}
             save_dict["group_nodes"] = {}
 
             if selected_nodes_only:
@@ -196,7 +197,7 @@ class NodeScene(QGraphicsScene):
                 group_nodes = self.get_all_group_nodes()
 
             for node in nodes:
-                save_dict[node.get_uuid(as_string=True)] = node.save()
+                save_dict["nodes"][node.get_uuid(as_string=True)] = node.save()
 
             for group_node in group_nodes:
                 save_dict["group_nodes"][group_node.get_uuid(as_string=True)] = group_node.save()
@@ -270,45 +271,47 @@ class NodeScene(QGraphicsScene):
         :param new_socket_uuids: [bool] if set to True, all sockets will get new uuids
         :return:
         """
-        for node_uuid, node_dict in mapped_scene.items():
-            x = node_dict.get("x")
-            y = node_dict.get("y")
-            if offset_nodes:
-                x += 20
-                y += 20
-            module_path = node_dict.get("module_path")
-            class_name = node_dict.get("class_name")
-            module_name = node_dict.get("module_name")
-            node = self.add_node_to_view(class_name, module_name, x, y)
+        nodes_dict = mapped_scene.get("nodes")
+        if nodes_dict is not None:
+            for node_uuid, node_dict in nodes_dict.items():
+                x = node_dict.get("x")
+                y = node_dict.get("y")
+                if offset_nodes:
+                    x += 20
+                    y += 20
+                module_path = node_dict.get("module_path")
+                class_name = node_dict.get("class_name")
+                module_name = node_dict.get("module_name")
+                node = self.add_node_to_view(class_name, module_name, x, y)
 
-            if node is not None:
-                node.load(node_dict, x=x, y=y)
+                if node is not None:
+                    node.load(node_dict, x=x, y=y)
 
-                if node_dict.get("sockets") is not None:
-                    for socket_uuid, socket_dict in node_dict.get("sockets").items():
-                        label = socket_dict.get("label")
-                        io = socket_dict.get("io")
-                        value = socket_dict.get("value")
-                        initial_value = socket_dict.get("initial_value")
-                        socket_type_name = socket_dict.get("socket_type")
-                        socket_type = getattr(socket_types, socket_type_name)(node)
+                    if node_dict.get("sockets") is not None:
+                        for socket_uuid, socket_dict in node_dict.get("sockets").items():
+                            label = socket_dict.get("label")
+                            io = socket_dict.get("io")
+                            value = socket_dict.get("value")
+                            initial_value = socket_dict.get("initial_value")
+                            socket_type_name = socket_dict.get("socket_type")
+                            socket_type = getattr(socket_types, socket_type_name)(node)
 
-                        socket = node.get_socket(label, io)
+                            socket = node.get_socket(label, io)
 
-                        if socket is None:
-                            if io == "output":
-                                socket = node.add_output(socket_type, label)
-                            elif io == "input":
-                                socket = node.add_input(socket_type, label)
+                            if socket is None:
+                                if io == "output":
+                                    socket = node.add_output(socket_type, label)
+                                elif io == "input":
+                                    socket = node.add_input(socket_type, label)
 
-                        if new_socket_uuids:
-                            socket_uuid = uuid.uuid4()
-                        socket.set_uuid(socket_uuid)
+                            if new_socket_uuids:
+                                socket_uuid = uuid.uuid4()
+                            socket.set_uuid(socket_uuid)
 
-                        if with_values:
-                            socket.set_initial_value(initial_value)
-                            socket.set_value(value)
-                            node.compute()
+                            if with_values:
+                                socket.set_initial_value(initial_value)
+                                socket.set_value(value)
+                                node.compute()
 
     def load_group_nodes(self, mapped_scene):
         group_nodes_dict = mapped_scene.get("group_nodes")
