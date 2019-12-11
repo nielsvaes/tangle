@@ -68,7 +68,7 @@ class GroupNode(QGraphicsRectItem):
     def pick_color(self):
         color_dialog = QColorDialog()
         color = color_dialog.getColor()
-        self.__color = QColor(color.red(), color.green(), color.blue(), 35)
+        self.__color = QColor(color.red(), color.green(), color.blue(), 255)
 
         self.__set_normal_colors()
 

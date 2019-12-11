@@ -328,14 +328,15 @@ class NodeScene(QGraphicsScene):
                 group_node.set_color(color)
 
     def align_selected_nodes(self, axis):
-        if axis == "horizontal":
-            y_pos = min([node.pos().y() for node in self.get_selected_nodes()])
-            for node in self.get_selected_nodes():
-                node.setPos(node.pos().x(), y_pos)
-        else:
-            x_pos = min([node.pos().x() for node in self.get_selected_nodes()])
-            for node in self.get_selected_nodes():
-                node.setPos(x_pos, node.pos().y())
+        if len(self.get_selected_nodes()) > 0:
+            if axis == "horizontal":
+                y_pos = min([node.pos().y() for node in self.get_selected_nodes()])
+                for node in self.get_selected_nodes():
+                    node.setPos(node.pos().x(), y_pos)
+            else:
+                x_pos = min([node.pos().x() for node in self.get_selected_nodes()])
+                for node in self.get_selected_nodes():
+                    node.setPos(x_pos, node.pos().y())
 
     def duplicate_nodes(self):
         """

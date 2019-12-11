@@ -1,5 +1,8 @@
 SETTINGS
     - deleting group deletes nodes
+    - random colors when grouping
+    - auto save on new connection/node/break connection/delete
+    - auto save on time
 
 
 TODO
