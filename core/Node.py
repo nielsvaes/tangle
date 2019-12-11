@@ -23,11 +23,10 @@ class Node(QGraphicsRectItem):
         self.height = nc.node_item_height
         self.title_label_size = nc.title_label_size
         self.socket_label_size = nc.socket_size - 6
-        self.socket_size = nc.socket_size
         self.socket_offset_from_top = nc.socket_size * 2.5
 
-        self.start_x_pos = x
-        self.start_y_pos = y
+        self.x = x
+        self.y = y
 
         self.title_background_color = title_background_color
         self.title = self.__add_title(title)
@@ -36,12 +35,12 @@ class Node(QGraphicsRectItem):
 
         self.__uuid = uuid.uuid4()
 
-        self.scene.addItem(self)
-        self.scene.addItem(self.title)
-
         self.__input_sockets = []
         self.__output_sockets = []
         self.__num_input_output_sockets = 0
+
+        self.scene.addItem(self)
+        self.scene.addItem(self.title)
 
     def add_output(self, socket_type, output_name):
         if self.get_socket(output_name, IO.output) is not None:
@@ -395,7 +394,7 @@ class Node(QGraphicsRectItem):
         self.setFlag(QGraphicsRectItem.ItemSendsGeometryChanges)
 
         self.setZValue(nc.node_item_z_depth)
-        self.setPos(self.start_x_pos, self.start_y_pos)
+        self.setPos(self.x, self.y)
 
         self.setAcceptHoverEvents(True)
 
