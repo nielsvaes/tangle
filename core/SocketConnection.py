@@ -132,11 +132,11 @@ class SocketConnection(QGraphicsPathItem):
         option.state = QStyle.State_NoChange
 
         if self.isSelected():
-            self.__set_selected_colors()
+            self.set_selected_colors()
         elif self.mouse_over:
-            self.__set_hover_colors()
+            self.set_hover_colors()
         else:
-            self.__set_normal_colors()
+            self.set_normal_colors()
 
         super(SocketConnection, self).paint(painter, option, widget)
 
@@ -144,12 +144,12 @@ class SocketConnection(QGraphicsPathItem):
         self.setFlag(QGraphicsItem.ItemIsSelectable)
         self.setAcceptHoverEvents(True)
 
-        self.__set_normal_colors()
+        self.set_normal_colors()
         self.redraw()
 
         self.scene.addItem(self)
 
-    def __set_normal_colors(self):
+    def set_normal_colors(self):
         pen = QPen()
         pen.setStyle(Qt.SolidLine)
         pen.setWidth(nc.connection_width_normal)
@@ -157,7 +157,7 @@ class SocketConnection(QGraphicsPathItem):
         self.setZValue(nc.connection_z_depth_normal)
         self.setPen(pen)
 
-    def __set_hover_colors(self):
+    def set_hover_colors(self):
         pen = QPen()
         pen.setStyle(Qt.SolidLine)
         pen.setWidth(nc.connection_width_hover)
@@ -166,7 +166,7 @@ class SocketConnection(QGraphicsPathItem):
         self.setZValue(nc.connection_z_depth_hover)
         self.setPen(pen)
 
-    def __set_selected_colors(self):
+    def set_selected_colors(self):
         pen = QPen()
         pen.setStyle(Qt.SolidLine)
         pen.setWidth(nc.connection_width_selected)
