@@ -1,0 +1,6 @@
+SETTINGS
+    - deleting group deletes nodes
+
+
+TODO
+    - Move node into group adds it to group
