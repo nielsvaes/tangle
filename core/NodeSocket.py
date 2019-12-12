@@ -21,6 +21,8 @@ class NodeSocket(QGraphicsEllipseItem):
         self.position = position
         self.scene = scene
 
+        self.mouse_over = False
+
         self.socket_type = socket_type
 
         self.io = io
@@ -218,20 +220,32 @@ class NodeSocket(QGraphicsEllipseItem):
             logging.warning("Released at %s, there is no socket here" % self.connection_end_point)
 
     def hoverEnterEvent(self, event):
+        self.mouse_over = True
         for connection in self.get_connections():
-            connection.mouse_over = True
+            connection.mouse_over = self.mouse_over
             connection.set_hover_colors()
         self.update()
 
         super().hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event):
+        self.mouse_over = False
         for connection in self.get_connections():
-            connection.mouse_over = False
+            connection.mouse_over = self.mouse_over
             connection.set_normal_colors()
         self.update()
 
         super().hoverLeaveEvent(event)
+
+    def paint(self, painter, option, widget):
+        option.state = QStyle.State_NoChange
+
+        if self.mouse_over:
+            self.set_hover_colors()
+        else:
+            self.set_normal_colors()
+
+        super().paint(painter, option, widget)
 
     def __is_output_connected_to_input(self, node_socket):
         if not node_socket.io == self.io:
@@ -256,6 +270,20 @@ class NodeSocket(QGraphicsEllipseItem):
                 self.name, self.io, input_socket.name, input_socket.type))
 
         return valid
+
+    def set_normal_colors(self):
+        pen = QPen()
+        pen.setStyle(Qt.SolidLine)
+        pen.setWidth(nc.node_item_border_width_selected)
+        pen.setColor(self.color)
+        self.setPen(pen)
+
+    def set_hover_colors(self):
+        pen = QPen()
+        pen.setStyle(Qt.SolidLine)
+        pen.setWidth(nc.node_item_border_width_selected)
+        pen.setColor(Colors.node_hover_border)
+        self.setPen(pen)
 
     def __draw(self):
         self.brush = QBrush()
