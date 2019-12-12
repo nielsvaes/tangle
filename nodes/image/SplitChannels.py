@@ -13,7 +13,7 @@ class SplitChannels(ImageNode):
         super(SplitChannels, self).__init__(scene, title_background_color=Colors.split_channel, x=x, y=y)
         self.change_title("split")
 
-        self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
+        self.input_image = self.add_input(socket_types.PictureSocketType(self), "image")
         self.output_r = self.add_output(socket_types.PictureSocketType(self), "R")
         self.output_g = self.add_output(socket_types.PictureSocketType(self), "G")
         self.output_b = self.add_output(socket_types.PictureSocketType(self), "B")
@@ -38,7 +38,6 @@ class SplitChannels(ImageNode):
 
             self.set_pixmap(ImageQt.toqpixmap(self.input_image.get_value()))
 
-            self.output_image.set_value(self.input_image.get_value())
             super().compute()
             self.set_dirty(False)
 
