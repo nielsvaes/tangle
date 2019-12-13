@@ -329,12 +329,21 @@ class NodeScene(QGraphicsScene):
 
     def align_selected_nodes(self, axis):
         if len(self.get_selected_nodes()) > 0:
-            if axis == "horizontal":
+            if axis == "horizontal_up":
                 y_pos = min([node.pos().y() for node in self.get_selected_nodes()])
                 for node in self.get_selected_nodes():
                     node.setPos(node.pos().x(), y_pos)
-            else:
+            if axis == "horizontal_down":
+                y_pos = max([node.pos().y() for node in self.get_selected_nodes()])
+                for node in self.get_selected_nodes():
+                    node.setPos(node.pos().x(), y_pos)
+
+            if axis == "vertical_left":
                 x_pos = min([node.pos().x() for node in self.get_selected_nodes()])
+                for node in self.get_selected_nodes():
+                    node.setPos(x_pos, node.pos().y())
+            if axis == "vertical_right":
+                x_pos = max([node.pos().x() for node in self.get_selected_nodes()])
                 for node in self.get_selected_nodes():
                     node.setPos(x_pos, node.pos().y())
 
@@ -506,10 +515,16 @@ class NodeScene(QGraphicsScene):
             self.group_nodes()
 
         if event.key() == Qt.Key_Up and event.modifiers() == Qt.ControlModifier:
-            self.align_selected_nodes("horizontal")
+            self.align_selected_nodes("horizontal_up")
+
+        if event.key() == Qt.Key_Down and event.modifiers() == Qt.ControlModifier:
+            self.align_selected_nodes("horizontal_down")
 
         if event.key() == Qt.Key_Left and event.modifiers() == Qt.ControlModifier:
-            self.align_selected_nodes("vertical")
+            self.align_selected_nodes("vertical_left")
+
+        if event.key() == Qt.Key_Right and event.modifiers() == Qt.ControlModifier:
+            self.align_selected_nodes("vertical_right")
 
     def set_colors_dirty(self):
         dirty_node_exists = False
