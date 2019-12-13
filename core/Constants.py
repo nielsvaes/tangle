@@ -119,3 +119,4 @@ class StyleSheets():
     view_dirty = "border-color: rgb(149, 72, 17); border: 2px; "
 
 ss = StyleSheets
+

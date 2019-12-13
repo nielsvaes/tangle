@@ -12,12 +12,14 @@ from PyQt5.QtCore import *
 import nv_utils.utils as utils
 import nv_utils.io_utils as io_utils
 import core.socket_types as socket_types
+from ez_settings.ez_settings import EasySettings
 
 from .SocketConnection import SocketConnection
 from .GroupNode import GroupNode
 from nodes.base_node import BaseNode
 
 from core.Constants import Colors
+import core.SettingsConstants as sc
 
 class NodeScene(QGraphicsScene):
     """
@@ -427,6 +429,10 @@ class NodeScene(QGraphicsScene):
         for item in items:
             try:
                 item.destroy_self()
+                if type(item) == GroupNode:
+                    if EasySettings().get_value(sc.GroupNodeStrings.delete_nodes_with_group_node, True) is True:
+                        item.destroy_nodes()
+
             except Exception as err:
                 utils.trace(err)
 

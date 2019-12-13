@@ -125,6 +125,10 @@ class GroupNode(QGraphicsRectItem):
 
         return group_node_dict
 
+    def destroy_nodes(self):
+        for node in self.get_nodes():
+            node.destroy_self()
+
     def __set_normal_colors(self):
         pen = QPen()
         pen.setStyle(Qt.DotLine)
