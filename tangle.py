@@ -77,8 +77,8 @@ class TangleWindow(QMainWindow):
         self.action_duplicate_nodes.triggered.connect(self.scene.duplicate_nodes)
         self.action_group_ungroup_nodes.triggered.connect(self.scene.group_nodes)
         self.action_delete_nodes.triggered.connect(self.scene.delete_nodes)
-        self.action_align_selected_nodes_horizontally.triggered.connect(partial(self.scene.align_selected_nodes, "horizontal"))
-        self.action_align_selected_nodes_vertically.triggered.connect(partial(self.scene.align_selected_nodes, "vertically"))
+        self.action_align_selected_nodes_horizontally.triggered.connect(partial(self.scene.align_selected_nodes, "horizontal_up"))
+        self.action_align_selected_nodes_vertically.triggered.connect(partial(self.scene.align_selected_nodes, "vertical_left"))
 
         self.action_reload_nodes.triggered.connect(self.node_tree.ui.load_node_tree)
         self.action_show_image_viewer.triggered.connect(partial(self.show_viewer, "image"))
