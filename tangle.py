@@ -18,7 +18,7 @@ except:
     logging.warning("Can't find qtmodern!")
     modern = False
 
-from ez_settings.ez_settings import EasySettings
+from ez_settings.ez_settings import EasySettingsBase
 
 
 import nv_utils.file_utils as file_utils
@@ -47,7 +47,7 @@ class TangleWindow(QMainWindow):
         uic.loadUi(os.path.join(UI_PATH, "tangle.ui"), self)
         self.setWindowTitle("Tangle")
 
-        EasySettings(SETTINGS_PATH)
+        EasySettingsBase(SETTINGS_PATH)
 
         self.build_ui()
         self.show()
