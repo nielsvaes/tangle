@@ -405,7 +405,6 @@ class Node(QGraphicsRectItem):
 
     def __resize(self):
         total_sockets = max(len(self.get_all_input_sockets()), len(self.get_all_output_sockets()))
-        print(total_sockets)
 
         new_height = self.height + self.socket_offset_from_top + (total_sockets * (nc.socket_size + nc.socket_spacing))
         position = self.pos()
