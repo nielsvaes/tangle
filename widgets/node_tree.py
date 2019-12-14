@@ -31,7 +31,6 @@ class NodeTree(form, base):
         self.ui.txt_search_nodes.textChanged.connect(self.search_node_tree)
 
     def search_node_tree(self):
-        # if self.txt_search_nodes.text()
         search_words = self.ui.txt_search_nodes.text().lower().split(" ")
 
         root = self.ui.tree_nodes.invisibleRootItem()
@@ -51,10 +50,8 @@ class NodeTree(form, base):
 
     def load_node_tree(self):
         self.ui.tree_nodes.clear()
-        self.loaded_nodes_info_dict = {}
         for file_path in file_utils.get_files_recursively(NODE_FOLDER, filters=".py"):
-            if file_path is not None and not "__" in file_path and not "base_node" in file_path and not file_path.endswith(
-                    "pyc") and not "image_node" in file_path:
+            if file_path is not None and not "__" in file_path and not file_path.endswith("pyc"):
 
                 file_name = os.path.basename(file_path)
                 file_name_no_ext = os.path.splitext(file_name)[0]
@@ -64,6 +61,9 @@ class NodeTree(form, base):
                 parent_folder = os.sep.join(complete_folder.split(os.sep)[0:-1])
                 parent_folder_name = parent_folder.split(os.sep)[-1]
                 complete_path = os.path.join(complete_folder, file_name).replace("\\", "/")
+
+                if complete_folder == NODE_FOLDER:
+                    continue
 
                 folder_item = qutils.get_item_with_text_from_tree_widget(self.ui.tree_nodes, folder_name, 0)
 
