@@ -33,7 +33,7 @@ class StockTester(PlotNode):
         # print(data)
         # print(meta_data)
 
-        x_axis_values = list(range(0, 30))
+        x_axis_values = list(range(0, 10))
         y_axis_values = []
         for _ in range(len(x_axis_values)):
             number = random.uniform(-100, 100)
@@ -43,8 +43,12 @@ class StockTester(PlotNode):
         self.set_y_axis(y_axis_values)
 
         self.set_color(QColor(255, 0, 255))
+        self.set_clear_first(False)
+        self.set_show_markers(True)
+        self.set_marker_shape("d")
+        self.set_marker_size(15)
 
-        self.plot_graphs(clear=True)
+        self.refresh()
 
     def compute(self):
         if self.is_dirty():

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5 import uic
-from pyqtgraph import *
+from pyqtgraph import PlotWidget
 
 import nv_utils.utils as utils
 from nv_utils.singleton import Singleton
@@ -14,11 +14,12 @@ class GraphViewer(QDockWidget, metaclass=Singleton):
         self.plot_widget = PlotWidget()
         self.plot_widget.setRenderHint(QPainter.HighQualityAntialiasing)
         self.plot_widget.showGrid(x=True, y=True)
+        self.plot_widget.setMenuEnabled(False)
 
         self.setWidget(self.plot_widget)
 
         self.setParent(parent)
-        self.setWindowTitle("Tangle - Graph Viewer")
+        self.setWindowTitle("Graph Viewer")
         self.setFloating(True)
 
         self.set_background_color(QColor(42, 42, 42))
@@ -26,11 +27,15 @@ class GraphViewer(QDockWidget, metaclass=Singleton):
     def set_background_color(self, qcolor):
         self.plot_widget.setBackground(qcolor)
 
-    def plot(self, x_axis, y_axis, pen, clear=False):
+    def plot(self, x_axis, y_axis, pen, clear=False, show_markers=False,
+             marker_shape="o", marker_size=20, marker_color=QBrush(QColor(255, 0, 0), Qt.SolidPattern), marker_pen=QPen(QColor(255, 0, 0))):
         if clear:
             self.plot_widget.clear()
 
-        self.plot_widget.plot(x_axis, y_axis, pen=pen)
+        if show_markers:
+            self.plot_widget.plot(x_axis, y_axis, pen=pen, symbol=marker_shape, symbolSize=marker_size, symbolBrush=marker_color, symbolPen=marker_pen)
+        else:
+            self.plot_widget.plot(x_axis, y_axis, pen=pen)
 
     def clear(self):
         self.plot_widget.getPlotItem().clear()
