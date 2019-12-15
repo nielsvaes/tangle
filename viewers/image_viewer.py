@@ -48,6 +48,9 @@ class ImageViewer(QDockWidget, metaclass=Singleton):
             self.lbl_pixmap.setPixmap(self.pixmap)
             self.resize_pixmap()
 
+    def clear(self):
+        self.lbl_pixmap.setPixmap(QPixmap())
+
     def resizeEvent(self, event):
         self.resize_pixmap()
         self.main_widget.resizeEvent(event)

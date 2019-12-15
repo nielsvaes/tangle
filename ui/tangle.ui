@@ -46,8 +46,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1170</width>
-           <height>784</height>
+           <width>1162</width>
+           <height>765</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -75,7 +75,7 @@
      <x>0</x>
      <y>0</y>
      <width>1294</width>
-     <height>20</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -96,15 +96,10 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>Viewers</string>
     </property>
-    <widget class="QMenu" name="menuViewers">
-     <property name="title">
-      <string>Viewers</string>
-     </property>
-     <addaction name="action_show_image_viewer"/>
-    </widget>
-    <addaction name="menuViewers"/>
+    <addaction name="action_show_image_viewer"/>
+    <addaction name="action_show_graph_viewer"/>
    </widget>
    <widget class="QMenu" name="menuScene">
     <property name="tearOffEnabled">
@@ -160,7 +155,7 @@
     <string>Image</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+I</string>
+    <string>F5</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
@@ -273,6 +268,22 @@
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="action_show_graph_viewer">
+   <property name="text">
+    <string>Graph</string>
+   </property>
+   <property name="shortcut">
+    <string>F6</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionsdf">
+   <property name="text">
+    <string>sdf</string>
    </property>
   </action>
  </widget>

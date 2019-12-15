@@ -32,6 +32,7 @@ from core.Constants import ss, IO
 from widgets.node_tree import NodeTree
 
 from viewers.image_viewer import ImageViewer
+from viewers.graph_viewer import GraphViewer
 
 SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
 UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
@@ -83,6 +84,7 @@ class TangleWindow(QMainWindow):
 
         self.action_reload_nodes.triggered.connect(self.node_tree.ui.load_node_tree)
         self.action_show_image_viewer.triggered.connect(partial(self.show_viewer, "image"))
+        self.action_show_graph_viewer.triggered.connect(partial(self.show_viewer, "graph"))
 
         self.scene.selectionChanged.connect(self.load_values_ui)
 
@@ -90,10 +92,13 @@ class TangleWindow(QMainWindow):
         self.vertical_splitter.setSizes([500, 200])
 
 
-
     def show_viewer(self, viewer_type):
         if viewer_type == "image":
             ImageViewer(self).show()
+
+        if viewer_type == "graph":
+            GraphViewer(self).show()
+
 
     def load_values_ui(self):
         from nodes.base_node import BaseNode
@@ -134,8 +139,10 @@ class TangleWindow(QMainWindow):
             node.compute()
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_I:
+        if event.key() == Qt.Key_F5:
             self.show_viewer("image")
+        if event.key() == Qt.Key_F6:
+            self.show_viewer("graph")
 
 
 class TitleLabel(QLineEdit):

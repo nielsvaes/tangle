@@ -17,6 +17,8 @@ from ez_settings.ez_settings import EasySettingsBase
 from .SocketConnection import SocketConnection
 from .GroupNode import GroupNode
 from nodes.base_node import BaseNode
+from viewers.image_viewer import ImageViewer
+from viewers.graph_viewer import GraphViewer
 
 from core.Constants import Colors
 import core.SettingsConstants as sc
@@ -448,6 +450,9 @@ class NodeScene(QGraphicsScene):
         for group_node in self.get_all_group_nodes():
             group_node.destroy_self()
 
+        ImageViewer(self.get_main_window()).clear()
+        GraphViewer(self.get_main_window()).clear()
+
     def browse_for_save_location(self, selected_nodes_only=False):
         """
         Opens a QFileDialog to save the Tangle network to and then saves the network
@@ -514,8 +519,11 @@ class NodeScene(QGraphicsScene):
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             self.refresh_network()
 
-        if event.key() == Qt.Key_I:
+        if event.key() == Qt.Key_F5:
             self.get_main_window().show_viewer("image")
+
+        if event.key() == Qt.Key_F6:
+            self.get_main_window().show_viewer("graph")
 
         if event.key() == Qt.Key_G and event.modifiers() == Qt.ControlModifier:
             self.group_nodes()

@@ -7,3 +7,5 @@ SETTINGS
 
 TODO
     - Move node into group adds it to group
+    - add graph combiner to draw multiple plotnodes at the same time
+    - dragging from connected input socket disconnects -> show a dragconnection
