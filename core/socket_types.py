@@ -150,7 +150,7 @@ class Vector3SocketType(BaseSocketType):
         super().__init__(parent_node)
 
         self.name = "vector3"
-        self.color = Colors.vector3
+        self.color = Colors.lists
         self.set_initial_value([0.0, 0.0, 0.0])
         self.reset_to_initial_value()
 
@@ -159,7 +159,7 @@ class Vector2SocketType(BaseSocketType):
         super().__init__(parent_node)
 
         self.name = "vector2"
-        self.color = Colors.vector2
+        self.color = Colors.lists
         self.set_initial_value([0.0, 0.0])
         self.reset_to_initial_value()
 

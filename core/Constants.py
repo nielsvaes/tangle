@@ -77,7 +77,7 @@ class Colors():
     replace_string           = QColor(127, 127, 127)
 
     # others
-    lists                    = QColor(127, 127, 255)
+    lists                    = QColor(80, 127, 80)
 
     # graphing
     plot                     = QColor(255, 0, 255, 255)
