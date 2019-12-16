@@ -47,5 +47,5 @@ class AddFloat(BaseNode):
         return node_dict
         #node_dict["extra_inputs"] = self.inputs[1:]
 
-    def load(self, node_dict, x=None, y=None):
-        super().load(node_dict, x=x, y=y)
+    def load(self, node_dict, is_duplicate=False, x=None, y=None):
+        super().load(node_dict, is_duplicate=is_duplicate, x=x, y=y)

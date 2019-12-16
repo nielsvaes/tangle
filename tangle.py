@@ -174,7 +174,8 @@ if __name__ == "__main__":
     # modern_window = qtmodern.windows.ModernWindow(tangle_window)
     # modern_window.show()
 
-    tangle_window.showMaximized()
+    # tangle_window.showMaximized()
+    tangle_window.show()
     splash_screen.finish(tangle_window)
 
 

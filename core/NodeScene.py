@@ -230,14 +230,10 @@ class NodeScene(QGraphicsScene):
         to use
         :return:
         """
-        offset_nodes = False
-        if is_duplicate:
-            offset_nodes = True
-
         if file_path is not None:
             scene_dict = io_utils.read_json(file_path)
 
-        self.load_nodes(scene_dict, offset_nodes, with_values, new_socket_uuids=is_duplicate)
+        self.load_nodes(scene_dict, with_values, is_duplicate=is_duplicate)
         m = self.get_all_nodes()
         self.load_group_nodes(scene_dict)
 
@@ -265,14 +261,13 @@ class NodeScene(QGraphicsScene):
         except Exception as err:
             utils.trace(err)
 
-    def load_nodes(self, mapped_scene, offset_nodes, with_values, new_socket_uuids=False):
+    def load_nodes(self, mapped_scene, with_values, is_duplicate=False):
         """
         Loads the nodes that are saved in the mapped_scene dictionary
 
         :param mapped_scene: [dict] that holds a saved Tangle network
         :param offset_nodes: [bool] if set to True, will add 20 pixels to the X and Y position of the node when it loads
         :param with_values: [bool] if set to True, will set the values on the sockets
-        :param new_socket_uuids: [bool] if set to True, all sockets will get new uuids
         :return:
         """
         nodes_dict = mapped_scene.get("nodes")
@@ -280,7 +275,7 @@ class NodeScene(QGraphicsScene):
             for node_uuid, node_dict in nodes_dict.items():
                 x = node_dict.get("x")
                 y = node_dict.get("y")
-                if offset_nodes:
+                if is_duplicate:
                     x += 20
                     y += 20
                 module_path = node_dict.get("module_path")
@@ -289,7 +284,7 @@ class NodeScene(QGraphicsScene):
                 node = self.add_node_to_view(class_name, module_name, x, y)
 
                 if node is not None:
-                    node.load(node_dict, x=x, y=y)
+                    node.load(node_dict, is_duplicate=is_duplicate, x=x, y=y)
 
                     if node_dict.get("sockets") is not None:
                         for socket_uuid, socket_dict in node_dict.get("sockets").items():
@@ -308,7 +303,7 @@ class NodeScene(QGraphicsScene):
                                 elif io == "input":
                                     socket = node.add_input(socket_type, label)
 
-                            if new_socket_uuids:
+                            if is_duplicate:
                                 socket_uuid = uuid.uuid4()
                             socket.set_uuid(socket_uuid)
 

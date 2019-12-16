@@ -292,7 +292,7 @@ class BaseNode(Node):
         self.scene.open_network(scene_dict=scene_dict, with_values=True, with_connections=False, is_duplicate=True)
         return node_dict
 
-    def load(self, node_dict, x=None, y=None):
+    def load(self, node_dict, is_duplicate=False, x=None, y=None):
         if x is not None:
             x_pos = x
         else:
@@ -303,7 +303,10 @@ class BaseNode(Node):
             y_pos = node_dict.get("y")
 
         self.setPos(x_pos, y_pos)
-        self.set_uuid(node_dict.get("uuid"))
+        if is_duplicate:
+            self.set_uuid(uuid.uuid4())
+        else:
+            self.set_uuid(node_dict.get("uuid"))
 
     def error(self, socket, text):
         logging.error("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))
