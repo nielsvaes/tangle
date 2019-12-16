@@ -6,6 +6,7 @@ import numpy as np
 from PIL import Image
 
 from core.Constants import Colors
+from nodes.plot_node import PlotObject
 
 import nv_utils.qt_utils as qutils
 
@@ -126,7 +127,6 @@ class FloatSocketType(BaseSocketType):
         return round(super().get_value(), 4)
 
 
-
 class StringSocketType(BaseSocketType):
     def __init__(self, parent_node):
         super(StringSocketType, self).__init__(parent_node)
@@ -163,7 +163,15 @@ class Vector2SocketType(BaseSocketType):
         self.set_initial_value([0.0, 0.0])
         self.reset_to_initial_value()
 
+class PlotSocketType(BaseSocketType):
+    def __init__(self, parent_node):
+        super().__init__(parent_node)
 
+        self.name = "plot"
+        # self.accept_multiple = True
+        self.color = Colors.plot
+        self.set_initial_value(PlotObject())
+        self.reset_to_initial_value()
 
 class EnumSocketType(BaseSocketType):
     def __init__(self, parent_node, options=[]):
@@ -216,18 +224,3 @@ class DebugSocketType(BaseSocketType):
 
         self.name = "debug"
         self.color = QColor(90, 90, 70, 255)
-
-    # def get_ui(self):
-    #     layout = QHBoxLayout()
-    #     text_edit = QTextEdit()
-    #
-    #     self.ui_widget.setLayout(layout)
-    #
-    #     try:
-    #         text_edit.setPlainText(self.get_value())
-    #     except Exception as err:
-    #         pass
-    #
-    #     layout.addWidget(text_edit)
-    #
-    #     return self.ui_widget

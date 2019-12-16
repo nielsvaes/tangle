@@ -79,6 +79,10 @@ class Colors():
     # others
     lists                    = QColor(127, 127, 255)
 
+    # graphing
+    plot                     = QColor(255, 0, 255, 255)
+    average_graph            = QColor(170, 0, 255, 170)
+
 class NumberConstants():
     connection_width_normal    = 2
     connection_width_hover     = connection_width_normal * 1.5

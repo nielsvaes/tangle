@@ -1,7 +1,7 @@
 from PyQt5.QtGui import *
 
 from nodes.stock_node import StockNode
-from nodes.plot_node import PlotNode
+from nodes.plot_node import PlotNode, PlotObject
 from core import socket_types as socket_types
 
 from core.Constants import Colors
@@ -33,22 +33,34 @@ class StockTester(PlotNode):
         # print(data)
         # print(meta_data)
 
-        x_axis_values = list(range(0, 10))
+        x_axis_values = list(range(0, 5))
         y_axis_values = []
         for _ in range(len(x_axis_values)):
-            number = random.uniform(-100, 100)
+            number = random.uniform(0, 100)
             y_axis_values.append(number)
 
-        self.set_x_axis(x_axis_values)
-        self.set_y_axis(y_axis_values)
+        print(y_axis_values)
 
-        self.set_color(QColor(255, 0, 255))
-        self.set_clear_first(False)
-        self.set_show_markers(True)
-        self.set_marker_shape("d")
-        self.set_marker_size(15)
+        po = PlotObject()
 
-        self.refresh()
+        po.set_x_axis_values(x_axis_values)
+        po.set_y_axis_values(y_axis_values)
+
+        po.set_color(QColor(255, 0, 255))
+        po.set_show_markers(True)
+        po.set_marker_shape("o")
+        po.set_marker_color(QColor(255, 0, 255, 127))
+        po.set_marker_size(15)
+
+        po.set_title(f"test data, {len(x_axis_values)} sample points")
+        po.set_x_axis_title("Days")
+        po.set_y_axis_title("Percentage gain")
+
+        self.add_plot_object(po)
+
+        test_output = self.add_output(socket_types.PlotSocketType(self), "graph")
+
+        test_output.set_value(po)
 
     def compute(self):
         if self.is_dirty():
