@@ -3,8 +3,6 @@ from core import socket_types as socket_types
 
 from core.Constants import Colors
 
-from ez_settings.ez_settings import EasySettingsBase
-
 
 class Float(BaseNode):
     def __init__(self, scene, x=0, y=0):
@@ -13,8 +11,6 @@ class Float(BaseNode):
 
         self.output_float = self.add_output(socket_types.FloatSocketType(self), "float")
         _, self.txt_number = self.add_label_float("number: ", number_changed_function=self.number_changed)
-
-        EasySettingsBase().set_value("from float", 1)
 
     def number_changed(self):
         if self.txt_number.text() == "":
