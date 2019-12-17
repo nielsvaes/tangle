@@ -78,14 +78,14 @@ class NodeSocket(QGraphicsEllipseItem):
         """
         Saves the socket so it can be serialized
 
-        :param save_value: [bool]  if set to yes, the value of the socket will also be saved
+        :param save_value: [bool]  if set to yes, the value of the socket will also be saved if the socket type allows it
         :return: a dictionary with the serialized data
         """
         save_dict = {}
         save_dict["label"] = self.label.toPlainText()
         save_dict["socket_type"] = str(self.socket_type)
         save_dict["io"] = self.io
-        if save_value:
+        if save_value and self.socket_type.get_value_saveable():
             save_dict["value"] = self.get_value()
             save_dict["initial_value"] = self.get_initial_value()
 
@@ -176,6 +176,12 @@ class NodeSocket(QGraphicsEllipseItem):
         if type(new_uuid) == str:
             new_uuid = uuid.UUID(new_uuid)
         self.__uuid = new_uuid
+
+    def get_name(self):
+        return self.name
+
+    def get_label_text(self):
+        return self.name
 
     def mousePressEvent(self, event):
         self.connection_start_point = event.scenePos()
