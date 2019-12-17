@@ -72,6 +72,7 @@ class AverageGraph(PlotNode):
                 self.output_socket.set_value(average_plot_object)
 
                 self.set_dirty(False)
+                self.refresh()
                 super().compute()
 
         except Exception as err:

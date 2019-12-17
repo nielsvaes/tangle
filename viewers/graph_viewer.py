@@ -46,10 +46,13 @@ class GraphViewer(QDockWidget, metaclass=Singleton):
         if plot_object.get_clear_first():
             self.clear()
 
-        if plot_object.get_show_markers():
-            self.plot_widget.plot(x_axis, y_axis, pen=pen, symbol=marker_shape, symbolSize=marker_size, symbolBrush=marker_color, symbolPen=marker_pen,)
-        else:
-            self.plot_widget.plot(x_axis, y_axis, pen=pen)
+        try:
+            if plot_object.get_show_markers():
+                self.plot_widget.plot(x_axis, y_axis, pen=pen, symbol=marker_shape, symbolSize=marker_size, symbolBrush=marker_color, symbolPen=marker_pen,)
+            else:
+                self.plot_widget.plot(x_axis, y_axis, pen=pen)
+        except Exception as err:
+            utils.trace(err)
 
     def clear(self):
         self.plot_widget.getPlotItem().clear()
