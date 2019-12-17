@@ -58,5 +58,11 @@ class List(BaseNode):
 
     def load(self, node_dict, is_duplicate=False, x=None, y=None):
         super().load(node_dict, is_duplicate=is_duplicate, x=x, y=y)
-
+        for socket_uuid, socket_dict in node_dict.get("sockets").items():
+            if socket_dict.get("label") == self.output_list.get_name():
+                self.items = socket_dict.get("value")
+                qutils.add_items_to_list_widget(self.lw_list, [str(item) for item in self.items],
+                                                duplicates_allowed=True, clear=True)
+                self.update_title()
+                self.output_list.set_value(self.items)
 
