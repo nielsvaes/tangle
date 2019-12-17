@@ -27,6 +27,8 @@ class BaseSocketType(QObject):
         self.accept_multiple = False
         self.color = QColor(105, 105, 105, 255)
 
+        self.value_saveable = True
+
     # def get_ui(self):
     #     raise NotImplementedError()
 
@@ -71,6 +73,12 @@ class BaseSocketType(QObject):
 
     def set_accept_multiple(self, value):
         self.accept_multiple = value
+
+    def set_value_saveable(self, value):
+        self.value_saveable = value
+
+    def get_value_saveable(self):
+        return self.value_saveable
 
     def __str__(self):
         return self.__class__.__name__
@@ -168,7 +176,7 @@ class PlotSocketType(BaseSocketType):
         super().__init__(parent_node)
 
         self.name = "plot"
-        # self.accept_multiple = True
+        self.set_value_saveable(False)
         self.color = Colors.plot
         self.set_initial_value(PlotObject())
         self.reset_to_initial_value()
