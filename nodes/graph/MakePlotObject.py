@@ -71,6 +71,8 @@ class MakePlotObject(PlotNode):
                 self.po.set_marker_shape(self.cb_marker_shape.currentText())
                 self.po.set_marker_size(float(self.txt_marker_size.text()))
 
+                self.output_plot_object.set_value(self.po)
+
                 super().compute()
                 self.refresh()
 
