@@ -258,6 +258,25 @@ class BaseNode(Node):
 
         return spin_number
 
+    def add_list_widget(self, multiselect=False, custom_context_menu_function=None, selection_changed_function=None):
+        layout = QHBoxLayout()
+
+        list_widget = QListWidget()
+        if multiselect:
+            list_widget.selectionMode(QAbstractItemView.ExtendedSelection)
+
+        if selection_changed_function is not None:
+            list_widget.currentItemChanged.connect(selection_changed_function)
+
+        if custom_context_menu_function is not None:
+            list_widget.setContextMenuPolicy(Qt.CustomContextMenu)
+            list_widget.customContextMenuRequested.connect(custom_context_menu_function)
+
+        layout.addWidget(list_widget)
+        self.__layout.addLayout(layout)
+
+        return list_widget
+
     def add_custom_widget(self, widget):
         self.__layout.addWidget(widget)
 
@@ -319,7 +338,6 @@ class BaseNode(Node):
 
     def __str__(self):
         return "%s - %s" % (self.__class__.__name__, self.get_uuid(as_string=True))
-
 
 
 
