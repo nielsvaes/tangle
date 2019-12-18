@@ -31,6 +31,8 @@ class CombineLists(BaseNode):
 
         self.inputs = [self.input_01, self.input_02]
 
+        self.duplicates_allowed = True
+
     def add_new_input(self):
         next_letter = chr(ord(self.inputs[-1].name[-1]) + 1)
         input = self.add_input(socket_types.ListSocketType(self), f"list {next_letter}")
@@ -38,9 +40,13 @@ class CombineLists(BaseNode):
 
     def duplicates_allowed_changed(self):
         self.set_dirty(True)
-        self.compute(self.chk_allow_duplicates.isChecked())
+        self.duplicates_allowed = self.chk_allow_duplicates.isChecked()
+        self.compute()
 
-    def compute(self, duplicates_allowed=True):
+    def update_title(self, count):
+        self.change_title(f"list combined : {count}")
+
+    def compute(self,):
         try:
             if self.is_dirty():
                 extended_list = []
@@ -51,17 +57,33 @@ class CombineLists(BaseNode):
                     if type(input_list) is not list:
                         input_list = [input_list]
 
-                    if duplicates_allowed:
+                    if self.duplicates_allowed:
                         extended_list.extend(input_list)
                     else:
                         extended_list.extend([item for item in input_list if item not in extended_list])
 
                 self.output_list.set_value(extended_list)
-                qutils.add_items_to_list_widget(self.lw_list, [str(item) for item in extended_list], duplicates_allowed=duplicates_allowed, clear=True)
+                qutils.add_items_to_list_widget(self.lw_list, [str(item) for item in extended_list], duplicates_allowed=self.duplicates_allowed, clear=True)
 
+                self.update_title(len(extended_list))
                 self.set_dirty(False)
                 super().compute()
         except Exception as err:
             utils.trace(err)
+
+    def save(self):
+        node_dict = super().save()
+        node_dict["node_specific_params"]["duplicates_allowed"] = self.chk_allow_duplicates.isChecked()
+
+        return node_dict
+
+    def load(self, node_dict, is_duplicate=False, x=None, y=None):
+        super().load(node_dict, is_duplicate=is_duplicate, x=x, y=y)
+
+        duplicates_allowed = node_dict.get("node_specific_params").get("duplicates_allowed", True)
+        self.duplicates_allowed = duplicates_allowed
+        self.chk_allow_duplicates.setChecked(duplicates_allowed)
+
+
 
 

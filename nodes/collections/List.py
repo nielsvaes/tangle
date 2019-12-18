@@ -50,7 +50,7 @@ class List(BaseNode):
         self.compute()
 
     def update_title(self):
-        self.change_title(f"list - {len(self.items)}")
+        self.change_title(f"list: {len(self.items)}")
 
     def compute(self):
         if self.is_dirty():
@@ -65,4 +65,5 @@ class List(BaseNode):
                                                 duplicates_allowed=True, clear=True)
                 self.update_title()
                 self.output_list.set_value(self.items)
+
 
