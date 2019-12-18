@@ -7,7 +7,7 @@ import logging
 from .Constants import nc, Colors, IO
 
 class SocketConnection(QGraphicsPathItem):
-    def __init__(self, output_socket, input_socket, scene, auto_compute_on_connect=True):
+    def __init__(self, output_socket, input_socket, scene, auto_compute_on_connect=True, auto_compute_on_disconnect=True):
         # super(SocketConnection, self).__init__()
         super(SocketConnection, self).__init__()
 
@@ -15,6 +15,7 @@ class SocketConnection(QGraphicsPathItem):
         self.input_socket = input_socket
         self.scene = scene
         self.auto_compute_on_connect = auto_compute_on_connect
+        self.auto_compute_on_disconnect = auto_compute_on_disconnect
 
         self.mouse_over = False
 
@@ -107,12 +108,14 @@ class SocketConnection(QGraphicsPathItem):
 
         for socket in [self.output_socket, self.input_socket]:
             socket.remove_connection(self)
-            # socket.is_connected = False
             socket.set_label_style_connected(False)
             socket.got_disconnected.emit()
 
         self.input_socket.get_node().set_dirty(True)
         self.input_socket.reset_to_initial_value()
+
+        if self.auto_compute_on_disconnect:
+            self.input_socket.get_node().compute()
 
     def get_input_socket(self):
         return self.input_socket
