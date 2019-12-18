@@ -45,7 +45,7 @@ class CombineLists(BaseNode):
                     input_socket.fetch_connected_value()
                     input_list = input_socket.get_value()
                     if type(input_list) is not list:
-                        input_list = list(input_list)
+                        input_list = [input_list]
                     extended_list.extend(input_list)
 
                 self.output_list.set_value(extended_list)

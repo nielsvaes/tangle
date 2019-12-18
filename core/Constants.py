@@ -115,6 +115,7 @@ nc = NumberConstants
 
 class StyleSheets():
     bold_12pt = "font-weight: bold; font: 12pt"
+    bold_9pt = "font-weight: bold; font: 9pt"
     values_title = "font-weight: bold; font: 12pt; border: 1px; border-radius: 6px;"
 
     socket_ui_connected = "QDoubleSpinBox{background: rgb(239, 239, 119); } QLineEdit {background-color: rgb(239, 239, 119); }"

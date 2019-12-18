@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 
 from core.Node import Node
 from core.SignalEmitter import SignalEmitter
-from core.Constants import Colors
+from core.Constants import Colors, ss
 
 import nv_utils.qt_utils as qutils
 
@@ -35,8 +35,12 @@ class BaseNode(Node):
 
         self.__widget.setLayout(self.__layout)
 
-        self.lbl_node_type = self.add_label(str(type(self)))
-        self.lbl_uuid = self.add_label(str(self.get_uuid()))
+        self.lbl_node_type = self.add_label(str(type(self).__name__), align_center=True)
+        self.lbl_node_type.setStyleSheet(ss.bold_12pt)
+        self.lbl_uuid = self.add_label(str(self.get_uuid()), align_center=True)
+        self.lbl_uuid.setStyleSheet(ss.bold_9pt)
+        self.add_horizontal_line()
+        self.add_spacer()
 
     def refresh(self):
         pass
@@ -85,13 +89,22 @@ class BaseNode(Node):
 
         return button
 
-    def add_label(self, label_text):
+    def add_label(self, label_text, align_center=False):
         label = QLabel(label_text)
+        if align_center:
+            label.setAlignment(Qt.AlignCenter)
         self.__layout.addWidget(label)
 
         return label
 
-    def add_spacer(self):
+    def add_horizontal_line(self):
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine)
+        line.setFrameShadow(QFrame.Sunken)
+
+        self.__layout.addWidget(line)
+
+    def add_spacer(self, width=10, height=20):
         spacer = QSpacerItem(10, 20)
         self.__layout.addSpacerItem(spacer)
 
