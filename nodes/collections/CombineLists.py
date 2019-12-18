@@ -23,7 +23,7 @@ class CombineLists(BaseNode):
         self.input_01 = self.add_input(socket_types.ListSocketType(self), "list A")
         self.input_02 = self.add_input(socket_types.ListSocketType(self), "list B")
 
-        self.add_label("Combine lists")
+        self.chk_allow_duplicates = self.add_checkbox("Duplicates allowed", change_checked_function=self.duplicates_allowed_changed)
         self.btn_add_input = self.add_button("Add input", clicked_function=self.add_new_input)
         self.add_spacer()
         self.add_label("Combined items")
@@ -36,7 +36,11 @@ class CombineLists(BaseNode):
         input = self.add_input(socket_types.ListSocketType(self), f"list {next_letter}")
         self.inputs.append(input)
 
-    def compute(self):
+    def duplicates_allowed_changed(self):
+        self.set_dirty(True)
+        self.compute(self.chk_allow_duplicates.isChecked())
+
+    def compute(self, duplicates_allowed=True):
         try:
             if self.is_dirty():
                 extended_list = []
@@ -46,10 +50,14 @@ class CombineLists(BaseNode):
                     input_list = input_socket.get_value()
                     if type(input_list) is not list:
                         input_list = [input_list]
-                    extended_list.extend(input_list)
+
+                    if duplicates_allowed:
+                        extended_list.extend(input_list)
+                    else:
+                        extended_list.extend([item for item in input_list if item not in extended_list])
 
                 self.output_list.set_value(extended_list)
-                qutils.add_items_to_list_widget(self.lw_list, [str(item) for item in extended_list], duplicates_allowed=True, clear=True)
+                qutils.add_items_to_list_widget(self.lw_list, [str(item) for item in extended_list], duplicates_allowed=duplicates_allowed, clear=True)
 
                 self.set_dirty(False)
                 super().compute()
