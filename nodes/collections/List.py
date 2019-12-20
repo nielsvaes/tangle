@@ -27,16 +27,29 @@ class List(BaseNode):
         self.txt_item.returnPressed.connect(self.return_pressed)
 
     def show_context_menu(self):
-        root_menu = QMenu(self.lw_list)
-        root_menu.addAction("Remove selected from list", self.remove_selected_from_list)
+        list_menu = QMenu(self.lw_list)
+        list_menu.addAction("Remove selected from list", self.remove_selected_from_list)
+        list_menu.addAction("Clear", self.clear_list)
 
-        root_menu.popup(QCursor.pos())
+        list_menu.popup(QCursor.pos())
 
     def remove_selected_from_list(self):
         for item in self.lw_list.selectedItems():
             self.items.remove(utils.try_parse(item.text()))
         qutils.remove_items_from_list_widget(self.lw_list, selected=True)
+        self.update_title()
+        self.output_list.set_value(self.items)
+        self.set_dirty(True)
+        self.compute()
 
+    def clear_list(self):
+        self.items = []
+        qutils.add_items_to_list_widget(self.lw_list, [str(item) for item in self.items], duplicates_allowed=True,
+                                        clear=True)
+        self.update_title()
+        self.output_list.set_value(self.items)
+        self.set_dirty(True)
+        self.compute()
 
     def return_pressed(self):
         self.items.append(utils.try_parse(self.txt_item.text()))
