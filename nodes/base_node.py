@@ -1,3 +1,5 @@
+import os
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -13,6 +15,12 @@ from core.SignalEmitter import SignalEmitter
 from core.Constants import Colors, ss
 
 import nv_utils.qt_utils as qutils
+
+SCRIPT_FOLDER = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
+SETTINGS_PATH = os.path.join(SCRIPT_FOLDER, "settings", "tangle_settings.json")
+ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
+NODE_FOLDER = os.path.join(SCRIPT_FOLDER, "nodes")
 
 class BaseNode(Node):
     def __init__(self, scene, title="unnamed_node", title_background_color=Colors.node_selected_border ,x=0, y=0):
@@ -39,8 +47,28 @@ class BaseNode(Node):
         self.lbl_node_type.setStyleSheet(ss.bold_12pt)
         self.lbl_uuid = self.add_label(str(self.get_uuid()), align_center=True)
         self.lbl_uuid.setStyleSheet(ss.bold_9pt)
+
+        icon_layout = QHBoxLayout()
+        self.__layout.addLayout(icon_layout)
+        self.lbl_icon = self.add_label("", align_center=True)
+        self.lbl_icon.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.lbl_icon.setFixedHeight(128)
+        self.set_icon()
+        icon_layout.addWidget(self.lbl_icon)
+
         self.add_horizontal_line()
         self.add_spacer()
+
+    def set_icon(self):
+        icon_path = os.path.join(ICONS_PATH, os.path.basename(str(type(self).__name__))) + ".png"
+        print(icon_path)
+        if os.path.isfile(icon_path):
+            self.lbl_icon.setVisible(True)
+            self.lbl_icon.setPixmap(QPixmap(icon_path).scaled(48, 48, transformMode=Qt.SmoothTransformation))
+            return icon_path
+        else:
+            self.lbl_icon.setVisible(False)
+            return
 
     def refresh(self):
         pass
