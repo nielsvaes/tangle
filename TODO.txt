@@ -4,6 +4,8 @@ SETTINGS
     - auto save on new connection/node/break connection/delete
     - auto save on time
     - start maximized
+    - write image to disk instead of keeping in memory
+    
 
 
 TODO

@@ -110,24 +110,8 @@ class TangleWindow(QMainWindow):
             for node in selected_items:
                 if issubclass(type(node), BaseNode) or type(node) == GroupNode:
                     node.refresh()
-
-                    # title_label = TitleLabel()
-                    # title_label.setText(node.name)
-                    # title_label.setStyleSheet(ss.values_title)
-                    # title_label.setAlignment(Qt.AlignCenter)
-                    # title_label.node = node
-                    #
-                    # title_label.textChanged.connect(partial(self.change_node_title, title_label))
-                    # title_label.returnPressed.connect(title_label.node.reposition_title)
-
-                    # self.values_layout.insertWidget(self.values_layout.count(), title_label)
                     widget = node.get_ui()
-
                     self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
-
-    def clear_values_layout(self):
-        for i in reversed(range(self.values_layout.count())):
-            self.values_layout.takeAt(i).widget().setParent(None)
 
     def change_node_title(self, title_label, text):
         text = text.replace(" ", "_")
