@@ -4,5 +4,5 @@ class GroupNodeStrings():
 class NodeStrings():
     pass
 
-class GeneralStrins():
+class GeneralStrings():
     pass
