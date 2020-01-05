@@ -61,7 +61,6 @@ class BaseNode(Node):
 
     def set_icon(self):
         icon_path = os.path.join(ICONS_PATH, os.path.basename(str(type(self).__name__))) + ".png"
-        print(icon_path)
         if os.path.isfile(icon_path):
             self.lbl_icon.setVisible(True)
             self.lbl_icon.setPixmap(QPixmap(icon_path).scaled(48, 48, transformMode=Qt.SmoothTransformation))
