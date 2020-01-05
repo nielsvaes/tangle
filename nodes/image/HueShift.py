@@ -54,13 +54,13 @@ class HueShift(ImageNode):
 
     def save(self):
         node_dict = super().save()
-        node_dict["sld_hue_value"] = self.sld_hue_value.value()
+        node_dict["node_specific_params"]["sld_hue_value"] = self.sld_hue_value.value()
 
         return node_dict
 
     def load(self, node_dict, x=None, y=None):
         super().load(node_dict, x=x, y=y)
-        self.sld_hue_value.setValue(node_dict.get("sld_hue_value"))
+        self.sld_hue_value.setValue(node_dict.get("node_specific_params").get("sld_hue_value"))
 
 
 
