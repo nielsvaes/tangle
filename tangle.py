@@ -32,7 +32,7 @@ from core.Constants import ss, IO
 from widgets.node_tree import NodeTree
 
 from viewers.image_viewer import ImageViewer
-from viewers.graph_viewer import GraphViewer
+from viewers.graph_viewer import GraphViewerFloat, GraphViewerDate
 
 SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
 UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
@@ -84,21 +84,21 @@ class TangleWindow(QMainWindow):
 
         self.action_reload_nodes.triggered.connect(self.node_tree.ui.load_node_tree)
         self.action_show_image_viewer.triggered.connect(partial(self.show_viewer, "image"))
-        self.action_show_graph_viewer.triggered.connect(partial(self.show_viewer, "graph"))
+        self.action_show_graph_viewer.triggered.connect(partial(self.show_viewer, "graph_float"))
+        self.action_show_graph_viewer_date.triggered.connect(partial(self.show_viewer, "graph_date"))
 
         self.scene.selectionChanged.connect(self.load_values_ui)
 
         self.horizontal_splitter.setSizes([500, 100])
         self.vertical_splitter.setSizes([500, 200])
 
-
     def show_viewer(self, viewer_type):
         if viewer_type == "image":
             ImageViewer(self).show()
-
-        if viewer_type == "graph":
-            GraphViewer(self).show()
-
+        if viewer_type == "graph_float":
+            GraphViewerFloat(self).show()
+        if viewer_type == "graph_date":
+            GraphViewerDate(self).show()
 
     def load_values_ui(self):
         from nodes.base_node import BaseNode
@@ -126,7 +126,9 @@ class TangleWindow(QMainWindow):
         if event.key() == Qt.Key_F5:
             self.show_viewer("image")
         if event.key() == Qt.Key_F6:
-            self.show_viewer("graph")
+            self.show_viewer("graph_float")
+        if event.key() == Qt.Key_F7:
+            self.show_viewer("graph_date")
 
 
 class TitleLabel(QLineEdit):

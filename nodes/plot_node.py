@@ -6,13 +6,20 @@ from PyQt5.QtCore import *
 from core.Constants import Colors
 from nodes.base_node import BaseNode
 
-from viewers.graph_viewer import GraphViewer
+from viewers.graph_viewer import GraphViewerFloat, GraphViewerDate
 
 class PlotNode(BaseNode):
     def __init__(self, scene, title="unnamed_node", title_background_color=Colors.node_selected_border, x=0, y=0):
         super().__init__(scene, title, title_background_color, x, y)
 
         self.__plot_objects = []
+        self.__type = "float"
+
+    def set_type(self, graph_type):
+        self.__type = graph_type
+
+    def get_type(self):
+        return self.__type
 
     def add_plot_object(self, plot_object):
         self.__plot_objects.append(plot_object)
@@ -26,7 +33,10 @@ class PlotNode(BaseNode):
     def refresh(self):
         main_window = self.scene.get_main_window()
         for plot_object in self.get_plot_objects():
-            GraphViewer(main_window).plot(plot_object)
+            if self.get_type() == "float":
+                GraphViewerFloat(main_window).plot(plot_object)
+            elif self.get_type() == "date":
+                GraphViewerDate(main_window).plot(plot_object)
 
 
 class PlotObject(QObject):

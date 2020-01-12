@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import *
+import datetime
+from functools import partial
 
 from nodes.base_node import BaseNode
 from core import socket_types as socket_types
@@ -33,6 +35,7 @@ class MakePlotObject(PlotNode):
         self.chk_show_markers = self.add_checkbox("Show markers", change_checked_function=self.compute)
         self.cb_marker_shape = self.add_label_combobox("Marker shape", ["o", "+", "d"], changed_function=self.compute)
         self.txt_marker_size = self.add_label_float("Marker size", number=10.0, number_changed_function=self.compute)[1]
+        self.cb_x_axis = self.add_label_combobox("X axis data", ["float", "date"], changed_function=self.compute)
 
     def set_graph_color(self):
         color_dialog = QColorDialog(self.po.get_color())
@@ -52,20 +55,26 @@ class MakePlotObject(PlotNode):
         try:
             if self.input_x_values.is_connected() and self.input_y_values.is_connected():
                 # self.input_graph_title.fetch_connected_value()
+                # self.po.set_title(self.input_graph_title.get_value())
+                # self.input_x_title.fetch_connected_value()
+                # self.input_y_title.fetch_connected_value()
+                # self.po.set_x_axis_title(self.input_x_title.get_value())
+                # self.po.set_y_axis_title(self.input_y_title.get_value())
 
                 self.input_x_values.fetch_connected_value()
                 self.input_y_values.fetch_connected_value()
 
-                # self.input_x_title.fetch_connected_value()
-                # self.input_y_title.fetch_connected_value()
+                if self.cb_x_axis.currentText() == "date":
+                    dates = [datetime.datetime.strptime(value, '%Y-%m-%d').timestamp() for value in
+                             self.input_x_values.get_value()]
+                    self.set_type("date")
+                    self.po.set_x_axis_values(dates)
+                if self.cb_x_axis.currentText() == "float":
+                    self.set_type("float")
+                    self.po.set_x_axis_values(self.input_x_values.get_value())
 
-                # self.po.set_title(self.input_graph_title.get_value())
 
-                self.po.set_x_axis_values(self.input_x_values.get_value())
                 self.po.set_y_axis_values(self.input_y_values.get_value())
-
-                # self.po.set_x_axis_title(self.input_x_title.get_value())
-                # self.po.set_y_axis_title(self.input_y_title.get_value())
 
                 self.po.set_show_markers(self.chk_show_markers.isChecked())
                 self.po.set_marker_shape(self.cb_marker_shape.currentText())

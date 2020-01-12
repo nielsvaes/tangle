@@ -49,8 +49,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1162</width>
-           <height>765</height>
+           <width>1170</width>
+           <height>784</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout">
@@ -78,7 +78,7 @@
      <x>0</x>
      <y>0</y>
      <width>1294</width>
-     <height>28</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -101,8 +101,15 @@
     <property name="title">
      <string>Viewers</string>
     </property>
+    <widget class="QMenu" name="menuGraph">
+     <property name="title">
+      <string>Graph</string>
+     </property>
+     <addaction name="action_show_graph_viewer"/>
+     <addaction name="action_show_graph_viewer_date"/>
+    </widget>
     <addaction name="action_show_image_viewer"/>
-    <addaction name="action_show_graph_viewer"/>
+    <addaction name="menuGraph"/>
    </widget>
    <widget class="QMenu" name="menuScene">
     <property name="tearOffEnabled">
@@ -273,20 +280,31 @@
     <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
+  <action name="actionsdf">
+   <property name="text">
+    <string>sdf</string>
+   </property>
+  </action>
   <action name="action_show_graph_viewer">
    <property name="text">
-    <string>Graph</string>
+    <string>Float Graph</string>
    </property>
    <property name="shortcut">
-    <string>F6</string>
+    <string>Ctrl+F6</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
-  <action name="actionsdf">
+  <action name="action_show_graph_viewer_date">
    <property name="text">
-    <string>sdf</string>
+    <string>Date Graph</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F7</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
  </widget>

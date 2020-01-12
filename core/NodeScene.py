@@ -18,7 +18,7 @@ from .SocketConnection import SocketConnection
 from .GroupNode import GroupNode
 from nodes.base_node import BaseNode
 from viewers.image_viewer import ImageViewer
-from viewers.graph_viewer import GraphViewer
+from viewers.graph_viewer import GraphViewerFloat
 
 from core.Constants import Colors
 import core.SettingsConstants as sc
@@ -446,7 +446,7 @@ class NodeScene(QGraphicsScene):
             group_node.destroy_self()
 
         ImageViewer(self.get_main_window()).clear()
-        GraphViewer(self.get_main_window()).clear()
+        GraphViewerFloat(self.get_main_window()).clear()
 
     def browse_for_save_location(self, selected_nodes_only=False):
         """
