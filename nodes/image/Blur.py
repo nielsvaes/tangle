@@ -4,6 +4,8 @@ from core import socket_types as socket_types
 from core.Constants import Colors
 from PIL import ImageQt, ImageFilter
 
+from nv_utils.decorators import timeit
+
 class Blur(ImageNode):
     def __init__(self, scene, x=0, y=0):
         super(Blur, self).__init__(scene, title_background_color=Colors.blur, x=x, y=y)
@@ -13,7 +15,6 @@ class Blur(ImageNode):
 
         self.sld_blur_amount = self.add_slider(0, 50, 0, changed_function=self.slider_changed, released_function=self.slider_released)
 
-
     def slider_changed(self):
         self.compute(compute_next=False)
         self.set_dirty(True)
@@ -21,6 +22,7 @@ class Blur(ImageNode):
     def slider_released(self):
         super().compute()
 
+    @timeit
     def compute(self, compute_next=True):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
