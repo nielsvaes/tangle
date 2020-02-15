@@ -1,7 +1,6 @@
 import os
 import sys
 from functools import partial
-import time
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -18,16 +17,12 @@ except:
     logging.warning("Can't find qtmodern!")
     modern = False
 
-from ez_settings.ez_settings import EasySettingsBase
+from ez_settings.ez_settings import EasySettingsSingleton as settings
 
-
-import nv_utils.file_utils as file_utils
 import nv_utils.qt_utils as qutils
-import nv_utils.utils as utils
 
 from core.NodeScene import NodeScene
 from core.NodeView import NodeView
-from core.Constants import ss, IO
 
 from widgets.node_tree import NodeTree
 
@@ -40,6 +35,7 @@ SETTINGS_PATH = os.path.join(SCRIPT_FOLDER, "settings", "tangle_settings.json")
 ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
 NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
 
+settings(SETTINGS_PATH)
 
 class TangleWindow(QMainWindow):
     def __init__(self):
@@ -48,7 +44,7 @@ class TangleWindow(QMainWindow):
         uic.loadUi(os.path.join(UI_PATH, "tangle.ui"), self)
         self.setWindowTitle("Tangle")
 
-        EasySettingsBase(SETTINGS_PATH)
+        print(settings().get_file_location())
 
         self.build_ui()
         self.show()
@@ -142,7 +138,6 @@ class TitleLabel(QLineEdit):
         self.deleteLater()
 
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     if modern:
@@ -157,12 +152,8 @@ if __name__ == "__main__":
 
     tangle_window = TangleWindow()
 
-    # modern_window = qtmodern.windows.ModernWindow(tangle_window)
-    # modern_window.show()
-
     # tangle_window.showMaximized()
     tangle_window.show()
     splash_screen.finish(tangle_window)
-
 
     app.exec_()
