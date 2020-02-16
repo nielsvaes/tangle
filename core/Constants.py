@@ -99,6 +99,9 @@ class NumberConstants():
     socket_spacing       = 5
     socket_z_depth       = 110
 
+    icon_circle_size = 45
+    icon_circle_pixmap_size = icon_circle_size - 10
+
     connection_z_depth_normal = 1
     connection_z_depth_hover  = 50
 

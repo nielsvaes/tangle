@@ -24,7 +24,7 @@ NODE_FOLDER = os.path.join(SCRIPT_FOLDER, "nodes")
 
 class BaseNode(Node):
     def __init__(self, scene, title="unnamed_node", title_background_color=Colors.node_selected_border ,x=0, y=0):
-        super(BaseNode, self).__init__(scene, title, title_background_color, x, y)
+        super().__init__(scene, title, title_background_color, x, y)
         self.scene = scene
         self.__auto_compute = False
         self.__x = x
@@ -60,14 +60,30 @@ class BaseNode(Node):
         self.add_spacer()
 
     def set_icon(self):
-        icon_path = os.path.join(ICONS_PATH, os.path.basename(str(type(self).__name__))) + ".png"
-        if os.path.isfile(icon_path):
+        if self.has_icon():
+            icon_pixmap = self.get_icon()
             self.lbl_icon.setVisible(True)
-            self.lbl_icon.setPixmap(QPixmap(icon_path).scaled(48, 48, transformMode=Qt.SmoothTransformation))
-            return icon_path
+            self.lbl_icon.setPixmap(icon_pixmap.scaled(48, 48, transformMode=Qt.SmoothTransformation))
+            self.add_icon_circle_pixmap(icon_pixmap)
         else:
             self.lbl_icon.setVisible(False)
             return
+
+    def has_icon(self):
+        if not self.get_icon(as_pixmap=False) == "":
+            return True
+        return False
+
+    def get_icon(self, as_pixmap=True):
+        icon_path = os.path.join(ICONS_PATH, os.path.basename(str(type(self).__name__))) + ".png"
+        if as_pixmap:
+            if os.path.isfile(icon_path):
+                return QPixmap(icon_path)
+            return QPixmap()
+        else:
+            if os.path.isfile(icon_path):
+                return icon_path
+            return ""
 
     def refresh(self):
         pass

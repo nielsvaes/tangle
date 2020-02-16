@@ -31,6 +31,9 @@ class Node(QGraphicsRectItem):
         self.title_background_color = title_background_color
         self.title = self.__add_title(title)
 
+        self.icon_circle = self.add_icon_circle()
+        self.icon_circle_pixmap = QGraphicsPixmapItem()
+
         self.draw()
 
         self.__uuid = uuid.uuid4()
@@ -341,6 +344,45 @@ class Node(QGraphicsRectItem):
 
         return None
 
+    def add_icon_circle(self):
+        icon_circle = QGraphicsEllipseItem()
+        icon_circle.setRect(0, 0, nc.icon_circle_size, nc.icon_circle_size)
+
+        x_pos = (self.boundingRect().width() / 2 - nc.icon_circle_size) + self.boundingRect().left()
+        y_pos = (self.boundingRect().bottom() - nc.icon_circle_size)
+
+        brush = QBrush()
+        brush.setStyle(Qt.SolidPattern)
+        brush.setColor(Colors.gray)
+        icon_circle.setBrush(brush)
+
+        # icon_circle.setPos(x_pos, y_pos)
+        icon_circle.setZValue(nc.socket_z_depth)
+
+        self.scene.addItem(icon_circle)
+        icon_circle.setParentItem(self)
+
+        return icon_circle
+
+    def add_icon_circle_pixmap(self, pixmap):
+        self.icon_circle_pixmap.setPixmap(pixmap.scaled(nc.icon_circle_pixmap_size, nc.icon_circle_pixmap_size))
+        self.icon_circle_pixmap.setTransformationMode(Qt.SmoothTransformation)
+        self.scene.addItem(self.icon_circle_pixmap)
+        self.icon_circle_pixmap.setZValue(self.icon_circle.zValue())
+        self.icon_circle_pixmap.setParentItem(self)
+
+    def reposition_icon_circle(self):
+        x_pos = (self.boundingRect().right() / 2 - (nc.icon_circle_size / 2)) + self.boundingRect().left()
+        y_pos = (self.boundingRect().bottom() - (nc.icon_circle_size / 2))
+
+        self.icon_circle.setPos(x_pos, y_pos)
+
+    def reposition_icon_circle_pixmap(self):
+        x_pos = (self.boundingRect().right() / 2 - (nc.icon_circle_size / 2)) + self.boundingRect().left() + (nc.icon_circle_pixmap_size / 10)
+        y_pos = (self.boundingRect().bottom() - (nc.icon_circle_size / 2)) + (nc.icon_circle_pixmap_size / 10)
+
+        self.icon_circle_pixmap.setPos(x_pos, y_pos)
+
     def reposition_title(self, title=None):
         if title is None:
             title = self.title
@@ -412,6 +454,8 @@ class Node(QGraphicsRectItem):
         self.setRect(self.node_rect)
         self.setPos(position)
         self.reposition_title(self.title)
+        self.reposition_icon_circle()
+        self.reposition_icon_circle_pixmap()
 
     def __set_normal_colors(self):
         pen = QPen()
@@ -425,6 +469,7 @@ class Node(QGraphicsRectItem):
         self.setBrush(brush)
 
         self.node_title_background.setPen(pen)
+        self.icon_circle.setPen(pen)
 
     def __set_hover_colors(self):
         pen = QPen()
@@ -438,6 +483,7 @@ class Node(QGraphicsRectItem):
         self.setBrush(brush)
 
         self.node_title_background.setPen(pen)
+        self.icon_circle.setPen(pen)
 
     def __set_selected_colors(self):
         pen = QPen()
@@ -451,6 +497,7 @@ class Node(QGraphicsRectItem):
         self.setBrush(brush)
 
         self.node_title_background.setPen(pen)
+        self.icon_circle.setPen(pen)
 
     def __add_title(self, title):
         node_title = NodeTitle(title, font_size=self.title_label_size)
