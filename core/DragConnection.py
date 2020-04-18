@@ -6,7 +6,7 @@ from .Constants import nc, Colors, IO
 
 class DragConnection(QGraphicsPathItem):
     def __init__(self, output_socket, mouse_position, scene):
-        super(DragConnection, self).__init__()
+        super().__init__()
         self.scene = scene
         self.output_socket = output_socket
         self.mouse_position = mouse_position
