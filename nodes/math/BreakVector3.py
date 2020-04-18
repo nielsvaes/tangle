@@ -18,8 +18,6 @@ class BreakVector3(BaseNode):
         if self.input_vector.is_connected():
             self.input_vector.fetch_connected_value()
 
-            print(self.input_vector.get_value())
-
             x_value = self.input_vector.get_value()[0]
             y_value = self.input_vector.get_value()[1]
             z_value = self.input_vector.get_value()[2]

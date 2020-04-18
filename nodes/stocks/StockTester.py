@@ -39,8 +39,6 @@ class StockTester(PlotNode):
             number = random.uniform(0, 100)
             y_axis_values.append(number)
 
-        print(y_axis_values)
-
         po = PlotObject()
 
         po.set_x_axis_values(x_axis_values)

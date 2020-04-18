@@ -7,7 +7,6 @@ class StockNode(PlotNode):
         super().__init__(scene, title, title_background_color, x, y)
 
         self.key = EasySettingsBase().get_value("alpha_vantage_api")
-        print(self.key)
 
 
 

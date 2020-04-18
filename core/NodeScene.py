@@ -168,7 +168,7 @@ class NodeScene(QGraphicsScene):
         try:
             if node is None:
                 for begin_node in self.get_begin_nodes():
-                    print("computing begin node %s " % begin_node)
+                    logging.log("computing begin node %s " % begin_node)
                     begin_node.set_dirty(True)
                     begin_node.compute()
             else:
@@ -253,7 +253,7 @@ class NodeScene(QGraphicsScene):
         :return:
         """
         try:
-            for connection_dict in utils.value_extract("connections", mapped_scene):
+            for connection_dict in utils.key_extract("connections", mapped_scene):
                 for index, connection_list in connection_dict.items():
                     output_socket = self.get_socket_by_uuid(connection_list[0])
                     input_socket = self.get_socket_by_uuid(connection_list[1])

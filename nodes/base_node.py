@@ -14,7 +14,7 @@ from core.Node import Node
 from core.SignalEmitter import SignalEmitter
 from core.Constants import Colors, ss
 
-import nv_utils.qt_utils as qutils
+import nv_utils.qt_utils as qt_utils
 
 SCRIPT_FOLDER = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
@@ -33,7 +33,6 @@ class BaseNode(Node):
         self.__module_path = None
 
         self.dirty_signal = SignalEmitter()
-        self.compute_time = None
 
         self.__widget = QWidget()
         self.__layout = QVBoxLayout()
@@ -198,11 +197,7 @@ class BaseNode(Node):
         layout = QHBoxLayout()
         label = QLabel(label_text)
 
-        # float_validator = QDoubleValidator()
-        # float_validator.setDecimals(3)
-
         txt_float = QLineEdit(str(number))
-        # txt_float.setValidator(float_validator)
 
         layout.addWidget(label)
         layout.addWidget(txt_float)
@@ -255,7 +250,7 @@ class BaseNode(Node):
 
     def add_combobox(self, items=[], changed_function=None):
         combobox = QComboBox()
-        qutils.add_items_to_combobox(combobox, items=items)
+        qt_utils.cb.add_items(combobox, items=items)
 
         if changed_function is not None:
             combobox.currentIndexChanged.connect(changed_function)
@@ -268,7 +263,7 @@ class BaseNode(Node):
         layout = QHBoxLayout()
         label = QLabel(label_text)
         combobox = QComboBox()
-        qutils.add_items_to_combobox(combobox, items=items)
+        qt_utils.cb.add_items(combobox, items=items)
 
         layout.addWidget(label)
         layout.addWidget(combobox)

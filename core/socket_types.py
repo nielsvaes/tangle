@@ -8,7 +8,7 @@ from PIL import Image
 from core.Constants import Colors
 from nodes.plot_node import PlotObject
 
-import nv_utils.qt_utils as qutils
+import nv_utils.qt_utils as qt_utils
 
 class BaseSocketType(QObject):
     #is_dirty = pyqtSignal()
@@ -206,7 +206,7 @@ class EnumSocketType(BaseSocketType):
         self.ui_widget.setLayout(self.layout)
 
         self.layout.addWidget(self.combobox)
-        qutils.add_items_to_combobox(self.combobox, self.get_value().get("options"), clear=True)
+        qt_utils.cb.add_items(self.combobox, self.get_value().get("options"), clear=True)
 
         self.combobox.setCurrentIndex(self.get_value().get("index"))
         self.combobox.blockSignals(False)
@@ -220,8 +220,6 @@ class EnumSocketType(BaseSocketType):
     def enter_value(self, index):
         self.__value_dictionary["index"] = index
         self.set_value(self.__value_dictionary)
-
-        # self.is_dirty.emit()
 
     def get_choice(self):
         return self.get_value().get("options")[self.get_value().get("index")]

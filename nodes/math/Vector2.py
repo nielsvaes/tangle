@@ -28,11 +28,9 @@ class Vector2(BaseNode):
         y_value = float(self.txt_y.text())
 
         try:
-            print("setting vector value")
             self.output_vector.set_value([x_value, y_value])
             self.output_x.set_value(x_value)
             self.output_y.set_value(y_value)
-            print("the value is %s" % self.output_vector.get_value())
         except ValueError as err:
             self.output_vector.set_value([0.0, 0.0])
 

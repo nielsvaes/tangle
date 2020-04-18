@@ -66,10 +66,8 @@ class Comparison(BaseNode):
                     self.change_title(str(result))
 
                     if result:
-                        print(self.value_if_true.get_value())
                         self.output.change_socket_type(self.value_if_true.socket_type)
                         self.output.set_value(self.value_if_true.get_value())
-                        print(self.value_if_true.get_value())
                     else:
                         self.output.change_socket_type(self.value_if_false.socket_type)
                         self.output.set_value(self.value_if_false.get_value())

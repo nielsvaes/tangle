@@ -11,7 +11,7 @@ from PyQt5.QtCore import *
 from PyQt5 import uic
 
 import nv_utils.file_utils as file_utils
-import nv_utils.qt_utils as qutils
+import nv_utils.qt_utils as qt_utils
 import nv_utils.utils as utils
 
 SCRIPT_FOLDER = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -65,7 +65,7 @@ class NodeTree(form, base):
                 if complete_folder == NODE_FOLDER:
                     continue
 
-                folder_item = qutils.get_item_with_text_from_tree_widget(self.ui.tree_nodes, folder_name, 0)
+                folder_item = qt_utils.tw.get_item_with_text(self.ui.tree_nodes, folder_name, 0)
 
                 if folder_item is None:
                     folder_item = QTreeWidgetItem(self.ui.tree_nodes, [folder_name])

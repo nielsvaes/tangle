@@ -19,7 +19,7 @@ except:
 
 from ez_settings.ez_settings import EasySettingsSingleton as settings
 
-import nv_utils.qt_utils as qutils
+import nv_utils.qt_utils as qt_utils
 
 from core.NodeScene import NodeScene
 from core.NodeView import NodeView
@@ -43,8 +43,6 @@ class TangleWindow(QMainWindow):
 
         uic.loadUi(os.path.join(UI_PATH, "tangle.ui"), self)
         self.setWindowTitle("Tangle")
-
-        print(settings().get_file_location())
 
         self.build_ui()
         self.show()
@@ -99,7 +97,7 @@ class TangleWindow(QMainWindow):
     def load_values_ui(self):
         from nodes.base_node import BaseNode
         from core.GroupNode import GroupNode
-        qutils.clear_layout(self.values_layout)
+        qt_utils.clear_layout(self.values_layout)
 
         selected_items = self.scene.selectedItems()
         if len(selected_items) > 0:

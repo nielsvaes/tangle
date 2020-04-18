@@ -9,7 +9,7 @@ from PyQt5.QtCore import *
 
 from ez_settings.ez_settings import EasySettingsBase
 
-import nv_utils.qt_utils as qutils
+import nv_utils.qt_utils as qt_utils
 import nv_utils.utils as utils
 
 
@@ -63,7 +63,7 @@ class CombineLists(BaseNode):
                         extended_list.extend([item for item in input_list if item not in extended_list])
 
                 self.output_list.set_value(extended_list)
-                qutils.add_items_to_list_widget(self.lw_list, [str(item) for item in extended_list], duplicates_allowed=self.duplicates_allowed, clear=True)
+                qt_utils.lw.add_items(self.lw_list, [str(item) for item in extended_list], duplicates_allowed=self.duplicates_allowed, clear=True)
 
                 self.update_title(len(extended_list))
                 self.set_dirty(False)
