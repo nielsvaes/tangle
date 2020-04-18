@@ -26,19 +26,16 @@ class BaseNode(Node):
     def __init__(self, scene, title="unnamed_node", title_background_color=Colors.node_selected_border ,x=0, y=0):
         super().__init__(scene, title, title_background_color, x, y)
         self.scene = scene
-        self.__auto_compute = False
         self.__x = x
         self.__y = y
 
         self.__module_path = None
 
-        self.dirty_signal = SignalEmitter()
-
         self.__widget = QWidget()
         self.__layout = QVBoxLayout()
 
         self.__is_dirty = True
-        self.__auto_compute_on_connect = False
+        self.__auto_compute_on_connect = True
 
         self.__widget.setLayout(self.__layout)
 
@@ -93,11 +90,20 @@ class BaseNode(Node):
     def get_module_path(self):
         return self.__module_path
 
+    def set_auto_compute_on_connect(self, value):
+        self.__auto_compute_on_connect = value
+
+    def get_auto_compute_on_connect(self):
+        return self.__auto_compute_on_connect
+
     def compute(self):
         self.compute_connected_nodes()
 
     def set_dirty(self, is_dirty, emit=False):
         self.__is_dirty = is_dirty
+
+    def is_dirty(self):
+        return self.__is_dirty
 
     def compute_connected_nodes(self, output_socket=None):
         if output_socket is None:
@@ -108,9 +114,6 @@ class BaseNode(Node):
             for connected_node in [socket.get_node() for socket in output_socket.get_connected_sockets()]:
                 connected_node.set_dirty(True)
                 connected_node.compute()
-
-    def is_dirty(self):
-        return self.__is_dirty
 
     def get_ui(self):
         return self.__widget
