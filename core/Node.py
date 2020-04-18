@@ -6,6 +6,8 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 import uuid
 
+import nv_utils.utils as utils
+
 from .Constants import nc, Colors, IO
 from .NodeTitle import NodeTitle
 from .NodeSocket import NodeSocket
@@ -118,8 +120,10 @@ class Node(QGraphicsRectItem):
 
         label = NodeTitle(input_output_name, font_size=self.socket_label_size)
 
-        output_socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * len(self.get_all_output_sockets())
-        input_socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * len(self.get_all_input_sockets())
+        y_pos_multiplier = len(utils.get_longest_list([self.get_all_input_sockets(), self.get_all_output_sockets()]))
+
+        output_socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * y_pos_multiplier
+        input_socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * y_pos_multiplier
 
         input_socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, input_socket_y_position)
         input_socket = NodeSocket(IO.input, socket_type, label, self.scene, position=input_socket_position)
