@@ -32,7 +32,7 @@ class SaveImage(ImageNode):
             self.set_pixmap(pixmap)
             self.input_image.get_value().save(self.txt_line.text())
 
-    def compute(self):
+    def compute(self, force=False):
         pass
 
 

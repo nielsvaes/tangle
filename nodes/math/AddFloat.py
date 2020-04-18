@@ -17,27 +17,27 @@ class AddFloat(BaseNode):
 
         self.inputs = [self.input_01, self.input_02]
 
-
     def add_new_input(self):
         next_letter = chr(ord(self.inputs[-1].name) + 1)
         input = self.add_input(socket_types.FloatSocketType(self), next_letter)
         self.inputs.append(input)
 
-    def compute(self):
-        if self.is_dirty():
-            result = 0.0
+    def compute(self, force=False):
+        if not self.get_auto_compute_on_connect() and force:
+            if self.is_dirty():
+                result = 0.0
 
-            for each in self.inputs:
-                each.fetch_connected_value()
-                input_value = each.get_value()
+                for each in self.inputs:
+                    each.fetch_connected_value()
+                    input_value = each.get_value()
 
-                result += input_value
+                    result += input_value
 
-            self.output_float.set_value(result)
-            self.lbl_result.setText(str(result))
+                self.output_float.set_value(result)
+                self.lbl_result.setText(str(result))
 
-            self.set_dirty(False)
+                self.set_dirty(False)
 
-            self.title.setPlainText(str(result))
-            self.reposition_title()
-            super().compute()
+                self.title.setPlainText(str(result))
+                self.reposition_title()
+                super().compute(force=force)

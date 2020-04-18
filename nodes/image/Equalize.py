@@ -15,7 +15,7 @@ class Equalize(ImageNode):
         self.input_mask.override_color(Colors.black)
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
             self.input_mask.fetch_connected_value()
@@ -30,5 +30,5 @@ class Equalize(ImageNode):
             contrasted_pixmap = ImageQt.toqpixmap(equalize)
             self.set_pixmap(contrasted_pixmap)
             self.refresh()
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)

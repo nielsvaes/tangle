@@ -38,9 +38,9 @@ class LoadImage(ImageNode):
 
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 
     def load(self, node_dict, x=None, y=None):

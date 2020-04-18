@@ -47,7 +47,7 @@ class MaskColor(ImageNode):
         self.set_dirty(True)
 
     def slider_released(self):
-        super().compute()
+        super().compute(force=force)
 
     def clamp(self, min_val, max_val, value):
         if value <= min_val:
@@ -87,5 +87,5 @@ class MaskColor(ImageNode):
             self.set_pixmap(output_pixmap)
             self.refresh()
             if compute_next:
-                super().compute()
+                super().compute(force=force)
             self.set_dirty(False)

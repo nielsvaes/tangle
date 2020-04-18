@@ -16,7 +16,7 @@ class Percentage(BaseNode):
 
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             result = 0.0
 
@@ -32,4 +32,4 @@ class Percentage(BaseNode):
 
             self.title.setPlainText(str(result))
             self.reposition_title()
-            super().compute()
+            super().compute(force=force)

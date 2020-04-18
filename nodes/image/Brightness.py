@@ -21,7 +21,7 @@ class Brightness(ImageNode):
         self.set_dirty(True)
 
     def slider_released(self):
-        super().compute()
+        super().compute(force=force)
 
 
     def compute(self, compute_next=True):
@@ -38,5 +38,5 @@ class Brightness(ImageNode):
             self.set_pixmap(contrasted_pixmap)
             self.refresh()
             if compute_next:
-                super().compute()
+                super().compute(force=force)
             self.set_dirty(False)

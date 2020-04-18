@@ -33,9 +33,9 @@ class Vector3(BaseNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             self.change_title("[%s, %s, %s]" % (self.txt_x.text(), self.txt_y.text(), self.txt_z.text()))
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 

@@ -114,6 +114,8 @@ class NumberConstants():
     node_item_width                 = node_item_height * 7
     node_item_z_depth               = 100
 
+    auto_text_size  = socket_size - 7
+
 nc = NumberConstants
 
 class StyleSheets():

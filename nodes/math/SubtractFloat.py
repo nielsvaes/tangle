@@ -24,7 +24,7 @@ class SubtractFloat(BaseNode):
         self.inputs.append(input)
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             self.input_01.fetch_connected_value()
             result = self.input_01.get_value()
@@ -38,7 +38,7 @@ class SubtractFloat(BaseNode):
             self.output_float.set_value(result)
             self.lbl_result.setText(str(result))
 
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 
             self.title.setPlainText(str(result))

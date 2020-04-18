@@ -22,7 +22,7 @@ class RandomFloat(BaseNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             self.input_min.fetch_connected_value()
             self.input_max.fetch_connected_value()
@@ -36,7 +36,7 @@ class RandomFloat(BaseNode):
 
             self.title.setPlainText(str(self.output_float.get_value()))
             self.reposition_title()
-            super().compute()
+            super().compute(force=force)
 
     # def save(self):
     #     node_dict = super().save()

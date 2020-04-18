@@ -25,7 +25,7 @@ class SplitChannels(ImageNode):
         self.output_a.override_color(Colors.gray)
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 
@@ -38,6 +38,6 @@ class SplitChannels(ImageNode):
 
             self.set_pixmap(ImageQt.toqpixmap(self.input_image.get_value()))
 
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 

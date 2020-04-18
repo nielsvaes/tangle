@@ -168,9 +168,9 @@ class NodeScene(QGraphicsScene):
         try:
             if node is None:
                 for begin_node in self.get_begin_nodes():
-                    logging.log("computing begin node %s " % begin_node)
+                    logging.info("computing begin node %s " % begin_node)
                     begin_node.set_dirty(True)
-                    begin_node.compute()
+                    begin_node.compute(force=True)
             else:
                 node.set_dirty(True)
                 node.compute()

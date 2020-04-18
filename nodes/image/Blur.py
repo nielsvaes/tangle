@@ -20,7 +20,7 @@ class Blur(ImageNode):
         self.set_dirty(True)
 
     def slider_released(self):
-        super().compute()
+        super().compute(force=force)
 
     @timeit
     def compute(self, compute_next=True):
@@ -34,5 +34,5 @@ class Blur(ImageNode):
             self.set_pixmap(blurred_pixmap)
             self.refresh()
             if compute_next:
-                super().compute()
+                super().compute(force=force)
             self.set_dirty(False)

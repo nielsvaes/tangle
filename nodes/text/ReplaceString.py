@@ -21,7 +21,7 @@ class ReplaceString(BaseNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             self.input_string.fetch_connected_value()
 
@@ -35,6 +35,6 @@ class ReplaceString(BaseNode):
             self.lbl_replaced_text.setText(new_string)
 
             self.output_string.set_value(new_string)
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 

@@ -69,7 +69,7 @@ class JoinChannels(ImageNode):
         return max(groups, key=_auxfun)[0]
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.input_r.is_connected() or self.input_r.is_connected() or self.input_r.is_connected() or self.input_r.is_connected():
             self.input_r.fetch_connected_value()
             self.input_g.fetch_connected_value()
@@ -103,7 +103,7 @@ class JoinChannels(ImageNode):
             self.output_image.set_value(combined_image)
             self.set_pixmap(ImageQt.toqpixmap(combined_image))
             self.refresh()
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 
 

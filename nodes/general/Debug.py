@@ -12,7 +12,7 @@ class Debug(BaseNode):
         self.txt_debug = self.add_label_text("Debug value: ")[1]
 
 
-    def compute(self):
+    def compute(self, force=False):
         self.debug_value.fetch_connected_value()
         # self.txt_debug.setText(str(self.debug_value.get_value()))
         self.txt_debug.setText(f"{self.debug_value.get_value()}")

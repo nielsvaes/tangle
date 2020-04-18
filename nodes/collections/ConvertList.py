@@ -33,7 +33,7 @@ class ConvertList(BaseNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         try:
             if self.is_dirty():
                 converted_list = []
@@ -62,7 +62,7 @@ class ConvertList(BaseNode):
 
                 self.output_list.set_value(converted_list)
                 self.set_dirty(False)
-                super().compute()
+                super().compute(force=force)
         except Exception as err:
             utils.trace(err)
 

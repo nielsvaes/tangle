@@ -65,9 +65,9 @@ class List(BaseNode):
     def update_title(self):
         self.change_title(f"list: {len(self.items)}")
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
-            super().compute()
+            super().compute(force=force)
 
     def load(self, node_dict, is_duplicate=False, x=None, y=None):
         super().load(node_dict, is_duplicate=is_duplicate, x=x, y=y)

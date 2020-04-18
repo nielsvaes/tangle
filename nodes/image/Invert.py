@@ -12,7 +12,7 @@ class Invert(ImageNode):
         self.input_image, self.output_image = self.add_input_output(socket_types.PictureSocketType(self), "image")
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 
@@ -22,7 +22,7 @@ class Invert(ImageNode):
 
             output_pixmap = ImageQt.toqpixmap(inverted_image)
             self.set_pixmap(output_pixmap)
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 
 

@@ -28,7 +28,7 @@ class MultiplyFloat(BaseNode):
         self.inputs.append(input)
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             result = 1.0
 
@@ -41,7 +41,7 @@ class MultiplyFloat(BaseNode):
             self.output_float.set_value(result)
             self.lbl_result.setText(str(result))
 
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 
             self.title.setPlainText(str(result))

@@ -8,8 +8,7 @@ from .Constants import nc, Colors, IO
 
 class SocketConnection(QGraphicsPathItem):
     def __init__(self, output_socket, input_socket, scene, auto_compute_on_connect=True, auto_compute_on_disconnect=True):
-        # super(SocketConnection, self).__init__()
-        super(SocketConnection, self).__init__()
+        super().__init__()
 
         self.output_socket = output_socket
         self.input_socket = input_socket
@@ -37,7 +36,7 @@ class SocketConnection(QGraphicsPathItem):
         input_node = self.input_socket.get_node()
         input_node.set_dirty(True)
 
-        if self.auto_compute_on_connect:
+        if self.get_input_socket().get_node().get_auto_compute_on_connect():
             input_node.compute()
 
         if self.input_socket.adjust_color_to_input:
@@ -114,7 +113,7 @@ class SocketConnection(QGraphicsPathItem):
         self.input_socket.get_node().set_dirty(True)
         self.input_socket.reset_to_initial_value()
 
-        if self.auto_compute_on_disconnect:
+        if self.get_input_socket().get_node().get_auto_compute_on_connect() == True:
             self.input_socket.get_node().compute()
 
     def get_input_socket(self):

@@ -112,7 +112,7 @@ class TangleWindow(QMainWindow):
         title_label.setText(text)
         title_label.node.change_title(text)
 
-    def compute(self):
+    def compute(self, force=False):
         for node in self.scene.selectedItems():
             node.compute()
 

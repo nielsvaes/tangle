@@ -29,7 +29,7 @@ class AverageGraph(PlotNode):
         input = self.add_input(socket_types.PlotSocketType(self), f"in {next_letter}")
         self.inputs.append(input)
 
-    def compute(self):
+    def compute(self, force=False):
         try:
             if self.is_dirty():
                 y_value_lists = []
@@ -73,7 +73,7 @@ class AverageGraph(PlotNode):
 
                 self.set_dirty(False)
                 self.refresh()
-                super().compute()
+                super().compute(force=force)
 
         except Exception as err:
             utils.trace(err)

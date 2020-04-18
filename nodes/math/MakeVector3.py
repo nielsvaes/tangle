@@ -14,7 +14,7 @@ class MakeVector3(BaseNode):
         self.input_z = self.add_input(socket_types.FloatSocketType(self), "z")
         self.output_vector = self.add_output(socket_types.Vector3SocketType(self), "vec3")
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             self.input_x.fetch_connected_value()
             self.input_y.fetch_connected_value()
@@ -23,6 +23,6 @@ class MakeVector3(BaseNode):
             self.output_vector.set_value(output_value)
 
             self.change_title(str(output_value))
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 

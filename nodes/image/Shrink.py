@@ -25,7 +25,7 @@ class Shrink(ImageNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 
@@ -41,5 +41,5 @@ class Shrink(ImageNode):
             self.set_pixmap(resized_pixmap)
 
             self.size.set_value(resized.size)
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)

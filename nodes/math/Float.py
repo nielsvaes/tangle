@@ -23,10 +23,10 @@ class Float(BaseNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
-            super().compute()
             self.change_title(str(self.output_float.get_value()))
+            super().compute(force=force)
             self.set_dirty(False)
 
     def load(self, node_dict, is_duplicate=False, x=None, y=None):

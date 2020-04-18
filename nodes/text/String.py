@@ -19,8 +19,8 @@ class String(BaseNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 

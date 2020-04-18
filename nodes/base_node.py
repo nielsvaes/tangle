@@ -92,12 +92,13 @@ class BaseNode(Node):
 
     def set_auto_compute_on_connect(self, value):
         self.__auto_compute_on_connect = value
+        self.set_auto_label(value)
 
     def get_auto_compute_on_connect(self):
         return self.__auto_compute_on_connect
 
-    def compute(self):
-        self.compute_connected_nodes()
+    def compute(self, force=False):
+        self.compute_connected_nodes(force=force)
 
     def set_dirty(self, is_dirty, emit=False):
         self.__is_dirty = is_dirty
@@ -105,15 +106,26 @@ class BaseNode(Node):
     def is_dirty(self):
         return self.__is_dirty
 
-    def compute_connected_nodes(self, output_socket=None):
-        if output_socket is None:
-            for node in self.get_connected_output_nodes():
-                node.set_dirty(True)
-                node.compute()
+    def compute_connected_nodes(self, output_socket=None, force=False):
+        if not self.get_auto_compute_on_connect():
+            if force:
+                if output_socket is None:
+                    for node in self.get_connected_output_nodes():
+                        node.set_dirty(True)
+                        node.compute(force=force)
+                else:
+                    for connected_node in [socket.get_node() for socket in output_socket.get_connected_sockets()]:
+                        connected_node.set_dirty(True)
+                        connected_node.compute(force=force)
         else:
-            for connected_node in [socket.get_node() for socket in output_socket.get_connected_sockets()]:
-                connected_node.set_dirty(True)
-                connected_node.compute()
+            if output_socket is None:
+                for node in self.get_connected_output_nodes():
+                    node.set_dirty(True)
+                    node.compute(force=force)
+            else:
+                for connected_node in [socket.get_node() for socket in output_socket.get_connected_sockets()]:
+                    connected_node.set_dirty(True)
+                    connected_node.compute(force=force)
 
     def get_ui(self):
         return self.__widget

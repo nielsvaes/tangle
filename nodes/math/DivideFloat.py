@@ -23,7 +23,7 @@ class DivideFloat(BaseNode):
         self.inputs.append(input)
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             result = 0.0
 
@@ -37,7 +37,7 @@ class DivideFloat(BaseNode):
                 self.output_float.set_value(result)
                 self.lbl_result.setText(str(self.output_float.get_value()))
 
-                super().compute()
+                super().compute(force=force)
                 self.set_dirty(False)
 
                 self.title.setPlainText(str(self.output_float.get_value()))

@@ -19,7 +19,7 @@ class Rotate(ImageNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 
@@ -36,5 +36,5 @@ class Rotate(ImageNode):
             rotated_pixmap = ImageQt.toqpixmap(rotated)
             self.set_pixmap(rotated_pixmap)
             self.refresh()
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)

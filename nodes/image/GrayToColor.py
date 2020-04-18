@@ -17,7 +17,7 @@ class GrayToColor(ImageNode):
 
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 
@@ -27,6 +27,6 @@ class GrayToColor(ImageNode):
 
             pixmap = ImageQt.toqpixmap(converted)
             self.set_pixmap(pixmap)
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 

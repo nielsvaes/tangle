@@ -67,7 +67,7 @@ class CombineLists(BaseNode):
 
                 self.update_title(len(extended_list))
                 self.set_dirty(False)
-                super().compute()
+                super().compute(force=force)
         except Exception as err:
             utils.trace(err)
 

@@ -13,7 +13,7 @@ class BreakVector2(BaseNode):
         self.output_x = self.add_output(socket_types.FloatSocketType(self), "x")
         self.output_y = self.add_output(socket_types.FloatSocketType(self), "y")
 
-    def compute(self):
+    def compute(self, force=False):
         if self.input_vector.is_connected():
             self.input_vector.fetch_connected_value()
 
@@ -28,4 +28,4 @@ class BreakVector2(BaseNode):
             self.change_title(str(self.input_vector.get_value()))
             self.compute_connected_nodes()
 
-            super().compute()
+            super().compute(force=force)

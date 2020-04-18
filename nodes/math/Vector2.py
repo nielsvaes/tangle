@@ -38,8 +38,8 @@ class Vector2(BaseNode):
 
 
 
-    def compute(self):
+    def compute(self, force=False):
         self.change_title("[%s, %s]" % (self.txt_x.text(), self.txt_y.text()))
-        super().compute()
+        super().compute(force=force)
         self.set_dirty(False)
 

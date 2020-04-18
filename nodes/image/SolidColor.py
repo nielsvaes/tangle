@@ -49,7 +49,7 @@ class SolidColor(ImageNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.input_size.is_connected():
             if self.output_image.get_value() is not None:
                 resized = self.output_image.get_value().resize(self.get_size())
@@ -60,5 +60,5 @@ class SolidColor(ImageNode):
                 pixmap = ImageQt.toqpixmap(self.solid_color_image)
 
             self.set_pixmap(pixmap)
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)

@@ -21,7 +21,7 @@ class PowerFloat(BaseNode):
 
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             self.input_01.fetch_connected_value()
             self.input_02.fetch_connected_value()
@@ -31,7 +31,7 @@ class PowerFloat(BaseNode):
             self.output_float.set_value(result)
             self.lbl_result.setText(str(result))
 
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)
 
             self.title.setPlainText(str(result))

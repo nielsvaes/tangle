@@ -23,7 +23,7 @@ class HueShift(ImageNode):
         self.set_dirty(True)
 
     def slider_released(self):
-        super().compute()
+        super().compute(force=force)
 
     def hue_shift(self, image, amount):
         # https://stackoverflow.com/questions/35417927/how-to-change-the-hsv-values-of-an-image-in-python
@@ -47,7 +47,7 @@ class HueShift(ImageNode):
                 self.set_pixmap(colorized_pixmap)
                 self.refresh()
                 if compute_next:
-                    super().compute()
+                    super().compute(force=force)
                 self.set_dirty(False)
         except Exception as err:
             utils.trace(err)

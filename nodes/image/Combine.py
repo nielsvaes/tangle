@@ -18,7 +18,7 @@ class Combine(ImageNode):
         self.input_mask.override_color(Colors.black)
 
 
-    def compute(self):
+    def compute(self, force=False):
         if self.background_input.is_connected() and self.foreground_input.is_connected():
             self.background_input.fetch_connected_value()
             self.foreground_input.fetch_connected_value()
@@ -37,5 +37,5 @@ class Combine(ImageNode):
             combined_pixmap = ImageQt.toqpixmap(combined)
             self.set_pixmap(combined_pixmap)
 
-            super().compute()
+            super().compute(force=force)
             self.set_dirty(False)

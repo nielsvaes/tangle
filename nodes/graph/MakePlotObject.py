@@ -51,7 +51,7 @@ class MakePlotObject(PlotNode):
         self.po.set_marker_color(color)
         self.refresh()
 
-    def compute(self):
+    def compute(self, force=False):
         try:
             if self.input_x_values.is_connected() and self.input_y_values.is_connected():
                 # self.input_graph_title.fetch_connected_value()
@@ -82,7 +82,7 @@ class MakePlotObject(PlotNode):
 
                 self.output_plot_object.set_value(self.po)
 
-                super().compute()
+                super().compute(force=force)
                 self.refresh()
 
                 self.set_dirty(False)

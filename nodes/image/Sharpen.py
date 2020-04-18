@@ -22,7 +22,7 @@ class Sharpen(ImageNode):
         self.set_dirty(True)
 
     def slider_released(self):
-        super().compute()
+        super().compute(force=force)
 
     def compute(self, compute_next=True):
         if self.input_image.is_connected():
@@ -39,7 +39,7 @@ class Sharpen(ImageNode):
 
             self.refresh()
             if compute_next:
-                super().compute()
+                super().compute(force=force)
             self.set_dirty(False)
 
     # def compute_thread(self):
@@ -57,7 +57,7 @@ class Sharpen(ImageNode):
     #
     #         self.set_dirty(False)
     #
-    # def compute(self):
+    # def compute(self, force=False):
     #     compute_thread = threading.Thread(target=self.compute_thread)
     #     compute_thread.setDaemon(True)
     #     compute_thread.start()

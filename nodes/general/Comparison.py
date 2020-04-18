@@ -34,7 +34,7 @@ class Comparison(BaseNode):
         self.set_dirty(True)
         self.compute()
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
             operation = self.cb_operation.currentText()
             if self.value_if_true.is_connected() and self.value_if_false.is_connected():
@@ -72,7 +72,7 @@ class Comparison(BaseNode):
                         self.output.change_socket_type(self.value_if_false.socket_type)
                         self.output.set_value(self.value_if_false.get_value())
 
-                    super().compute()
+                    super().compute(force=force)
                     self.set_dirty(False)
             else:
                 self.change_title("comparison")

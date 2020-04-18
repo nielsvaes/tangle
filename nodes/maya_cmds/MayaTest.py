@@ -9,9 +9,9 @@ class MayaTest(BaseNode):
         super().__init__(scene, title_background_color=Colors.float, x=x, y=y)
         self.change_title("cmds test")
 
-    def compute(self):
+    def compute(self, force=False):
         if self.is_dirty():
-            super().compute()
+            super().compute(force=force)
             self.change_title(str(self.output_float.get_value()))
             self.set_dirty(False)
 
