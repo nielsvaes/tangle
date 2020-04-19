@@ -52,7 +52,6 @@ class NodeTree(form, base):
         self.ui.tree_nodes.clear()
         for file_path in file_utils.get_files_recursively(NODE_FOLDER, filters=".py"):
             if file_path is not None and not "__" in file_path and not file_path.endswith("pyc"):
-
                 file_name = os.path.basename(file_path)
                 file_name_no_ext = os.path.splitext(file_name)[0]
                 icon_path = os.path.join(ICONS_PATH, file_name_no_ext + ".png")
@@ -68,16 +67,52 @@ class NodeTree(form, base):
                 folder_item = qt_utils.tw.get_item_with_text(self.ui.tree_nodes, folder_name, 0)
 
                 if folder_item is None:
-                    folder_item = QTreeWidgetItem(self.ui.tree_nodes, [folder_name])
+                    folder_item = FolderItem(self.ui.tree_nodes, [folder_name])
                     font = QFont()
                     font.setBold(True)
                     font.setPointSize(12)
                     folder_item.setFont(0, font)
                     folder_item.setExpanded(True)
 
-                file_item = QTreeWidgetItem(folder_item,
-                                            [file_name_no_ext, complete_path, complete_folder, folder_name])
+                file_item = NodeItem(folder_item, [file_name_no_ext]) #, complete_path, complete_folder, folder_name])
+
+                file_item.file_name = file_name
+                file_item.file_name_no_ext = file_name_no_ext
+                file_item.icon_path = icon_path
+                file_item.complete_folder = complete_folder
+                file_item.folder_name = folder_name
+                file_item.parent_folder = parent_folder
+                file_item.parent_folder_name = parent_folder_name
+                file_item.complete_path = complete_path
 
                 if os.path.isfile(icon_path):
                     file_item.setIcon(0, QIcon(icon_path))
 
+    def get_all_node_items(self):
+        return [item for item in qt_utils.tw.get_all_items(self.ui.tree_nodes) if item.item_type == "node"]
+
+    def get_all_folder_items(self):
+        return qt_utils.tw.get_all_items(self.ui.tree_nodes)
+
+
+class NodeTreeItem(QTreeWidgetItem):
+    def __init__(self, parent_item, columns):
+        super().__init__(parent_item, columns)
+        file_name = None
+        file_name_no_ext = None
+        icon_path = None
+        complete_folder = None
+        folder_name = None
+        parent_folder = None
+        parent_folder_name = None
+        complete_path = None
+
+class FolderItem(NodeTreeItem):
+    def __init__(self, parent_item, columns):
+        super().__init__(parent_item, columns)
+        self.item_type = "folder"
+
+class NodeItem(NodeTreeItem):
+    def __init__(self, parent_item, columns):
+        super().__init__(parent_item, columns)
+        self.item_type = "node"
