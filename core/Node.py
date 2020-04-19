@@ -398,12 +398,12 @@ class Node(QGraphicsRectItem):
 
     def set_auto_label(self, value=False):
         font = QFont()
-        font.setItalic(True)
+        # font.setItalic(True)
         font.setFamily("Monospace")
         font.setPixelSize(nc.auto_text_size)
         # font.setStrikeOut(not value)
 
-        text = QGraphicsTextItem("manual")
+        text = QGraphicsTextItem("◘")
         text.setFont(font)
         text.setDefaultTextColor(QColor(255, 0, 0, 255))
         text.setPos(self.boundingRect().right() - text.boundingRect().width(),
