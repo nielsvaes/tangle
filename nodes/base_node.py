@@ -396,12 +396,15 @@ class BaseNode(Node):
 
     def error(self, socket, text):
         logging.error("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))
+        logging.error("***********************")
 
     def warning(self, socket, text):
         logging.warning("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))
+        logging.warning("***********************")
 
     def info(self, socket, text):
         logging.info("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))
+        logging.info("***********************")
 
     def __str__(self):
         return "%s - %s" % (self.__class__.__name__, self.get_uuid(as_string=True))
