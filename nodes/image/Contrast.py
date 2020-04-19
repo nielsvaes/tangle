@@ -21,10 +21,10 @@ class Contrast(ImageNode):
         self.set_dirty(True)
 
     def slider_released(self):
-        super().compute(force=force)
+        super().compute()
 
 
-    def compute(self, compute_next=True):
+    def compute(self, compute_next=True, force=False):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 

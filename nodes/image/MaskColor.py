@@ -47,7 +47,7 @@ class MaskColor(ImageNode):
         self.set_dirty(True)
 
     def slider_released(self):
-        super().compute(force=force)
+        super().compute()
 
     def clamp(self, min_val, max_val, value):
         if value <= min_val:
@@ -56,7 +56,7 @@ class MaskColor(ImageNode):
             return max_val
         return value
 
-    def compute(self, compute_next=True):
+    def compute(self, compute_next=True, force=False):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
 

@@ -20,7 +20,7 @@ class LoadImage(ImageNode):
         self.scene = scene
 
         self.add_button("Load image", self.load_image)
-        self.load_image()
+        #self.load_image()
 
     def load_image(self):
         file_path = QFileDialog.getOpenFileName(caption="Open image", filter="Image files (*.jpg *.png *.tga)")[0]

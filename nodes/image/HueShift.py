@@ -23,7 +23,7 @@ class HueShift(ImageNode):
         self.set_dirty(True)
 
     def slider_released(self):
-        super().compute(force=force)
+        super().compute()
 
     def hue_shift(self, image, amount):
         # https://stackoverflow.com/questions/35417927/how-to-change-the-hsv-values-of-an-image-in-python
@@ -35,7 +35,7 @@ class HueShift(ImageNode):
         return new_img.convert(original_mode)
 
 
-    def compute(self, compute_next=True):
+    def compute(self, compute_next=True, force=False):
         try:
             if self.input_image.is_connected():
                 self.input_image.fetch_connected_value()
