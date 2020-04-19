@@ -23,7 +23,6 @@ class AddFloat(BaseNode):
         self.inputs.append(input)
 
     def compute(self, force=False):
-        if not self.get_auto_compute_on_connect() and force:
             if self.is_dirty():
                 result = 0.0
 
