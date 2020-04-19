@@ -17,12 +17,10 @@ class SubtractFloat(BaseNode):
 
         self.inputs = [self.input_02]
 
-
     def add_new_input(self):
         next_letter = chr(ord(self.inputs[-1].name) + 1)
         input = self.add_input(socket_types.FloatSocketType(self), next_letter)
         self.inputs.append(input)
-
 
     def compute(self, force=False):
         if self.is_dirty():
