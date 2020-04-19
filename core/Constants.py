@@ -130,3 +130,7 @@ class StyleSheets():
 
 ss = StyleSheets
 
+class SettingsConstants():
+    version = "version"
+
+sc = SettingsConstants

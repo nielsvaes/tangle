@@ -24,8 +24,10 @@ import nv_utils.io_utils as io_utils
 
 from core.NodeScene import NodeScene
 from core.NodeView import NodeView
+from core.Constants import sc
 
 from widgets.node_tree import NodeTree
+from widgets.about import AboutDialog
 import node_db
 
 from viewers.image_viewer import ImageViewer
@@ -38,11 +40,14 @@ NODE_INFO_DB = os.path.join(SCRIPT_FOLDER, "settings", "node_info.json")
 ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
 NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
 
+TANGLE_VERSION = 1.0
+
 settings(SETTINGS_PATH)
+settings().set_value(sc.version, TANGLE_VERSION)
 
 class TangleWindow(QMainWindow):
     def __init__(self):
-        super(TangleWindow, self).__init__()
+        super().__init__()
 
         uic.loadUi(os.path.join(UI_PATH, "tangle.ui"), self)
         self.setWindowTitle("Tangle")
@@ -61,12 +66,16 @@ class TangleWindow(QMainWindow):
         self.node_tree = NodeTree()
         self.node_tree_layout.addWidget(self.node_tree)
 
+        self.setWindowIcon(QIcon(os.path.join(ICONS_PATH, "logo.png")))
+
         for i in range(1, 4):
             self.node_tree.ui.tree_nodes.setColumnHidden(i, True)
 
         self.connect_ui_elements()
 
     def connect_ui_elements(self):
+        self.action_show_about.triggered.connect(self.show_about)
+
         self.action_save_scene.triggered.connect(self.scene.browse_for_save_location)
         self.action_load.triggered.connect(self.scene.browse_for_saved_scene)
         self.action_clear_scene.triggered.connect(self.scene.clear_scene)
@@ -114,6 +123,9 @@ class TangleWindow(QMainWindow):
     def generate_node_database(self):
         node_db.generate_database(self.node_tree.get_all_node_items(), self.scene)
 
+    def show_about(self):
+        dialog = AboutDialog()
+        dialog.exec_()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_F5:
