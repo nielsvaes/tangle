@@ -46,7 +46,7 @@ class CombineLists(BaseNode):
     def update_title(self, count):
         self.change_title(f"list combined : {count}")
 
-    def compute(self,):
+    def compute(self, force=False):
         try:
             if self.is_dirty():
                 extended_list = []
