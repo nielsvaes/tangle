@@ -30,6 +30,8 @@ class NodeScene(QGraphicsScene):
     def __init__(self):
         super(NodeScene, self).__init__()
 
+        self.spawned_widgets = []
+
     def add_node_to_view(self, class_name, module, x=0, y=0):
         """
         Adds a new node to the scene.
@@ -168,7 +170,7 @@ class NodeScene(QGraphicsScene):
         try:
             if node is None:
                 for begin_node in self.get_begin_nodes():
-                    logging.info("computing begin node %s " % begin_node)
+                    logging.info("flcomputing begin node %s " % begin_node)
                     begin_node.set_dirty(True)
                     begin_node.compute(force=True)
             else:
@@ -413,6 +415,11 @@ class NodeScene(QGraphicsScene):
         return [item for item in self.selectedItems() if issubclass(type(item), BaseNode)]
 
     def get_selected_group_nodes(self):
+        """
+        returns all the selected GroupNodes
+
+        :return: [list]
+        """
         return [item for item in self.selectedItems() if type(item) == GroupNode]
 
     def delete_nodes(self):
@@ -447,6 +454,20 @@ class NodeScene(QGraphicsScene):
 
         ImageViewer(self.get_main_window()).clear()
         GraphViewerFloat(self.get_main_window()).clear()
+
+    def spawn_widget_at(self, widget, screen_pos_x, screen_pos_y):
+        widget.setParent(self.get_main_window())
+        pos = widget.mapFromGlobal(QPoint(screen_pos_x - widget.width() / 2, screen_pos_y))
+        widget.move(pos)
+        widget.show()
+
+        self.spawned_widgets.append(widget)
+
+    def destroy_spawned_widgets(self):
+        for widget in self.spawned_widgets:
+            print(widget)
+            self.spawned_widgets.remove(widget)
+            widget.deleteLater()
 
     def browse_for_save_location(self, selected_nodes_only=False):
         """
@@ -488,8 +509,8 @@ class NodeScene(QGraphicsScene):
 
     def dropEvent(self, event):
         try:
-            class_name = event.source().selectedItems()[0].text(0)
-            module = event.source().selectedItems()[0].parent().text(0)
+            class_name = event.source().selectedItems()[0].file_name_no_ext
+            module = event.source().selectedItems()[0].folder_name
 
             x = event.scenePos().x()
             y = event.scenePos().y()
@@ -534,6 +555,9 @@ class NodeScene(QGraphicsScene):
 
         if event.key() == Qt.Key_Right and event.modifiers() == Qt.ControlModifier:
             self.align_selected_nodes("vertical_right")
+
+        if event.key() == Qt.Key_Escape:
+            self.destroy_spawned_widgets()
 
     def set_colors_dirty(self):
         dirty_node_exists = False

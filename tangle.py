@@ -20,11 +20,13 @@ except:
 from ez_settings.ez_settings import EasySettingsSingleton as settings
 
 import nv_utils.qt_utils as qt_utils
+import nv_utils.io_utils as io_utils
 
 from core.NodeScene import NodeScene
 from core.NodeView import NodeView
 
 from widgets.node_tree import NodeTree
+import node_db
 
 from viewers.image_viewer import ImageViewer
 from viewers.graph_viewer import GraphViewerFloat, GraphViewerDate
@@ -32,6 +34,7 @@ from viewers.graph_viewer import GraphViewerFloat, GraphViewerDate
 SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
 UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
 SETTINGS_PATH = os.path.join(SCRIPT_FOLDER, "settings", "tangle_settings.json")
+NODE_INFO_DB = os.path.join(SCRIPT_FOLDER, "settings", "node_info.json")
 ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
 NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
 
@@ -77,6 +80,7 @@ class TangleWindow(QMainWindow):
         self.action_align_selected_nodes_vertically.triggered.connect(partial(self.scene.align_selected_nodes, "vertical_left"))
 
         self.action_reload_nodes.triggered.connect(self.node_tree.ui.load_node_tree)
+        self.action_generate_node_database.triggered.connect(self.generate_node_database)
         self.action_show_image_viewer.triggered.connect(partial(self.show_viewer, "image"))
         self.action_show_graph_viewer.triggered.connect(partial(self.show_viewer, "graph_float"))
         self.action_show_graph_viewer_date.triggered.connect(partial(self.show_viewer, "graph_date"))
@@ -107,14 +111,9 @@ class TangleWindow(QMainWindow):
                     widget = node.get_ui()
                     self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
-    def change_node_title(self, title_label, text):
-        text = text.replace(" ", "_")
-        title_label.setText(text)
-        title_label.node.change_title(text)
+    def generate_node_database(self):
+        node_db.generate_database(self.node_tree.get_all_node_items(), self.scene)
 
-    def compute(self, force=False):
-        for node in self.scene.selectedItems():
-            node.compute()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_F5:
@@ -123,18 +122,6 @@ class TangleWindow(QMainWindow):
             self.show_viewer("graph_float")
         if event.key() == Qt.Key_F7:
             self.show_viewer("graph_date")
-
-
-class TitleLabel(QLineEdit):
-    def __init__(self):
-        super(TitleLabel, self).__init__()
-
-        self.node = None
-
-    def delete_ui(self):
-        self.setParent(None)
-        self.deleteLater()
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

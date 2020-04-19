@@ -6,12 +6,17 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 import uuid
 
+from functools import partial
+
 from .SocketConnection import SocketConnection
 from .DragConnection import DragConnection
 from .Constants import nc, Colors, IO
 from .SignalEmitter import SignalEmitter
 
+import node_db
+
 import nv_utils.utils as utils
+import nv_utils.qt_utils as qt_utils
 
 
 class NodeSocket(QGraphicsEllipseItem):
@@ -183,6 +188,16 @@ class NodeSocket(QGraphicsEllipseItem):
     def get_label_text(self):
         return self.name
 
+    def is_input(self):
+        if self.io == IO.input:
+            return True
+        return False
+
+    def is_output(self):
+        if self.io == IO.output:
+            return True
+        return False
+
     def mousePressEvent(self, event):
         self.connection_start_point = event.scenePos()
         output_socket = self.scene.itemAt(self.connection_start_point, QTransform())
@@ -203,27 +218,75 @@ class NodeSocket(QGraphicsEllipseItem):
             self.drag_connection.destroy_self()
             self.drag_connection = None
 
-        output_socket = self.scene.itemAt(self.connection_start_point, QTransform())
-        input_socket = self.scene.itemAt(self.connection_end_point, QTransform())
+        socket_01 = self.scene.itemAt(self.connection_start_point, QTransform())
+        socket_02 = self.scene.itemAt(self.connection_end_point, QTransform())
 
-        if isinstance(input_socket, NodeSocket):
+        # we've released the mouse button over another socket
+        if isinstance(socket_02, NodeSocket):
             try:
-                connection = SocketConnection(output_socket, input_socket, self.scene)
+                connection = SocketConnection(socket_01, socket_02, self.scene)
             except Exception as err:
                 utils.trace(err)
                 return
 
             if connection.is_valid:
-                output_socket.set_label_style_connected(True)
-                input_socket.set_label_style_connected(True)
+                socket_01.set_label_style_connected(True)
+                socket_02.set_label_style_connected(True)
                 self.get_node().compute_connected_nodes(output_socket=self)
-                # self.scene.refresh_network()
                 logging.info(str(connection))
             else:
                 del connection
 
+        # we've released the mouse button where there is no socket
         else:
-            logging.warning("Released at %s, there is no socket here" % self.connection_end_point)
+            if event.button() == Qt.LeftButton:
+                logging.warning("Released at %s, there is no socket here" % self.connection_end_point)
+
+            elif event.button() == Qt.RightButton:
+                x = event.screenPos().x()
+                y = event.screenPos().y()
+
+                widget = QComboBox()
+                widget.blockSignals(True)
+                widget.activated.connect(partial(self.add_new_node,
+                                                           widget,
+                                                           self,
+                                                           event.scenePos().x() - nc.node_item_width / 2,
+                                                           event.scenePos().y() - nc.node_item_height / 2))
+                widget.resize(300, 20)
+                self.scene.spawn_widget_at(widget, x, y)
+
+                connectable_nodes = []
+                if socket_01.is_input():
+                    for node_dict in node_db.get_node_dicts_with_output_of_type(socket_01.socket_type.name):
+                        connectable_nodes.append("%s.%s" % (node_dict.get("module"), node_dict.get("name")))
+                if socket_01.is_output():
+                    for node_dict in node_db.get_node_dicts_with_input_of_type(socket_01.socket_type.name):
+                        connectable_nodes.append("%s.%s" % (node_dict.get("module"), node_dict.get("name")))
+
+                qt_utils.cb.add_items(widget, connectable_nodes)
+                widget.blockSignals(False)
+
+    def add_new_node(self, combobox, socket, pos_x, pos_y):
+        module, class_name = combobox.currentText().split(".")
+        self.scene.destroy_spawned_widgets()
+
+        new_node = self.scene.add_node_to_view(class_name, module, pos_x - nc.node_item_width / 2, pos_y)
+        socket_01 = socket
+        if socket_01.is_input():
+            socket_02 = new_node.get_all_output_sockets()[0]
+            connection = SocketConnection(socket_02, socket, self.scene)
+        else:
+            socket_02 = new_node.get_all_input_sockets()[0]
+            connection = SocketConnection(socket, socket_02, self.scene)
+
+        if connection.is_valid:
+            socket_01.set_label_style_connected(True)
+            socket_02.set_label_style_connected(True)
+            self.get_node().compute_connected_nodes(output_socket=self)
+            logging.info(str(connection))
+        else:
+            del connection
 
     def hoverEnterEvent(self, event):
         self.mouse_over = True

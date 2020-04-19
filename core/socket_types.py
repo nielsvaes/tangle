@@ -27,6 +27,8 @@ class BaseSocketType(QObject):
         self.accept_multiple = False
         self.color = QColor(105, 105, 105, 255)
 
+        self.default_node_type = None
+
         self.value_saveable = True
 
     # def get_ui(self):
@@ -80,6 +82,12 @@ class BaseSocketType(QObject):
     def get_value_saveable(self):
         return self.value_saveable
 
+    def set_default_node_type(self, value):
+        self.default_node_type = value
+
+    def get_default_node_name(self):
+        return self.default_node_type
+
     def __str__(self):
         return self.__class__.__name__
 
@@ -90,6 +98,7 @@ class PictureSocketType(BaseSocketType):
         self.name = "pic"
         self.color = QColor(90, 100, 170, 255)
         self.set_initial_value(None)
+        self.set_default_node_type("image.LoadImage")
 
     def reset_to_initial_value(self):
         super().reset_to_initial_value()
@@ -109,6 +118,7 @@ class IntSocketType(BaseSocketType):
 
         self.name = "int"
         self.color = QColor(255, 140, 33, 255)
+        self.set_default_node_type("Float")
 
 class BooleanSocketType(BaseSocketType):
     def __init__(self, parent_node):
@@ -126,6 +136,7 @@ class FloatSocketType(BaseSocketType):
         self.color = Colors.float
         self.set_initial_value(0.0)
         self.reset_to_initial_value()
+        self.set_default_node_type("math.Float")
 
     def set_value(self, value):
         value = round(value, 4)
@@ -143,6 +154,7 @@ class StringSocketType(BaseSocketType):
         self.color = Colors.string
         self.set_initial_value("")
         self.reset_to_initial_value()
+        self.set_default_node_type("text.String")
 
 class ListSocketType(BaseSocketType):
     def __init__(self, parent_node):
@@ -152,6 +164,7 @@ class ListSocketType(BaseSocketType):
         self.color = Colors.lists
         self.set_initial_value([])
         self.reset_to_initial_value()
+        self.set_default_node_type("collections.List")
 
 class Vector3SocketType(BaseSocketType):
     def __init__(self, parent_node):
@@ -161,6 +174,7 @@ class Vector3SocketType(BaseSocketType):
         self.color = Colors.lists
         self.set_initial_value([0.0, 0.0, 0.0])
         self.reset_to_initial_value()
+        self.set_default_node_type("math.Vector3")
 
 class Vector2SocketType(BaseSocketType):
     def __init__(self, parent_node):
@@ -170,6 +184,7 @@ class Vector2SocketType(BaseSocketType):
         self.color = Colors.lists
         self.set_initial_value([0.0, 0.0])
         self.reset_to_initial_value()
+        self.set_default_node_type("math.Vector2")
 
 class PlotSocketType(BaseSocketType):
     def __init__(self, parent_node):
@@ -180,6 +195,7 @@ class PlotSocketType(BaseSocketType):
         self.color = Colors.plot
         self.set_initial_value(PlotObject())
         self.reset_to_initial_value()
+        self.set_default_node_type("graph.MakePlotObject")
 
 class EnumSocketType(BaseSocketType):
     def __init__(self, parent_node, options=[]):
