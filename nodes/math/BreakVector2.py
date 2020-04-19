@@ -3,7 +3,6 @@ from core import socket_types as socket_types
 
 from core.Constants import Colors
 
-
 class BreakVector2(BaseNode):
     def __init__(self, scene, x=0, y=0):
         super().__init__(scene, title_background_color=Colors.vector2, x=x, y=y)
@@ -16,8 +15,6 @@ class BreakVector2(BaseNode):
     def compute(self, force=False):
         if self.input_vector.is_connected():
             self.input_vector.fetch_connected_value()
-
-            logging.log(self.input_vector.get_value())
 
             x_value = self.input_vector.get_value()[0]
             y_value = self.input_vector.get_value()[1]
