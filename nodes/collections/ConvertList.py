@@ -56,10 +56,6 @@ class ConvertList(BaseNode):
                     self.txt_date_format.setVisible(False)
                     converted_list = [str(item) for item in input_list]
 
-                if self.cb_convert_to.currentText() == "string":
-                    self.txt_date_format.setVisible(False)
-                    converted_list = [str(item) for item in input_list]
-
                 self.output_list.set_value(converted_list)
                 self.set_dirty(False)
                 super().compute(force=force)

@@ -253,16 +253,18 @@ class NodeSocket(QGraphicsEllipseItem):
                                                            self,
                                                            event.scenePos().x() - nc.node_item_width / 2,
                                                            event.scenePos().y() - nc.node_item_height / 2))
-                widget.resize(300, 20)
+                widget.resize(180, 20)
                 self.scene.spawn_widget_at(widget, x, y)
 
                 connectable_nodes = []
+                connectable_nodes.append("debug.Debug")
                 if socket_01.is_input():
                     for node_dict in node_db.get_node_dicts_with_output_of_type(socket_01.socket_type.name):
                         connectable_nodes.append("%s.%s" % (node_dict.get("module"), node_dict.get("name")))
                 if socket_01.is_output():
                     for node_dict in node_db.get_node_dicts_with_input_of_type(socket_01.socket_type.name):
                         connectable_nodes.append("%s.%s" % (node_dict.get("module"), node_dict.get("name")))
+
 
                 qt_utils.cb.add_items(widget, connectable_nodes)
                 widget.blockSignals(False)

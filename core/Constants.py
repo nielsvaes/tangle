@@ -111,7 +111,7 @@ class NumberConstants():
 
     node_item_border_width_selected = 4
     node_item_height                = socket_size
-    node_item_width                 = node_item_height * 7
+    node_item_width                 = node_item_height * 9
     node_item_z_depth               = 100
 
     auto_text_size  = socket_size - 1
