@@ -233,29 +233,29 @@ class Node(QGraphicsRectItem):
 
         return connected_output_nodes
 
-    def get_connected_output_nodes_recursive(self, node=None):
+    def get_connected_output_nodes_recursive(self, start_node=None):
         connected_output_nodes = []
 
-        if node is None:
-            node = self
+        if start_node is None:
+            start_node = self
 
-        for output_node in node.get_connected_output_nodes():
+        for output_node in start_node.get_connected_output_nodes():
             connected_output_nodes.append(output_node)
 
-            connected_output_nodes += self.get_connected_output_nodes_recursive(node=output_node)
+            connected_output_nodes += self.get_connected_output_nodes_recursive(start_node=output_node)
 
         return connected_output_nodes
 
-    def get_connected_input_nodes_recursive(self, node=None):
+    def get_connected_input_nodes_recursive(self, start_node=None):
         connected_input_nodes = []
 
-        if node is None:
-            node = self
+        if start_node is None:
+            start_node = self
 
-        for input_node in node.get_connected_input_nodes():
+        for input_node in start_node.get_connected_input_nodes():
             connected_input_nodes.append(input_node)
 
-            connected_input_nodes += self.get_connected_input_nodes_recursive(node=input_node)
+            connected_input_nodes += self.get_connected_input_nodes_recursive(start_node=input_node)
 
         return connected_input_nodes
 
@@ -396,7 +396,14 @@ class Node(QGraphicsRectItem):
             self.boundingRect().top() - title.boundingRect().height() - nc.title_offset)
         self.name = title.toPlainText()
 
-    def set_auto_label(self, value=False):
+    def set_auto_label(self):
+        """
+        This is called to denote that a node will not evaluate automatically when connected, but
+        needs the user to hit the Enter key to trigger it's compute function
+
+        :param value:
+        :return:
+        """
         font = QFont()
         # font.setItalic(True)
         font.setFamily("Monospace")
