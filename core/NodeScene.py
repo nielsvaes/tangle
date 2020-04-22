@@ -102,6 +102,7 @@ class NodeScene(QGraphicsScene):
         for item in self.items():
             if type(item) == SocketConnection:
                 connections.append(item)
+        return connections
 
     def get_node_by_name(self, name):
         """
