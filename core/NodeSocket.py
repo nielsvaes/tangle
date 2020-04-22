@@ -297,6 +297,8 @@ class NodeSocket(QGraphicsEllipseItem):
             connection.set_hover_colors()
         self.update()
 
+        self.scene.get_main_window().set_help_text(self.socket_type.name)
+
         super().hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event):
@@ -305,6 +307,8 @@ class NodeSocket(QGraphicsEllipseItem):
             connection.mouse_over = self.mouse_over
             connection.set_normal_colors()
         self.update()
+
+        self.scene.get_main_window().set_help_text("")
 
         super().hoverLeaveEvent(event)
 
