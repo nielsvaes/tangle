@@ -94,7 +94,7 @@ class BaseNode(Node):
 
     def set_auto_compute_on_connect(self, value):
         self.__auto_compute_on_connect = value
-        self.set_auto_label(value)
+        self.set_auto_label()
 
     def get_auto_compute_on_connect(self):
         return self.__auto_compute_on_connect
