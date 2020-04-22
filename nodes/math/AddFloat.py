@@ -8,8 +8,9 @@ class AddFloat(BaseNode):
         super().__init__(scene, title_background_color=Colors.add_float, x=x, y=y)
         self.change_title("0.0")
 
-        self.input_01, self.output_float = self.add_input_output(socket_types.FloatSocketType(self), "A")
+        self.input_01 = self.add_input(socket_types.FloatSocketType(self), "A")
         self.input_02 = self.add_input(socket_types.FloatSocketType(self), "B")
+        self.output_float = self.add_output(socket_types.FloatSocketType(self), "out")
 
         self.add_label("Add")
         self.lbl_result = self.add_label("0")
@@ -17,10 +18,14 @@ class AddFloat(BaseNode):
 
         self.inputs = [self.input_01, self.input_02]
 
+        self.set_help_text("Adds up all the inputs")
+
     def add_new_input(self):
         next_letter = chr(ord(self.inputs[-1].name) + 1)
         input = self.add_input(socket_types.FloatSocketType(self), next_letter)
         self.inputs.append(input)
+
+        self.set_help_text("Adds up all the inputs")
 
     def compute(self, force=False):
             if self.is_dirty():

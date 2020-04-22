@@ -8,13 +8,14 @@ class Percentage(BaseNode):
         super().__init__(scene, title_background_color=Colors.add_float, x=x, y=y)
         self.change_title("0.0")
 
-        self.input_01, self.output_float = self.add_input_output(socket_types.FloatSocketType(self), "number")
+        self.input_01= self.add_input(socket_types.FloatSocketType(self), "number")
         self.input_percentage = self.add_input(socket_types.FloatSocketType(self), "percent")
+        self.output_float = self.add_output(socket_types.FloatSocketType(self), "out")
 
         self.add_label("Percentage")
         self.lbl_result = self.add_label("0.0")
 
-
+        self.set_help_text("Outputs percentage (B) of of A")
 
     def compute(self, force=False):
         if self.is_dirty():

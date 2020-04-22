@@ -350,8 +350,20 @@ class BaseNode(Node):
 
         return widget
 
-    def set_help_text(self, text):
-        self.__help_text = text
+    def set_help_text(self, user_text, include_inputs=True, include_outputs=True):
+        combined_text = ""
+
+        if include_inputs and len(self.get_all_input_sockets()) > 0:
+            for socket in self.get_all_input_sockets():
+                combined_text += f"input: '{socket.get_name()}': <{socket.socket_type.name}> | "
+
+        if include_outputs and len(self.get_all_output_sockets()) > 0:
+            for socket in self.get_all_output_sockets() :
+                combined_text += f"output: '{socket.get_name()}': <{socket.socket_type.name}> | "
+
+        combined_text += user_text
+
+        self.__help_text = combined_text
 
     def get_help_text(self):
         return self.__help_text

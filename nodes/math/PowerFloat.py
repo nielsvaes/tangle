@@ -8,8 +8,9 @@ class PowerFloat(BaseNode):
         super().__init__(scene, title_background_color=Colors.power_float, x=x, y=y)
         self.change_title("0.0")
 
-        self.input_01, self.output_float = self.add_input_output(socket_types.FloatSocketType(self), "A")
+        self.input_01 = self.add_input(socket_types.FloatSocketType(self), "A")
         self.input_02 = self.add_input(socket_types.FloatSocketType(self), "B")
+        self.output_float = self.add_output(socket_types.FloatSocketType(self), "out")
 
         self.input_01.set_initial_value(0.0)
         self.input_02.set_initial_value(0.0)
@@ -19,6 +20,7 @@ class PowerFloat(BaseNode):
 
         self.inputs = [self.input_01, self.input_02]
 
+        self.set_help_text("Outputs A to the power of B")
 
 
     def compute(self, force=False):

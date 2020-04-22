@@ -8,19 +8,24 @@ class SubtractFloat(BaseNode):
         super().__init__(scene, title_background_color=Colors.subtract_float, x=x, y=y)
         self.change_title("0.0")
 
-        self.input_01, self.output_float = self.add_input_output(socket_types.FloatSocketType(self), "A")
+        self.input_01 = self.add_input(socket_types.FloatSocketType(self), "A")
         self.input_02 = self.add_input(socket_types.FloatSocketType(self), "B")
+        self.output_float = self.add_output(socket_types.FloatSocketType(self), "out")
 
         self.add_label("Subtract")
         self.lbl_result = self.add_label("0")
         self.btn_add_input = self.add_button("Add input", clicked_function=self.add_new_input)
 
         self.inputs = [self.input_02]
+        
+        self.set_help_text("Subtracts all inputs from the first input (A)")
 
     def add_new_input(self):
         next_letter = chr(ord(self.inputs[-1].name) + 1)
         input = self.add_input(socket_types.FloatSocketType(self), next_letter)
         self.inputs.append(input)
+
+        self.set_help_text("Subtracts all inputs from the first input (A)")
 
     def compute(self, force=False):
         if self.is_dirty():

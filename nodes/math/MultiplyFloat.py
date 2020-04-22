@@ -8,8 +8,9 @@ class MultiplyFloat(BaseNode):
         super().__init__(scene, title_background_color=Colors.multiply_float, x=x, y=y)
         self.change_title("0.0")
 
-        self.input_01, self.output_float = self.add_input_output(socket_types.FloatSocketType(self), "A")
+        self.input_01 = self.add_input(socket_types.FloatSocketType(self), "A")
         self.input_02 = self.add_input(socket_types.FloatSocketType(self), "B")
+        self.output_float = self.add_output(socket_types.FloatSocketType(self), "out")
 
         self.input_01.set_initial_value(1.0)
         self.input_02.set_initial_value(1.0)
@@ -20,12 +21,16 @@ class MultiplyFloat(BaseNode):
 
         self.inputs = [self.input_01, self.input_02]
 
+        self.set_help_text("Multipies up all the inputs")
+
 
     def add_new_input(self):
         next_letter = chr(ord(self.inputs[-1].name) + 1)
         input = self.add_input(socket_types.FloatSocketType(self), next_letter)
         input.set_initial_value(1.0)
         self.inputs.append(input)
+
+        self.set_help_text("Multipies up all the inputs")
 
 
     def compute(self, force=False):

@@ -10,13 +10,16 @@ class RandomFloat(BaseNode):
         super().__init__(scene, title_background_color=Colors.add_float, x=x, y=y)
         self.change_title("0.0")
 
-        self.input_min, self.output_float = self.add_input_output(socket_types.FloatSocketType(self), "Min")
-        self.input_max = self.add_input(socket_types.FloatSocketType(self), "Max")
+        self.input_min = self.add_input(socket_types.FloatSocketType(self), "min")
+        self.output_float = self.add_output(socket_types.FloatSocketType(self), "out")
+        self.input_max = self.add_input(socket_types.FloatSocketType(self), "max")
 
         self.add_label("Random")
         self.btn_random = self.add_button("Get new value", clicked_function=self.get_new_value)
 
         self.lbl_result = self.add_label("0")
+
+        self.set_help_text("Generates a single float value between Min and Max values")
 
     def get_new_value(self):
         self.set_dirty(True)
