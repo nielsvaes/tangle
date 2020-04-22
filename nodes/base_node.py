@@ -29,6 +29,8 @@ class BaseNode(Node):
         self.__x = x
         self.__y = y
 
+        self.__help_text = ""
+
         self.__module_path = None
 
         self.__widget = QWidget()
@@ -348,6 +350,12 @@ class BaseNode(Node):
 
         return widget
 
+    def set_help_text(self, text):
+        self.__help_text = text
+
+    def get_help_text(self):
+        return self.__help_text
+
     def save(self, save_value=True):
         node_dict = {}
         node_dict["sockets"] = {}
@@ -393,6 +401,24 @@ class BaseNode(Node):
             self.set_uuid(uuid.uuid4())
         else:
             self.set_uuid(node_dict.get("uuid"))
+
+    def hoverEnterEvent(self, event):
+        super().hoverEnterEvent(event)
+        self.mouse_over = True
+        self.update()
+
+        self.scene.get_main_window().set_help_text(self.get_help_text())
+
+    def hoverLeaveEvent(self, event):
+        super().hoverLeaveEvent(event)
+        self.mouse_over = False
+        self.update()
+
+        self.scene.get_main_window().set_help_text("")
+
+    def hoverMoveEvent(self, event: 'QGraphicsSceneHoverEvent') -> None:
+        super().hoverLeaveEvent(event)
+        self.scene.get_main_window().set_help_text(self.get_help_text())
 
     def error(self, socket, text):
         logging.error("Node: %s\nSocket: %s\n%s" % (self.name, socket.name, text))

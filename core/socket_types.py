@@ -19,6 +19,8 @@ class BaseSocketType(QObject):
         self.initial_value = None
         self.parent_node = parent_node
 
+        self.__help_text = ""
+
         self.name = "base"
         self.accepted_inputs = []
 
@@ -81,6 +83,12 @@ class BaseSocketType(QObject):
 
     def get_value_saveable(self):
         return self.value_saveable
+
+    def set_help_text(self, text):
+        self.__help_text = text
+
+    def get_help_text(self):
+        return self.__help_text
 
     def __str__(self):
         return self.__class__.__name__

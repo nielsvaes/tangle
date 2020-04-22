@@ -54,6 +54,8 @@ class TangleWindow(QMainWindow):
 
         self.build_ui()
         self.show()
+        
+        self.set_help_text("Testing!")
 
     def build_ui(self):
         self.scene = NodeScene()
@@ -126,6 +128,9 @@ class TangleWindow(QMainWindow):
     def show_about(self):
         dialog = AboutDialog()
         dialog.exec_()
+
+    def set_help_text(self, text, timeout=0):
+        self.statusbar.showMessage(text, timeout)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_F5:

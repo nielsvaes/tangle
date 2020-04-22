@@ -12,6 +12,8 @@ class Float(BaseNode):
         self.output_float = self.add_output(socket_types.FloatSocketType(self), "float")
         _, self.txt_number = self.add_label_float("number: ", number_changed_function=self.number_changed)
 
+        self.set_help_text("Outputs a single float value")
+
     def number_changed(self):
         if self.txt_number.text() == "":
             self.output_float.set_value(0.0)
