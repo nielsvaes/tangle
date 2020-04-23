@@ -26,6 +26,9 @@ from core.NodeScene import NodeScene
 from core.NodeView import NodeView
 from core.Constants import sc
 
+from nodes.base_node import BaseNode
+from core.GroupNode import GroupNode
+
 from widgets.node_tree import NodeTree
 from widgets.about import AboutDialog
 import node_db
@@ -110,8 +113,6 @@ class TangleWindow(QMainWindow):
             GraphViewerDate(self).show()
 
     def load_values_ui(self):
-        from nodes.base_node import BaseNode
-        from core.GroupNode import GroupNode
         qt_utils.clear_layout(self.values_layout)
 
         selected_items = self.scene.selectedItems()

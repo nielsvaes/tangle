@@ -16,12 +16,10 @@ from ez_settings.ez_settings import EasySettingsSingleton as settings
 
 from .SocketConnection import SocketConnection
 from .GroupNode import GroupNode
+from .SettingsConstants import GroupNodeStrings as gs
 from nodes.base_node import BaseNode
 from viewers.image_viewer import ImageViewer
 from viewers.graph_viewer import GraphViewerFloat
-
-from core.Constants import Colors
-import core.SettingsConstants as sc
 
 class NodeScene(QGraphicsScene):
     """
@@ -435,7 +433,7 @@ class NodeScene(QGraphicsScene):
             try:
                 item.destroy_self()
                 if type(item) == GroupNode:
-                    if settings().get_value(sc.GroupNodeStrings.delete_nodes_with_group_node, True) is True:
+                    if settings().get_value(gs.GroupNodeStrings.delete_nodes_with_group_node, True) is True:
                         item.destroy_nodes()
 
             except Exception as err:
