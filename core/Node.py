@@ -11,6 +11,7 @@ import nv_utils.utils as utils
 from .Constants import nc, Colors, IO
 from .NodeTitle import NodeTitle
 from .NodeSocket import NodeSocket
+from .SocketConnection import SocketConnection
 from .NodeTitleBackground import NodeTitleBackground
 
 
@@ -348,6 +349,25 @@ class Node(QGraphicsRectItem):
 
         return None
 
+    def connect_complete_node(self, other_node):
+        output_sockets = self.get_all_output_sockets()
+        # if we only have one output, just connect it to everything it can on the other node
+        if len(output_sockets) < 2:
+            for output_socket in output_sockets:
+                for input_socket in other_node.get_all_input_sockets():
+                    if not input_socket.is_connected():
+                        connection = SocketConnection(output_socket, input_socket, self.scene)
+        # if we have more than 1 output socket, only connect it once and then see if the other output
+        # sockets can connect to the next input socket on the other node
+        else:
+            for output_socket in output_sockets:
+                has_been_connected = False
+                for input_socket in other_node.get_all_input_sockets():
+                    if not input_socket.is_connected() and not has_been_connected:
+                        connection = SocketConnection(output_socket, input_socket, self.scene)
+                        has_been_connected = True
+
+
     def add_icon_circle(self):
         icon_circle = QGraphicsEllipseItem()
         icon_circle.setRect(0, 0, nc.icon_circle_size, nc.icon_circle_size)
@@ -405,10 +425,8 @@ class Node(QGraphicsRectItem):
         :return:
         """
         font = QFont()
-        # font.setItalic(True)
         font.setFamily("Monospace")
         font.setPixelSize(nc.auto_text_size)
-        # font.setStrikeOut(not value)
 
         text = QGraphicsTextItem("◘")
         text.setFont(font)
@@ -418,17 +436,26 @@ class Node(QGraphicsRectItem):
 
         text.setParentItem(self)
 
+    def mouseReleaseEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
+        if event.modifiers() == Qt.ControlModifier and event.button() == Qt.RightButton:
+            other_node = self.scene.itemAt(event.scenePos(), QTransform())
+            if isinstance(other_node, Node):
+                self.connect_complete_node(other_node)
+
+        super().mouseReleaseEvent(event)
+
+
     def hoverEnterEvent(self, event):
         self.mouse_over = True
         self.update()
 
-        super(Node, self).hoverEnterEvent(event)
+        super().hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event):
         self.mouse_over = False
         self.update()
 
-        super(Node, self).hoverLeaveEvent(event)
+        super().hoverLeaveEvent(event)
 
     def itemChange(self, change, value):
         try:
@@ -452,7 +479,7 @@ class Node(QGraphicsRectItem):
         else:
             self.__set_normal_colors()
 
-        super(Node, self).paint(painter, option, widget)
+        super().paint(painter, option, widget)
 
     def draw(self):
         self.node_rect = QRectF(0, 0, nc.node_item_width, self.height)

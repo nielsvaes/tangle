@@ -24,6 +24,7 @@ class SocketConnection(QGraphicsPathItem):
         self.is_valid = self.check_validity()
         if self.is_valid:
             self.update_sockets()
+            self.update_socket_labels()
             self.__draw()
 
     def update_sockets(self):
@@ -41,6 +42,12 @@ class SocketConnection(QGraphicsPathItem):
 
         if self.input_socket.adjust_color_to_input:
             self.input_socket.override_color(self.output_socket.color)
+
+    def update_socket_labels(self):
+        if self.is_valid:
+            self.input_socket.set_label_style_connected(True)
+            self.output_socket.set_label_style_connected(True)
+            self.output_socket.get_node().compute_connected_nodes(output_socket=self.output_socket)
 
     def order_sockets(self):
         try:

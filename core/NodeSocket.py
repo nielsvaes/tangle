@@ -76,7 +76,6 @@ class NodeSocket(QGraphicsEllipseItem):
                 value = socket.get_value()
                 self.set_value(value)
         else:
-            # self.set_value(None)
             self.reset_to_initial_value()
 
     def save(self, save_value=True):
@@ -128,7 +127,6 @@ class NodeSocket(QGraphicsEllipseItem):
             for socket in [connection.output_socket, connection.input_socket]:
                 if socket == node_socket:
                     return True
-
         return False
 
     def set_label_style_connected(self, value):
@@ -229,14 +227,6 @@ class NodeSocket(QGraphicsEllipseItem):
                 utils.trace(err)
                 return
 
-            if connection.is_valid:
-                socket_01.set_label_style_connected(True)
-                socket_02.set_label_style_connected(True)
-                self.get_node().compute_connected_nodes(output_socket=self)
-                logging.info(str(connection))
-            else:
-                del connection
-
         # we've released the mouse button where there is no socket
         else:
             if event.button() == Qt.LeftButton:
@@ -265,7 +255,6 @@ class NodeSocket(QGraphicsEllipseItem):
                     for node_dict in node_db.get_node_dicts_with_input_of_type(socket_01.socket_type.name):
                         connectable_nodes.append("%s.%s" % (node_dict.get("module"), node_dict.get("name")))
 
-
                 qt_utils.cb.add_items(widget, connectable_nodes)
                 widget.blockSignals(False)
 
@@ -281,14 +270,6 @@ class NodeSocket(QGraphicsEllipseItem):
         else:
             socket_02 = new_node.get_all_input_sockets()[0]
             connection = SocketConnection(socket, socket_02, self.scene)
-
-        if connection.is_valid:
-            socket_01.set_label_style_connected(True)
-            socket_02.set_label_style_connected(True)
-            self.get_node().compute_connected_nodes(output_socket=self)
-            logging.info(str(connection))
-        else:
-            del connection
 
     def hoverEnterEvent(self, event):
         self.mouse_over = True

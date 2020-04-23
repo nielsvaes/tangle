@@ -466,7 +466,6 @@ class NodeScene(QGraphicsScene):
 
     def destroy_spawned_widgets(self):
         for widget in self.spawned_widgets:
-            print(widget)
             self.spawned_widgets.remove(widget)
             widget.deleteLater()
 
@@ -560,21 +559,21 @@ class NodeScene(QGraphicsScene):
         if event.key() == Qt.Key_Escape:
             self.destroy_spawned_widgets()
 
-    def set_colors_dirty(self):
-        dirty_node_exists = False
-        for node in self.get_all_nodes():
-            if node.is_dirty():
-                dirty_node_exists = True
-                break
-        if dirty_node_exists:
-            brush = QBrush()
-            brush.setStyle(Qt.SolidPattern)
-            brush.setColor(Colors.node_scene_dirty)
-            self.setBackgroundBrush(brush)
-
-    def __set_colors_computed(self):
-        brush = QBrush()
-        brush.setStyle(Qt.SolidPattern)
-        brush.setColor(Colors.node_scene_computed)
-        self.setBackgroundBrush(brush)
+    # def set_colors_dirty(self):
+    #     dirty_node_exists = False
+    #     for node in self.get_all_nodes():
+    #         if node.is_dirty():
+    #             dirty_node_exists = True
+    #             break
+    #     if dirty_node_exists:
+    #         brush = QBrush()
+    #         brush.setStyle(Qt.SolidPattern)
+    #         brush.setColor(Colors.node_scene_dirty)
+    #         self.setBackgroundBrush(brush)
+    #
+    # def __set_colors_computed(self):
+    #     brush = QBrush()
+    #     brush.setStyle(Qt.SolidPattern)
+    #     brush.setColor(Colors.node_scene_computed)
+    #     self.setBackgroundBrush(brush)
 
