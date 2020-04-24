@@ -1,6 +1,4 @@
 import os
-import sys
-from functools import partial
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -8,14 +6,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5 import uic
-
-try:
-    import qtmodern.styles
-    import qtmodern.windows
-    modern = True
-except:
-    logging.warning("Can't find qtmodern!")
-    modern = False
 
 from ez_settings.ez_settings import EasySettingsSingleton as ez_settings
 

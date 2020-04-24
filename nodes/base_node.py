@@ -58,14 +58,14 @@ class BaseNode(Node):
         self.add_spacer()
 
     def set_icon(self):
-        if self.has_icon():
-            icon_pixmap = self.get_icon()
-            self.lbl_icon.setVisible(True)
-            self.lbl_icon.setPixmap(icon_pixmap.scaled(48, 48, transformMode=Qt.SmoothTransformation))
-            self.add_icon_circle_pixmap(icon_pixmap)
-        else:
-            self.lbl_icon.setVisible(False)
-            return
+            if self.has_icon():
+                icon_pixmap = self.get_icon()
+                self.lbl_icon.setVisible(True)
+                self.lbl_icon.setPixmap(icon_pixmap.scaled(48, 48, transformMode=Qt.SmoothTransformation))
+                self.add_icon_circle_pixmap(icon_pixmap)
+            else:
+                self.lbl_icon.setVisible(False)
+                return
 
     def has_icon(self):
         if not self.get_icon(as_pixmap=False) == "":

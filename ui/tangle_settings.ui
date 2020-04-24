@@ -20,7 +20,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>General</string>
+      <string>Nodes</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
