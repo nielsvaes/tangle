@@ -416,20 +416,16 @@ class BaseNode(Node):
 
     def hoverEnterEvent(self, event):
         super().hoverEnterEvent(event)
-        self.mouse_over = True
-        self.update()
 
         self.scene.get_main_window().set_help_text(self.get_help_text())
 
     def hoverLeaveEvent(self, event):
         super().hoverLeaveEvent(event)
-        self.mouse_over = False
-        self.update()
 
         self.scene.get_main_window().set_help_text("")
 
     def hoverMoveEvent(self, event: 'QGraphicsSceneHoverEvent') -> None:
-        super().hoverLeaveEvent(event)
+        super().hoverMoveEvent(event)
         self.scene.get_main_window().set_help_text(self.get_help_text())
 
     def error(self, socket, text):
