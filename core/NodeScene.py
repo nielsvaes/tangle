@@ -12,7 +12,7 @@ from PyQt5.QtCore import *
 import nv_utils.utils as utils
 import nv_utils.io_utils as io_utils
 import core.socket_types as socket_types
-from ez_settings.ez_settings import EasySettingsSingleton as settings
+from ez_settings.ez_settings import EasySettingsSingleton as ez_settings
 
 from .SocketConnection import SocketConnection
 from .GroupNode import GroupNode
@@ -433,8 +433,9 @@ class NodeScene(QGraphicsScene):
             try:
                 item.destroy_self()
                 if type(item) == GroupNode:
-                    if settings().get_value(gs.GroupNodeStrings.delete_nodes_with_group_node, True) is True:
-                        item.destroy_nodes()
+                    group_node = item
+                    if ez_settings().get_value(gs.delete_nodes_with_group_node, True) is True:
+                        group_node.destroy_nodes()
 
             except Exception as err:
                 utils.trace(err)

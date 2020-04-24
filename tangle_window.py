@@ -17,7 +17,7 @@ except:
     logging.warning("Can't find qtmodern!")
     modern = False
 
-from ez_settings.ez_settings import EasySettingsSingleton as settings
+from ez_settings.ez_settings import EasySettingsSingleton as ez_settings
 
 import nv_utils.qt_utils as qt_utils
 import nv_utils.io_utils as io_utils
@@ -31,6 +31,7 @@ from core.GroupNode import GroupNode
 
 from widgets.node_tree import NodeTree
 from widgets.about import AboutDialog
+from widgets.settings_dialog import SettingsDialog
 import node_db
 
 from viewers.image_viewer import ImageViewer
@@ -45,8 +46,8 @@ NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
 
 TANGLE_VERSION = 1.0
 
-settings(SETTINGS_PATH)
-settings().set_value(sc.version, TANGLE_VERSION)
+ez_settings(SETTINGS_PATH)
+ez_settings().set_value(sc.version, TANGLE_VERSION)
 
 class TangleWindow(QMainWindow):
     def __init__(self):
@@ -95,6 +96,7 @@ class TangleWindow(QMainWindow):
 
         self.action_reload_nodes.triggered.connect(self.node_tree.ui.load_node_tree)
         self.action_generate_node_database.triggered.connect(self.generate_node_database)
+        self.action_settings.triggered.connect(self.show_settings)
         self.action_show_image_viewer.triggered.connect(partial(self.show_viewer, "image"))
         self.action_show_graph_viewer.triggered.connect(partial(self.show_viewer, "graph_float"))
         self.action_show_graph_viewer_date.triggered.connect(partial(self.show_viewer, "graph_date"))
@@ -128,6 +130,10 @@ class TangleWindow(QMainWindow):
 
     def show_about(self):
         dialog = AboutDialog()
+        dialog.exec_()
+
+    def show_settings(self):
+        dialog = SettingsDialog()
         dialog.exec_()
 
     def set_help_text(self, text, timeout=0):
