@@ -13,8 +13,10 @@ logging.basicConfig(level=logging.INFO)
 from core.Node import Node
 from core.SignalEmitter import SignalEmitter
 from core.Constants import Colors, ss
+from core.SettingsConstants import NodeSettings as ns
 
 import nv_utils.qt_utils as qt_utils
+from ez_settings.ez_settings import EasySettingsSingleton as ez_settings
 
 SCRIPT_FOLDER = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
@@ -54,6 +56,7 @@ class BaseNode(Node):
         self.set_icon()
         icon_layout.addWidget(self.lbl_icon)
 
+        self.lbl_help_text = self.add_label("")
         self.add_horizontal_line()
         self.add_spacer()
 
@@ -130,6 +133,8 @@ class BaseNode(Node):
                     connected_node.compute(force=force)
 
     def get_ui(self):
+        help_visible = ez_settings().get_value(ns.chk_show_help_text_in_node_ui, True)
+        self.lbl_help_text.setVisible(help_visible)
         return self.__widget
 
     def get_x(self):
@@ -364,6 +369,7 @@ class BaseNode(Node):
         combined_text += user_text
 
         self.__help_text = combined_text
+        self.lbl_help_text.setText(combined_text.replace("| ", "\n"))
 
     def get_help_text(self):
         return self.__help_text

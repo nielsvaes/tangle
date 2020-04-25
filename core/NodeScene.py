@@ -434,7 +434,7 @@ class NodeScene(QGraphicsScene):
                 item.destroy_self()
                 if type(item) == GroupNode:
                     group_node = item
-                    if ez_settings().get_value(ns.delete_nodes_with_group_node, True) is True:
+                    if ez_settings().get_value(ns.chk_delete_nodes_with_group_node, True) is True:
                         group_node.destroy_nodes()
 
             except Exception as err:

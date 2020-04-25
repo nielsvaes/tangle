@@ -2,23 +2,19 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+from .SettingsConstants import ApplicationSettings as aps
+
+from ez_settings.ez_settings import EasySettingsSingleton as ez_settings
 
 class NodeView(QGraphicsView):
     def __init__(self, scene, parent):
         super(NodeView, self).__init__(parent)
-        self.setRenderHint(QPainter.HighQualityAntialiasing)
+        if ez_settings().get_value(aps.chk_high_quality_view, True):
+            self.setRenderHint(QPainter.HighQualityAntialiasing)
         self.setObjectName("View")
         self.setScene(scene)
 
-        self.middle_mouse_down = False
-        self.start_x = None
-        self.start_y = None
-        self.drag_speed = 0.03
-
         self.zoom = 5
-
-        # self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        # self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.setDragMode(QGraphicsView.RubberBandDrag)
 
