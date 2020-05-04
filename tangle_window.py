@@ -49,6 +49,8 @@ TANGLE_VERSION = 1.0
 ez_settings(SETTINGS_PATH)
 ez_settings().set_value(sc.version, TANGLE_VERSION)
 
+# testing a git submit from VS Code on the raspberry pi
+
 class TangleWindow(QMainWindow):
     def __init__(self):
         super().__init__()
