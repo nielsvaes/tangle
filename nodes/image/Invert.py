@@ -15,8 +15,11 @@ class Invert(ImageNode):
     def compute(self, force=False):
         if self.input_image.is_connected():
             self.input_image.fetch_connected_value()
+            input_image = self.input_image.get_value()
+            if input_image.mode == "RGBA":
+                input_image = input_image.convert("RGB")
 
-            inverted_image = ImageOps.invert(self.input_image.get_value())
+            inverted_image = ImageOps.invert(input_image)
 
             self.output_image.set_value(inverted_image)
 

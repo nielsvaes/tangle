@@ -124,7 +124,7 @@
    </widget>
    <widget class="QMenu" name="menuScene">
     <property name="tearOffEnabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="title">
      <string>Scene</string>
@@ -143,6 +143,7 @@
     <addaction name="action_save_selected_nodes"/>
     <addaction name="action_duplicate_nodes"/>
     <addaction name="action_group_ungroup_nodes"/>
+    <addaction name="action_import_nodes_from_file"/>
     <addaction name="separator"/>
     <addaction name="action_align_selected_nodes_horizontally"/>
     <addaction name="action_align_selected_nodes_vertically"/>
@@ -326,6 +327,14 @@
   <action name="action_show_about">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="action_import_nodes_from_file">
+   <property name="text">
+    <string>Import nodes from file...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
    </property>
   </action>
  </widget>

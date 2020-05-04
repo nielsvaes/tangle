@@ -482,12 +482,15 @@ class NodeScene(QGraphicsScene):
             else:
                 self.save_network(selected_nodes_only=False, file_path=file_path)
 
-    def browse_for_saved_scene(self):
+    def browse_for_saved_scene(self, clear_first=False):
         """
         Open a QFileDialog to open a saved Tangle network and then opens it
 
+        :param clear_first: [bool] will destroy everything in the existing scene first before importing
         :return:
         """
+        if clear_first:
+            self.clear_scene()
         file_path = QFileDialog.getOpenFileName(caption="Open Tangle Network", filter="Tangle files (*.tngl)")[0]
         if file_path != "":
             self.open_network(file_path=file_path)
@@ -527,9 +530,6 @@ class NodeScene(QGraphicsScene):
 
         if event.key() == Qt.Key_S and event.modifiers() == Qt.ControlModifier:
             self.browse_for_save_location()
-
-        if event.key() == Qt.Key_O and event.modifiers() == Qt.ControlModifier:
-            self.browse_for_saved_scene()
 
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             self.refresh_network()
