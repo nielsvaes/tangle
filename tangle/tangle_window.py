@@ -127,10 +127,12 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
                     # self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
     def clear_values_ui(self):
-        for index in range(self.values_layout.count()):
-            print(type(self.values_layout.children()[index]))
-            self.values_layout.children()[index].setVisible(False)
-
+        for i in reversed(range(self.values_layout.count())):
+            widgetToRemove = self.values_layout.itemAt(i).widget()
+            # remove it from the layout list
+            self.values_layout.removeWidget(widgetToRemove)
+            # remove it from the gui
+            widgetToRemove.setParent(None)
 
     def generate_node_database(self):
         node_db.generate_database(self.node_tree.get_all_node_items(), self.scene)
