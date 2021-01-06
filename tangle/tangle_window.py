@@ -155,23 +155,3 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
             self.show_viewer("graph_float")
         if event.key() == Qt.Key_F7:
             self.show_viewer("graph_date")
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    if modern:
-        qtmodern.styles.dark(app)
-
-    splash_pixmap = QPixmap(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ui", "icons", "splashscreen.png"))
-    splash_screen = QSplashScreen(splash_pixmap)
-
-    splash_screen.show()
-
-    app.processEvents()
-
-    tangle_window = TangleWindow()
-
-    # tangle_window.showMaximized()
-    tangle_window.show()
-    splash_screen.finish(tangle_window)
-
-    app.exec_()

@@ -2,15 +2,6 @@ import os
 import logging
 logging.basicConfig(level=logging.INFO)
 
-try:
-    import qtmodern.styles
-    import qtmodern.windows
-    modern = True
-except:
-    logging.warning("Can't find qtmodern!")
-    modern = False
-
-from ez_settings.ez_settings import EZSettings as settings
 import nv_utils.io_utils as io_utils
 
 SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
