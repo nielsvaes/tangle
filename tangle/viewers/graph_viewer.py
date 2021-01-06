@@ -6,7 +6,7 @@ import pyqtgraph
 
 import nv_utils.utils as utils
 from nv_utils.singleton import Singleton
-# from nv_utils.qt_utils import DateAxis
+# from ez_qt import DateAxis
 
 class GraphViewerFloat(QDockWidget, Singleton):
     def __init__(self, parent):

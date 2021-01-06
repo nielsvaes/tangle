@@ -9,7 +9,7 @@ from PySide2.QtCore import *
 
 from datetime import datetime
 
-import nv_utils.qt_utils as qt_utils
+import ez_qt as qt_utils
 import nv_utils.utils as utils
 
 

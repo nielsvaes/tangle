@@ -16,7 +16,7 @@ from .Constants import nc, Colors, IO
 from .. import node_db
 
 import nv_utils.utils as utils
-import nv_utils.qt_utils as qt_utils
+import ez_qt as qt_utils
 
 class NodeSocket(QGraphicsEllipseItem):
     got_connected = Signal(str)
@@ -259,7 +259,7 @@ class NodeSocket(QGraphicsEllipseItem):
                 qt_utils.cb.add_items(widget, connectable_nodes)
                 widget.blockSignals(False)
 
-    def add_new_node(self, combobox, socket, pos_x, pos_y):
+    def add_new_node(self, combobox, socket, pos_x, pos_y, _):
         module, class_name = combobox.currentText().split(".")
         self.scene.destroy_spawned_widgets()
 

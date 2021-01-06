@@ -477,6 +477,8 @@ class NodeScene(QGraphicsScene):
         """
         file_path = QFileDialog.getSaveFileName(caption="Save Tangle network", filter="Tangle files (*.tngl)")[0]
         if file_path != "":
+            if not file_path.endswith(".tngl"):
+                file_path = file_path + ".tngl"
             if selected_nodes_only:
                 self.save_network(selected_nodes_only=True, file_path=file_path)
             else:

@@ -11,7 +11,7 @@ from PySide2.QtUiTools import *
 
 from ez_settings.ez_settings import EZSettings as ez_settings
 
-import nv_utils.qt_utils as qt_utils
+import ez_qt as qt_utils
 
 from .ui import tangle_ui
 

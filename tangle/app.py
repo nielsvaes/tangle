@@ -1,28 +1,32 @@
 import logging
 import os
+import nv_utils.io_utils
 
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
-from PySide2.QtCore import *
-from PySide2.QtUiTools import *
-
-try:
-    import qtmodern.styles
-    import qtmodern.windows
-    modern = True
-except:
-    logging.warning("Can't find qtmodern!")
-    modern = False
 
 from tangle import tangle_window
 
-def main():
-    if modern:
-        qtmodern.styles.dark(qApp)
+palette = QPalette()
+palette.setColor(QPalette.Window, QColor(53, 53, 53))
+palette.setColor(QPalette.WindowText, Qt.white)
+palette.setColor(QPalette.Base, QColor(45, 45, 45))
+palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+palette.setColor(QPalette.ToolTipBase, Qt.black)
+palette.setColor(QPalette.ToolTipText, Qt.white)
+palette.setColor(QPalette.Text, Qt.white)
+palette.setColor(QPalette.Button, QColor(53, 53, 53))
+palette.setColor(QPalette.ButtonText, Qt.white)
+palette.setColor(QPalette.BrightText, Qt.red)
+palette.setColor(QPalette.Link, QColor(42, 130, 218))
+palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+palette.setColor(QPalette.HighlightedText, Qt.black)
 
+
+def main():
+    qApp.setPalette(palette)
     splash_pixmap = QPixmap(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ui", "icons", "splashscreen.png"))
     splash_screen = QSplashScreen(splash_pixmap)
-
     splash_screen.show()
 
     qApp.processEvents()

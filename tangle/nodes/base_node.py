@@ -15,7 +15,7 @@ from ..core.SignalEmitter import SignalEmitter
 from ..core.Constants import Colors, ss
 from ..core.SettingsConstants import NodeSettings as ns
 
-import nv_utils.qt_utils as qt_utils
+import ez_qt as qt_utils
 from ez_settings.ez_settings import EZSettings as ez_settings
 
 SCRIPT_FOLDER = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))

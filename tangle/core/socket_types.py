@@ -7,7 +7,7 @@ import numpy as np
 from .Constants import Colors
 from ..nodes.plot_node import PlotObject
 
-import nv_utils.qt_utils as qt_utils
+import ez_qt as qt_utils
 
 class BaseSocketType(QObject):
     #is_dirty = pyqtSignal()

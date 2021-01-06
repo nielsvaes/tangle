@@ -11,7 +11,7 @@ from PySide2.QtCore import *
 from PySide2.QtUiTools import *
 
 import nv_utils.file_utils as file_utils
-import nv_utils.qt_utils as qt_utils
+import ez_qt as qt_utils
 import nv_utils.utils as utils
 
 from ..ui import node_tree_ui
@@ -26,7 +26,6 @@ class NodeTree(QTreeWidget, node_tree_ui.Ui_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
-        # self. = QUiLoader().loadUi(os.path.join(UI_PATH, "node_tree"), self)
         self.load_node_tree()
 
         self.txt_search_nodes.textChanged.connect(self.search_node_tree)
@@ -65,7 +64,7 @@ class NodeTree(QTreeWidget, node_tree_ui.Ui_Form):
                 if complete_folder == NODE_FOLDER:
                     continue
 
-                folder_item = qt_utils.tw.get_item_with_text(self.tree_nodes, folder_name, 0)
+                folder_item = qt_utils.tree_widget.get_item_with_text(self.tree_nodes, folder_name, 0)
 
                 if folder_item is None:
                     folder_item = FolderItem(self.tree_nodes, [folder_name])
@@ -90,10 +89,10 @@ class NodeTree(QTreeWidget, node_tree_ui.Ui_Form):
                     file_item.setIcon(0, QIcon(icon_path))
 
     def get_all_node_items(self):
-        return [item for item in qt_utils.tw.get_all_items(self.tree_nodes) if item.item_type == "node"]
+        return [item for item in qt_utils.tree_widget.get_all_items(self.tree_nodes) if item.item_type == "node"]
 
     def get_all_folder_items(self):
-        return qt_utils.tw.get_all_items(self.tree_nodes)
+        return qt_utils.tree_widget.get_all_items(self.tree_nodes)
 
 
 class NodeTreeItem(QTreeWidgetItem):
