@@ -256,7 +256,7 @@ class NodeSocket(QGraphicsEllipseItem):
                     for node_dict in node_db.get_node_dicts_with_input_of_type(socket_01.socket_type.name):
                         connectable_nodes.append("%s.%s" % (node_dict.get("module"), node_dict.get("name")))
 
-                qt_utils.cb.add_items(widget, connectable_nodes)
+                qt_utils.combo_box.add_items(widget, connectable_nodes)
                 widget.blockSignals(False)
 
     def add_new_node(self, combobox, socket, pos_x, pos_y, _):

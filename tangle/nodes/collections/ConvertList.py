@@ -67,7 +67,7 @@ class ConvertList(BaseNode):
 
     def load(self, node_dict, is_duplicate=False, x=None, y=None):
         super().load(node_dict, is_duplicate=is_duplicate, x=x, y=y)
-        qt_utils.cb.set_to_item(self.cb_convert_to, node_dict.get("node_specific_params").get("cb_convert_to"))
+        qt_utils.combo_box.set_to_item(self.cb_convert_to, node_dict.get("node_specific_params").get("cb_convert_to"))
 
 
 

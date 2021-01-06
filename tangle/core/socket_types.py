@@ -215,7 +215,7 @@ class EnumSocketType(BaseSocketType):
         self.ui_widget.setLayout(self.layout)
 
         self.layout.addWidget(self.combobox)
-        qt_utils.cb.add_items(self.combobox, self.get_value().get("options"), clear=True)
+        qt_utils.combo_box.add_items(self.combobox, self.get_value().get("options"), clear=True)
 
         self.combobox.setCurrentIndex(self.get_value().get("index"))
         self.combobox.blockSignals(False)

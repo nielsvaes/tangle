@@ -272,7 +272,7 @@ class BaseNode(Node):
 
     def add_combobox(self, items=[], changed_function=None):
         combobox = QComboBox()
-        qt_utils.cb.add_items(combobox, items=items)
+        qt_utils.combo_box.add_items(combobox, items=items)
 
         if changed_function is not None:
             combobox.currentIndexChanged.connect(changed_function)
@@ -285,7 +285,7 @@ class BaseNode(Node):
         layout = QHBoxLayout()
         label = QLabel(label_text)
         combobox = QComboBox()
-        qt_utils.cb.add_items(combobox, items=items)
+        qt_utils.combo_box.add_items(combobox, items=items)
 
         layout.addWidget(label)
         layout.addWidget(combobox)

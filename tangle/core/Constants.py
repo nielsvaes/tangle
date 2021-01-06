@@ -1,4 +1,5 @@
 from PySide2.QtGui import *
+import os
 
 class IO():
     input = "input"
@@ -134,3 +135,11 @@ class SettingsConstants():
     version = "version"
 
 sc = SettingsConstants
+
+class Paths:
+    SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
+    UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
+    SETTINGS_PATH = os.path.join(SCRIPT_FOLDER, "settings", "tangle_settings.json")
+    NODE_INFO_DB = os.path.join(SCRIPT_FOLDER, "settings", "node_info.json")
+    ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
+    NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
