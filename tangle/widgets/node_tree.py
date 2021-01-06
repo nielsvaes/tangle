@@ -94,14 +94,14 @@ class NodeTree(QTreeWidget, node_tree_ui.Ui_Form):
 class NodeTreeItem(QTreeWidgetItem):
     def __init__(self, parent_item, columns):
         super().__init__(parent_item, columns)
-        file_name = None
-        file_name_no_ext = None
-        icon_path = None
-        complete_folder = None
-        folder_name = None
-        parent_folder = None
-        parent_folder_name = None
-        complete_path = None
+        self.file_name = None
+        self.file_name_no_ext = None
+        self.icon_path = None
+        self.complete_folder = None
+        self.folder_name = None
+        self.parent_folder = None
+        self.parent_folder_name = None
+        self.complete_path = None
 
 class FolderItem(NodeTreeItem):
     def __init__(self, parent_item, columns):

@@ -20,12 +20,10 @@ class Ui_Form(object):
         Form.resize(544, 722)
         self.gridLayout = QGridLayout(Form)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
         self.txt_search_nodes = QLineEdit(Form)
         self.txt_search_nodes.setObjectName(u"txt_search_nodes")
 
-        self.verticalLayout.addWidget(self.txt_search_nodes)
+        self.gridLayout.addWidget(self.txt_search_nodes, 0, 0, 1, 1)
 
         self.tree_nodes = QTreeWidget(Form)
         self.tree_nodes.setObjectName(u"tree_nodes")
@@ -42,11 +40,10 @@ class Ui_Form(object):
         self.tree_nodes.setSelectionMode(QAbstractItemView.SingleSelection)
         self.tree_nodes.setSortingEnabled(True)
         self.tree_nodes.setAnimated(True)
+        self.tree_nodes.setHeaderHidden(False)
+        self.tree_nodes.header().setVisible(True)
 
-        self.verticalLayout.addWidget(self.tree_nodes)
-
-
-        self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.tree_nodes, 1, 0, 1, 1)
 
 
         self.retranslateUi(Form)
