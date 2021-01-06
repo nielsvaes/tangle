@@ -43,13 +43,11 @@ print(SETTINGS_PATH)
 ez_settings(SETTINGS_PATH)
 ez_settings().set(sc.version, TANGLE_VERSION)
 
-# testing a git submit from VS Code on the raspberry pi
 
 class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        # QUiLoader().loadUi(os.path.join(UI_PATH, "tangle.ui"), self)
         self.setWindowTitle("Tangle")
 
         self.build_ui()
