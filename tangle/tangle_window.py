@@ -110,8 +110,6 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
             GraphViewerDate(self).show()
 
     def load_values_ui(self):
-        # qt_utils.general.clear_layout(self.values_layout)
-
         self.clear_values_ui()
 
         selected_items = self.scene.selectedItems()
