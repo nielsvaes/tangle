@@ -3,6 +3,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 
 from .SettingsConstants import ApplicationSettings as aps
+from .Constants import StyleSheets as ss
 
 from ez_settings.ez_settings import EZSettings as ez_settings
 
@@ -19,6 +20,19 @@ class NodeView(QGraphicsView):
         self.setDragMode(QGraphicsView.RubberBandDrag)
 
         self.scale(0.9, 0.9)
+
+        font = QFont()
+        font.setPointSize(8)
+        font.setItalic(True)
+        font.setFamily("sans-serif")
+        self.title_label = QLabel("Tangle: a Python node editor")
+        self.title_label.setFont(font)
+        self.title_label.setScaledContents(True)
+
+        self.grid_layout = QGridLayout(self)
+        self.grid_layout.setContentsMargins(30, 30, 30, 30)
+        self.grid_layout.addWidget(self.title_label, 0, 0, 0, 0, Qt.AlignBottom | Qt.AlignRight)
+
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MiddleButton:
