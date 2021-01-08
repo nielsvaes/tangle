@@ -1,8 +1,8 @@
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
-from pyqtgraph import PlotWidget
-import pyqtgraph
+# from pyqtgraph import PlotWidget
+# import pyqtgraph
 
 import nv_utils.utils as utils
 from nv_utils.singleton import Singleton
