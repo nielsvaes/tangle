@@ -14,7 +14,7 @@ setup(
     license='MIT',
     author='Niels Vaes',
     author_email='nielsvaes@gmail.com',
-    description='A Python based node editor, very early version',
+    description='A Python based node editor',
 
     entry_points = {
                    'console_scripts': ['tangle=tangle.app:main'],
