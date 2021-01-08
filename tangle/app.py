@@ -1,12 +1,10 @@
-import logging
 import os
-import nv_utils.io_utils
+from qt_material import apply_stylesheet
 
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 
 from tangle import tangle_window
-
 
 def main():
     palette = QPalette()
@@ -24,6 +22,8 @@ def main():
     palette.setColor(QPalette.BrightText, Qt.red)
     palette.setColor(QPalette.Link, QColor(255, 160, 0))
 
+    # apply_stylesheet(qApp, theme="dark_teal.xml")
+
     qApp.setPalette(palette)
     splash_pixmap = QPixmap(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ui", "icons", "splashscreen.png"))
     splash_screen = QSplashScreen(splash_pixmap)
@@ -33,7 +33,7 @@ def main():
 
     window = tangle_window.TangleWindow()
 
-    # tangle_window.showMaximized()
+    window.showMaximized()
     window.show()
     splash_screen.finish(window)
 
