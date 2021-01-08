@@ -4,7 +4,7 @@ from ..plot_node import PlotNode, PlotObject
 from ...core import socket_types as socket_types
 
 from ...core.Constants import Colors
-import nv_utils.utils as utils
+import ez_utils.general as utils
 
 import numpy as np
 

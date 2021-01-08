@@ -4,7 +4,7 @@ from ...core import socket_types as socket_types
 from ...core.Constants import Colors
 from PIL import ImageQt, ImageFilter
 
-from nv_utils.decorators import timeit
+from ez_utils.decorators import timeit
 
 class Blur(ImageNode):
     def __init__(self, scene, x=0, y=0):

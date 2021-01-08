@@ -2,9 +2,10 @@ from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
 
-from nv_utils.singleton import Singleton
+# from ez_utils.singleton import Singleton
 
-class ImageViewer(QDockWidget, Singleton):
+# class ImageViewer(QDockWidget, Singleton):
+class ImageViewer(QDockWidget):
     def __init__(self, parent):
         super(ImageViewer, self).__init__()
 

@@ -8,7 +8,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 
 import ez_qt as qt_utils
-import nv_utils.utils as utils
+import ez_utils.general as utils
 
 
 class CombineLists(BaseNode):

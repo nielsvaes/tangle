@@ -7,7 +7,7 @@ import uuid
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-import nv_utils.utils as utils
+import ez_utils.general as utils
 
 from .Constants import nc, Colors, IO
 

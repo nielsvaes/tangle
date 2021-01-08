@@ -1,6 +1,6 @@
 from ..base_node import BaseNode
 from ...core import socket_types as socket_types
-from nv_utils.decorators import timeit
+from ez_utils.decorators import timeit
 
 from ...core.Constants import Colors
 

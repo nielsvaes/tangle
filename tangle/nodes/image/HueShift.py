@@ -6,7 +6,7 @@ from PIL import ImageQt, Image
 
 import numpy as np
 
-import nv_utils.utils as utils
+import ez_utils.general as utils
 
 class HueShift(ImageNode):
     def __init__(self, scene, x=0, y=0):

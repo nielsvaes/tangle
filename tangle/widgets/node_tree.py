@@ -7,7 +7,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 from PySide2.QtUiTools import *
 
-import nv_utils.file_utils as file_utils
+import ez_utils.file_utils as file_utils
 import ez_qt as qt_utils
 
 from ..ui import node_tree_ui

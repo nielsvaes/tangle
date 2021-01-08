@@ -10,7 +10,7 @@ from PySide2.QtCore import *
 from datetime import datetime
 
 import ez_qt as qt_utils
-import nv_utils.utils as utils
+import ez_utils.general as utils
 
 
 class ConvertList(BaseNode):

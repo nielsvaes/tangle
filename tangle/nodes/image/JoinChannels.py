@@ -9,7 +9,7 @@ from .LoadImage import LoadImage
 from ...core import socket_types as socket_types
 from ...core.Constants import Colors
 
-import nv_utils.utils as utils
+import ez_utils.general as utils
 
 from PIL import Image, ImageQt
 

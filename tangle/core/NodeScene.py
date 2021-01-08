@@ -9,8 +9,8 @@ from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
 
-import nv_utils.utils as utils
-import nv_utils.io_utils as io_utils
+import ez_utils.general as utils
+import ez_utils.io_utils as io_utils
 from . import socket_types
 from ez_settings.ez_settings import EZSettings as ez_settings
 
@@ -453,7 +453,7 @@ class NodeScene(QGraphicsScene):
             group_node.destroy_self()
 
         ImageViewer(self.get_main_window()).clear()
-        GraphViewerFloat(self.get_main_window()).clear()
+        # GraphViewerFloat(self.get_main_window()).clear()
 
     def spawn_widget_at(self, widget, screen_pos_x, screen_pos_y):
         widget.setParent(self.get_main_window())

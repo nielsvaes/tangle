@@ -2,7 +2,7 @@ import os
 import logging
 logging.basicConfig(level=logging.INFO)
 
-import nv_utils.io_utils as io_utils
+import ez_utils.io_utils as io_utils
 
 SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
 UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")

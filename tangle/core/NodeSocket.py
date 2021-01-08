@@ -15,7 +15,7 @@ from .Constants import nc, Colors, IO
 
 from .. import node_db
 
-import nv_utils.utils as utils
+import ez_utils.general as utils
 import ez_qt as qt_utils
 
 class NodeSocket(QGraphicsEllipseItem):

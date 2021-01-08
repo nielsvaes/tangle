@@ -10,7 +10,7 @@ setup(
     url='https://www.github.com/nielsvaes/tangle',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    install_requires=["ez-qt", "ez-settings", "PySide2"],
+    install_requires=["ez-qt", "ez-settings", "ez-utils", "PySide2"],
     license='MIT',
     author='Niels Vaes',
     author_email='nielsvaes@gmail.com',

@@ -6,7 +6,7 @@ from ...core import socket_types as socket_types
 from ...core.Constants import Colors
 from ..plot_node import PlotNode, PlotObject
 
-import nv_utils.utils as utils
+import ez_utils.general as utils
 
 
 class MakePlotObject(PlotNode):

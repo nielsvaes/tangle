@@ -6,7 +6,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 import uuid
 
-import nv_utils.utils as utils
+import ez_utils.general as utils
 
 from .Constants import nc, Colors, IO
 from .NodeTitle import NodeTitle
