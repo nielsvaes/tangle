@@ -1,30 +1,15 @@
 import os
-from qt_material import apply_stylesheet
+import ez_qt
 
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 
 from tangle import tangle_window
 
+application = QApplication()
+
 def main():
-    palette = QPalette()
-    palette.setColor(QPalette.Window, QColor(53, 53, 53))
-    palette.setColor(QPalette.WindowText, Qt.white)
-    palette.setColor(QPalette.Base, QColor(45, 45, 45))
-    palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-    palette.setColor(QPalette.Highlight, QColor(0, 126, 194))
-    palette.setColor(QPalette.HighlightedText, Qt.black)
-    palette.setColor(QPalette.Text, QColor(200, 200, 200))
-    palette.setColor(QPalette.Button, QColor(60, 60, 60))
-    palette.setColor(QPalette.ToolTipBase, Qt.black)
-    palette.setColor(QPalette.ToolTipText, Qt.white)
-    palette.setColor(QPalette.ButtonText, Qt.white)
-    palette.setColor(QPalette.BrightText, Qt.red)
-    palette.setColor(QPalette.Link, QColor(255, 160, 0))
-
-    # apply_stylesheet(qApp, theme="dark_teal.xml")
-
-    qApp.setPalette(palette)
+    ez_qt.app_colors.set_dark_theme(qApp, accent_color=ez_qt.k.AccentColors.medium_blue)
     splash_pixmap = QPixmap(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ui", "icons", "splashscreen.png"))
     splash_screen = QSplashScreen(splash_pixmap)
     splash_screen.show()
