@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='tangle-node-editor',
-    version='1.0.4-alpha',
+    version='1.0.5-alpha',
     packages=find_packages(),
     url='https://www.github.com/nielsvaes/tangle',
     long_description=long_description,
