@@ -1,14 +1,11 @@
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
-# from pyqtgraph import PlotWidget
-# import pyqtgraph
+import pyqtgraph
+from pyqtgraph import PlotWidget
 
 import ez_utils.general as utils
-# from ez_utils.singleton import Singleton
-# from ez_qt import DateAxis
 
-# class GraphViewerFloat(QDockWidget, Singleton):
 class GraphViewerFloat(QDockWidget):
     def __init__(self, parent):
         super(GraphViewerFloat, self).__init__(parent)

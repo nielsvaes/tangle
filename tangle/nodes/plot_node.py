@@ -29,12 +29,12 @@ class PlotNode(BaseNode):
         return self.__plot_objects
 
     def refresh(self):
-        main_window = self.scene.get_main_window()
+        graph_viewer = self.scene.get_main_window().get_graph_viewer()
         for plot_object in self.get_plot_objects():
             if self.get_type() == "float":
-                GraphViewerFloat(main_window).plot(plot_object)
-            elif self.get_type() == "date":
-                GraphViewerDate(main_window).plot(plot_object)
+                graph_viewer.plot(plot_object)
+            # elif self.get_type() == "date":
+            #     GraphViewerDate(main_window).plot(plot_object)
 
 
 class PlotObject(QObject):

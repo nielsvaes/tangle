@@ -62,11 +62,11 @@ class MakePlotObject(PlotNode):
                 self.input_x_values.fetch_connected_value()
                 self.input_y_values.fetch_connected_value()
 
-                if self.cb_x_axis.currentText() == "date":
-                    dates = [datetime.datetime.strptime(value, '%Y-%m-%d').timestamp() for value in
-                             self.input_x_values.get_value()]
-                    self.set_type("date")
-                    self.po.set_x_axis_values(dates)
+                # if self.cb_x_axis.currentText() == "date":
+                #     dates = [datetime.datetime.strptime(value, '%Y-%m-%d').timestamp() for value in
+                #              self.input_x_values.get_value()]
+                #     self.set_type("date")
+                #     self.po.set_x_axis_values(dates)
                 if self.cb_x_axis.currentText() == "float":
                     self.set_type("float")
                     self.po.set_x_axis_values(self.input_x_values.get_value())

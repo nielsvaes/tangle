@@ -5,7 +5,7 @@ from PySide2.QtCore import *
 import numpy as np
 
 from .Constants import Colors
-# from ..nodes.plot_node import PlotObject
+from ..nodes.plot_node import PlotObject
 
 import ez_qt as qt_utils
 

@@ -33,8 +33,8 @@ class List(BaseNode):
 
     def remove_selected_from_list(self):
         for item in self.lw_list.selectedItems():
-            self.items.remove(utils.try_parse(item.text()))
-        qt_utils.lw.remove_items(self.lw_list, selected=True)
+            self.items.remove(self.try_number_parse(item.text()))
+        qt_utils.list_widget.remove_items(self.lw_list, selected=True)
         self.update_title()
         self.output_list.set_value(self.items)
         self.set_dirty(True)
@@ -42,7 +42,7 @@ class List(BaseNode):
 
     def clear_list(self):
         self.items = []
-        qt_utils.lw.add_items(self.lw_list, [str(item) for item in self.items], duplicates_allowed=True,
+        qt_utils.list_widget.add_items(self.lw_list, [str(item) for item in self.items], duplicates_allowed=True,
                               clear=True)
         self.update_title()
         self.output_list.set_value(self.items)
@@ -50,15 +50,21 @@ class List(BaseNode):
         self.compute()
 
     def return_pressed(self):
-        self.items.append(utils.try_parse(self.txt_item.text()))
+        self.items.append(self.try_number_parse(self.txt_item.text()))
 
-        qt_utils.lw.add_items(self.lw_list, [str(item) for item in self.items], duplicates_allowed=True, clear=True)
+        qt_utils.list_widget.add_items(self.lw_list, [str(item) for item in self.items], duplicates_allowed=True, clear=True)
         self.output_list.set_value(self.items)
 
         self.set_dirty(True)
         self.txt_item.clear()
         self.update_title()
         self.compute()
+
+    def try_number_parse(self, string):
+        try:
+            return int(string)
+        except:
+            return float(string)
 
     def update_title(self):
         self.change_title(f"list: {len(self.items)}")
@@ -72,7 +78,7 @@ class List(BaseNode):
         for socket_uuid, socket_dict in node_dict.get("sockets").items():
             if socket_dict.get("label") == self.output_list.get_name():
                 self.items = socket_dict.get("value")
-                qt_utils.lw.add_items(self.lw_list, [str(item) for item in self.items],
+                qt_utils.list_widget.add_items(self.lw_list, [str(item) for item in self.items],
                                       duplicates_allowed=True, clear=True)
                 self.update_title()
                 self.output_list.set_value(self.items)
