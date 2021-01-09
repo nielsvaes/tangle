@@ -54,6 +54,7 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
         self.show()
         
         self.set_help_text("Testing!")
+        self.__image_viewer = ImageViewer(parent=self)
 
     def build_ui(self):
         self.scene = NodeScene()
@@ -101,9 +102,12 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
         self.horizontal_splitter.setSizes([500, 100])
         self.vertical_splitter.setSizes([500, 200])
 
+    def get_image_viewer(self):
+        return self.__image_viewer
+
     def show_viewer(self, viewer_type):
         if viewer_type == "image":
-            ImageViewer(self).show()
+            self.__image_viewer.show()
         if viewer_type == "graph_float":
             GraphViewerFloat(self).show()
         if viewer_type == "graph_date":
