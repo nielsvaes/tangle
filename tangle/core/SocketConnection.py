@@ -90,6 +90,9 @@ class SocketConnection(QGraphicsPathItem):
         if self.input_socket.get_node().is_child_of(self.output_socket.get_node()):
             error_message = "%s is an input of %s" % (self.input_socket.get_node().get_uuid(), self.output_socket.get_node().get_uuid())
 
+        if self.input_socket.get_node() == self.output_socket.get_node():
+            error_message = "Trying to connect to the same node!"
+
         if error_message is not None:
             logging.error(error_message)
             return False
@@ -123,7 +126,7 @@ class SocketConnection(QGraphicsPathItem):
         self.input_socket.get_node().set_dirty(True)
         self.input_socket.reset_to_initial_value()
 
-        if self.get_input_socket().get_node().get_auto_compute_on_connect() == True:
+        if self.get_input_socket().get_node().get_auto_compute_on_connect():
             self.input_socket.get_node().compute()
 
     def get_input_socket(self):

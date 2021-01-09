@@ -6,7 +6,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 import uuid
 
-import ez_utils.general as utils
+import ez_utils
 
 from .Constants import nc, Colors, IO
 from .NodeTitle import NodeTitle
@@ -88,7 +88,6 @@ class Node(QGraphicsRectItem):
 
         label = NodeTitle(input_name, font_size=self.socket_label_size)
 
-        # socket_y_position = self.boundingRect().top() + (nc.socket_size + nc.socket_spacing) - (self.__num_input_output_sockets * nc.socket_size + nc.socket_spacing)
         socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * len(self.get_all_input_sockets())
 
         socket_position = QPointF(self.boundingRect().left() - nc.socket_size / 2, socket_y_position)
@@ -121,7 +120,7 @@ class Node(QGraphicsRectItem):
 
         label = NodeTitle(input_output_name, font_size=self.socket_label_size)
 
-        y_pos_multiplier = len(utils.get_longest_list([self.get_all_input_sockets(), self.get_all_output_sockets()]))
+        y_pos_multiplier = len(ez_utils.lists.get_longest_list([self.get_all_input_sockets(), self.get_all_output_sockets()]))
 
         output_socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * y_pos_multiplier
         input_socket_y_position = self.boundingRect().top() + self.socket_offset_from_top + (nc.socket_size + nc.socket_spacing) * y_pos_multiplier
@@ -371,9 +370,6 @@ class Node(QGraphicsRectItem):
     def add_icon_circle(self):
         icon_circle = QGraphicsEllipseItem()
         icon_circle.setRect(0, 0, nc.icon_circle_size, nc.icon_circle_size)
-
-        x_pos = (self.boundingRect().width() / 2 - nc.icon_circle_size) + self.boundingRect().left()
-        y_pos = (self.boundingRect().bottom() - nc.icon_circle_size)
 
         brush = QBrush()
         brush.setStyle(Qt.SolidPattern)

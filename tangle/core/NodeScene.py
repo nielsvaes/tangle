@@ -95,7 +95,6 @@ class NodeScene(QGraphicsScene):
 
         :return: [list] SocketConnection
         """
-        from .core import SocketConnection
         connections = []
         for item in self.items():
             if type(item) == SocketConnection:
@@ -169,7 +168,7 @@ class NodeScene(QGraphicsScene):
         try:
             if node is None:
                 for begin_node in self.get_begin_nodes():
-                    logging.info("flcomputing begin node %s " % begin_node)
+                    logging.info("computing begin node %s " % begin_node)
                     begin_node.set_dirty(True)
                     begin_node.compute(force=True)
             else:
@@ -235,7 +234,6 @@ class NodeScene(QGraphicsScene):
             scene_dict = io_utils.read_json(file_path)
 
         self.load_nodes(scene_dict, with_values, is_duplicate=is_duplicate)
-        m = self.get_all_nodes()
         self.load_group_nodes(scene_dict)
 
         if with_connections:

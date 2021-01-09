@@ -11,7 +11,6 @@ from functools import partial
 from .SocketConnection import SocketConnection
 from .DragConnection import DragConnection
 from .Constants import nc, Colors, IO
-# from .SignalEmitter import SignalEmitter
 
 from .. import node_db
 
@@ -130,8 +129,8 @@ class NodeSocket(QGraphicsEllipseItem):
                     return True
         return False
 
-    def set_label_style_connected(self, value):
-        if value == True:
+    def set_label_style_connected(self, connected):
+        if connected:
             self.label.font.setBold(True)
             self.label.font.setItalic(True)
             self.label.setDefaultTextColor(self.socket_type.color)
