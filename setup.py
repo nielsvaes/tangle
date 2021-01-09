@@ -1,12 +1,12 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
     name='tangle-node-editor',
-    version='1.0.3-alpha',
-    packages=['tangle'],
+    version='1.0.4-alpha',
+    packages=find_packages(),
     url='https://www.github.com/nielsvaes/tangle',
     long_description=long_description,
     long_description_content_type="text/markdown",
