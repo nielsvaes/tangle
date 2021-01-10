@@ -18,8 +18,6 @@ from .SocketConnection import SocketConnection
 from .GroupNode import GroupNode
 from .SettingsConstants import NodeSettings as ns
 from ..nodes.base_node import BaseNode
-from ..viewers.image_viewer import ImageViewer
-from ..viewers.graph_viewer import GraphViewerFloat
 
 class NodeScene(QGraphicsScene):
     """
@@ -450,8 +448,7 @@ class NodeScene(QGraphicsScene):
         for group_node in self.get_all_group_nodes():
             group_node.destroy_self()
 
-        ImageViewer(self.get_main_window()).clear()
-        # GraphViewerFloat(self.get_main_window()).clear()
+        self.get_main_window().get_image_viewer().clear()
 
     def spawn_widget_at(self, widget, screen_pos_x, screen_pos_y):
         widget.setParent(self.get_main_window())
