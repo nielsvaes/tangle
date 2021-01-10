@@ -230,7 +230,7 @@ class NodeSocket(QGraphicsEllipseItem):
         # we've released the mouse button where there is no socket
         else:
             if event.button() == Qt.LeftButton:
-                logging.warning("Released at %s, there is no socket here" % self.connection_end_point)
+                self.scene.get_view().info_label.warning("Released at %s, there is no socket here" % self.connection_end_point)
 
             elif event.button() == Qt.RightButton:
                 x = event.screenPos().x()
@@ -314,15 +314,15 @@ class NodeSocket(QGraphicsEllipseItem):
 
         if input_socket == self:
             valid = False
-            logging.error("Output and input socket can't be the same!")
+            self.scene.get_view().info_label.error("Output and input socket can't be the same!")
 
         if self.is_connected_to(input_socket):
             valid = False
-            logging.error("%s -> %s is already connected" % (self.name, input_socket.name))
+            self.scene.get_view().info_label.error("%s -> %s is already connected" % (self.name, input_socket.name))
 
         if not self.__is_output_connected_to_input(input_socket):
             valid = False
-            logging.error("%s is of type %s, %s is also of type %s" % (
+            self.scene.get_view().info_label.error("%s is of type %s, %s is also of type %s" % (
                 self.name, self.io, input_socket.name, input_socket.type))
 
         return valid

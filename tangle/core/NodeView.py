@@ -3,6 +3,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 
 from .SettingsConstants import ApplicationSettings as aps
+from ..widgets.info_label import InfoLabel
 from .Constants import StyleSheets as ss
 
 from ez_settings.ez_settings import EZSettings as ez_settings
@@ -29,10 +30,12 @@ class NodeView(QGraphicsView):
         self.title_label.setFont(font)
         self.title_label.setScaledContents(True)
 
+        self.info_label = InfoLabel("")
+
         self.grid_layout = QGridLayout(self)
         self.grid_layout.setContentsMargins(30, 30, 30, 30)
-        self.grid_layout.addWidget(self.title_label, 0, 0, 0, 0, Qt.AlignBottom | Qt.AlignRight)
-
+        self.grid_layout.addWidget(self.info_label, 0, 0, 0, 0, Qt.AlignTop | Qt.AlignCenter)
+        self.grid_layout.addWidget(self.title_label, 1, 2, 1, 2, Qt.AlignBottom | Qt.AlignRight)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MiddleButton:

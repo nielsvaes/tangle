@@ -94,7 +94,7 @@ class SocketConnection(QGraphicsPathItem):
             error_message = "Trying to connect to the same node!"
 
         if error_message is not None:
-            logging.error(error_message)
+            self.scene.get_view().info_label.error(error_message)
             return False
             # raise AttributeError(error_message)
 

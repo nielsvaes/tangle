@@ -109,6 +109,9 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
     def get_graph_viewer(self):
         return self.__graph_viewer
 
+    def get_info_label(self):
+        return self.view.info_label
+
     def show_viewer(self, viewer_type):
         if viewer_type == "image":
             self.__image_viewer.show()
