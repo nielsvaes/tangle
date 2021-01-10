@@ -10,6 +10,7 @@ from PySide2.QtCore import *
 from PySide2.QtUiTools import *
 
 from ez_settings.ez_settings import EZSettings as ez_settings
+from .logger import Logger
 
 import ez_qt as qt_utils
 
@@ -17,7 +18,7 @@ from .ui import tangle_ui
 
 from .core.NodeScene import NodeScene
 from .core.NodeView import NodeView
-from .core.Constants import sc
+from .core.Constants import sc, Paths
 
 from .nodes.base_node import BaseNode
 from .core.GroupNode import GroupNode
@@ -30,17 +31,9 @@ from . import node_db
 from .viewers.image_viewer import ImageViewer
 from .viewers.graph_viewer import GraphViewerFloat #, GraphViewerDate
 
-SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
-UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
-SETTINGS_PATH = os.path.join(SCRIPT_FOLDER, "settings", "tangle_settings.json")
-NODE_INFO_DB = os.path.join(SCRIPT_FOLDER, "settings", "node_info.json")
-ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
-NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
+TANGLE_VERSION = "1.0.7-alpha"
 
-TANGLE_VERSION = 1.0
-
-print(SETTINGS_PATH)
-ez_settings(SETTINGS_PATH)
+ez_settings(Paths.SETTINGS_PATH)
 ez_settings().set(sc.version, TANGLE_VERSION)
 
 
@@ -57,6 +50,8 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
         self.__image_viewer = ImageViewer(parent=self)
         self.__graph_viewer = GraphViewerFloat(parent=self)
 
+        Logger(self.view.info_label)
+
     def build_ui(self):
         self.scene = NodeScene()
         self.scene.setObjectName('Scene')
@@ -68,7 +63,7 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
         self.node_tree = NodeTree()
         self.node_tree_layout.addWidget(self.node_tree)
 
-        self.setWindowIcon(QIcon(os.path.join(ICONS_PATH, "logo.png")))
+        self.setWindowIcon(QIcon(os.path.join(Paths.ICONS_PATH, "logo.png")))
 
         for i in range(1, 4):
             self.node_tree.tree_nodes.setColumnHidden(i, True)

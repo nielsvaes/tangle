@@ -5,6 +5,7 @@ from PySide2.QtCore import *
 import logging
 
 from .Constants import nc, Colors, IO
+from ..logger import Logger
 
 class SocketConnection(QGraphicsPathItem):
     def __init__(self, output_socket, input_socket, scene, auto_compute_on_connect=True, auto_compute_on_disconnect=True):
@@ -30,10 +31,6 @@ class SocketConnection(QGraphicsPathItem):
     def update_sockets(self):
         for socket in [self.input_socket, self.output_socket]:
             socket.add_connection(self)
-            # try:
-            #     socket.got_connected.emit("connected")
-            # except Exception as err:
-            #     print(str(err))
 
         self.input_socket.set_value(self.output_socket.get_value())
 
@@ -94,7 +91,7 @@ class SocketConnection(QGraphicsPathItem):
             error_message = "Trying to connect to the same node!"
 
         if error_message is not None:
-            self.scene.get_view().info_label.error(error_message)
+            Logger().error(error_message)
             return False
             # raise AttributeError(error_message)
 

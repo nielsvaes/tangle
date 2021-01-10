@@ -2,8 +2,6 @@ from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
 
-import logging
-logging.basicConfig(level=logging.DEBUG)
 import uuid
 
 from functools import partial
@@ -11,17 +9,19 @@ from functools import partial
 from .SocketConnection import SocketConnection
 from .DragConnection import DragConnection
 from .Constants import nc, Colors, IO
+from .SignalEmitter import SignalEmitter
 
 from .. import node_db
+from ..logger import Logger
 
 import ez_utils.general as utils
 import ez_qt as qt_utils
 
 class NodeSocket(QGraphicsEllipseItem):
-    got_connected = Signal(str)
-    got_disconnected = Signal(str)
+    # got_connected = Signal(str)
+    # got_disconnected = Signal(str)
     def __init__(self, io, socket_type, label, scene, position=None):
-        super().__init__()
+        super(NodeSocket, self).__init__()
         self.rect = QRectF(0, 0, nc.socket_size, nc.socket_size)
         self.position = position
         self.scene = scene
@@ -43,8 +43,8 @@ class NodeSocket(QGraphicsEllipseItem):
         self.__uuid = uuid.uuid4()
         self.connections = []
 
-        # self.got_connected = SignalEmitter()
-        # self.got_disconnected = SignalEmitter()
+        self.got_connected = SignalEmitter()
+        self.got_disconnected = SignalEmitter()
 
         self.__draw()
 
@@ -147,10 +147,13 @@ class NodeSocket(QGraphicsEllipseItem):
     def add_connection(self, connection):
         if type(connection) == SocketConnection:
             self.connections.append(connection)
+            Logger().success(str(connection))
+            self.got_connected.fire()
 
     def remove_connection(self, connection):
         if type(connection) == SocketConnection:
             self.connections.remove(connection)
+            self.got_disconnected.fire()
 
     def get_connections(self):
         return self.connections
@@ -230,7 +233,7 @@ class NodeSocket(QGraphicsEllipseItem):
         # we've released the mouse button where there is no socket
         else:
             if event.button() == Qt.LeftButton:
-                self.scene.get_view().info_label.warning("Released at %s, there is no socket here" % self.connection_end_point)
+                Logger().warning("Released at %s, there is no socket here" % self.connection_end_point)
 
             elif event.button() == Qt.RightButton:
                 x = event.screenPos().x()
@@ -309,23 +312,23 @@ class NodeSocket(QGraphicsEllipseItem):
         else:
             return False
 
-    def __is_valid_connection(self, input_socket):
-        valid = True
-
-        if input_socket == self:
-            valid = False
-            self.scene.get_view().info_label.error("Output and input socket can't be the same!")
-
-        if self.is_connected_to(input_socket):
-            valid = False
-            self.scene.get_view().info_label.error("%s -> %s is already connected" % (self.name, input_socket.name))
-
-        if not self.__is_output_connected_to_input(input_socket):
-            valid = False
-            self.scene.get_view().info_label.error("%s is of type %s, %s is also of type %s" % (
-                self.name, self.io, input_socket.name, input_socket.type))
-
-        return valid
+    # def __is_valid_connection(self, input_socket):
+    #     valid = True
+    #
+    #     if input_socket == self:
+    #         valid = False
+    #         Logger().error("Output and input socket can't be the same!")
+    #
+    #     if self.is_connected_to(input_socket):
+    #         valid = False
+    #         Logger().error("%s -> %s is already connected" % (self.name, input_socket.name))
+    #
+    #     if not self.__is_output_connected_to_input(input_socket):
+    #         valid = False
+    #         Logger().error("%s is of type %s, %s is also of type %s" % (
+    #             self.name, self.io, input_socket.name, input_socket.type))
+    #
+    #     return valid
 
     def set_normal_colors(self):
         pen = QPen()

@@ -18,7 +18,7 @@ def main():
 
     window = tangle_window.TangleWindow()
 
-    window.showMaximized()
+    # window.showMaximized()
     window.show()
     splash_screen.finish(window)
 

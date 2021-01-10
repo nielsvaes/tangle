@@ -5,6 +5,7 @@ class SignalEmitter(QObject):
     def __init__(self):
         super(SignalEmitter, self).__init__()
 
-    def emit(self):
+    def fire(self, *args):
+        print(args)
         self.signal.emit()
 

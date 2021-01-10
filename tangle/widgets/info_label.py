@@ -25,6 +25,16 @@ class InfoLabel(QLabel):
 
         self.setGraphicsEffect(self.__fade_effect)
 
+    def show_message(self, status, text):
+        if status == "error":
+            self.error(text)
+        elif status == "success":
+            self.success(text)
+        elif status == "warning":
+            self.warning(text)
+        else:
+            self.info(text)
+
     def info(self, text):
         self.setStyleSheet(StyleSheets.normal)
         self.setText(text)
