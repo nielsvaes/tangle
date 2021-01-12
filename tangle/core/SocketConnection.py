@@ -60,7 +60,7 @@ class SocketConnection(QGraphicsPathItem):
         error_message = None
 
         if self.output_socket.socket_type.name != self.input_socket.socket_type.name:
-            if self.input_socket.socket_type.name != "debug" and not self.input_socket.socket_type.name != "list":
+            if self.input_socket.socket_type.name != "debug" and self.input_socket.socket_type.name != "list":
                 error_message = "Output socket type (%s) doesn't match input socket type (%s)" % \
                                 (self.output_socket.socket_type.name, self.input_socket.socket_type.name)
 
