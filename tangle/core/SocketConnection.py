@@ -85,7 +85,7 @@ class SocketConnection(QGraphicsPathItem):
             error_message = "%s doesn't allow multiple connections" % self.input_socket.name
 
         if self.input_socket.get_node().is_child_of(self.output_socket.get_node()):
-            error_message = "%s is an input of %s" % (self.input_socket.get_node().get_uuid(), self.output_socket.get_node().get_uuid())
+            error_message = "%s is an input of %s" % (self.input_socket.get_node(), self.output_socket.get_node())
 
         if self.input_socket.get_node() == self.output_socket.get_node():
             error_message = "Trying to connect to the same node!"
@@ -188,5 +188,5 @@ class SocketConnection(QGraphicsPathItem):
 
     def __str__(self):
         return "SocketConnection: %s.%s -> %s.%s" % \
-               (self.output_socket.get_uuid(True), self.output_socket.name,
-                self.input_socket.get_uuid(True), self.input_socket.name)
+               (self.output_socket.get_node(), self.output_socket.name,
+                self.input_socket.get_node(), self.input_socket.name)
