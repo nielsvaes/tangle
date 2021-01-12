@@ -6,7 +6,7 @@ from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
 
-from ez_settings.ez_settings import EZSettings as settings
+from ez_settings import EZSettings
 from ..core.Constants import sc
 from ..ui import about_ui
 
@@ -20,7 +20,7 @@ class AboutDialog(QDialog, about_ui.Ui_tangle_about):
         self.setupUi(self)
         self.setWindowIcon(QIcon(os.path.join(ICONS_PATH, "logo.png")))
         self.lbl_logo.setPixmap(QPixmap(os.path.join(ICONS_PATH, "logo.png")).scaled(self.lbl_logo.height(), self.lbl_logo.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
-        self.lbl_version.setText(str(settings().get(sc.version, 0.00)))
+        self.lbl_version.setText(str(EZSettings().get(sc.version, 0.00)))
         self.lbl_website.setText("<a href=http://www.nielsvaes.be>www.nielsvaes.be</a>")
         self.lbl_website.setOpenExternalLinks(True)
         self.show()

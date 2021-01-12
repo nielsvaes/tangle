@@ -6,12 +6,12 @@ from .SettingsConstants import ApplicationSettings as aps
 from ..widgets.info_label import InfoLabel
 from .Constants import StyleSheets as ss
 
-from ez_settings.ez_settings import EZSettings as ez_settings
+from ez_settings import EZSettings
 
 class NodeView(QGraphicsView):
     def __init__(self, scene, parent):
         super(NodeView, self).__init__(parent)
-        if ez_settings().get(aps.chk_high_quality_view, True):
+        if EZSettings().get(aps.chk_high_quality_view, True):
             self.setRenderHint(QPainter.HighQualityAntialiasing)
         self.setObjectName("View")
         self.setScene(scene)

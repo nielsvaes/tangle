@@ -9,7 +9,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 from PySide2.QtUiTools import *
 
-from ez_settings.ez_settings import EZSettings as ez_settings
+from ez_settings import EZSettings
 from .logger import Logger
 
 import ez_qt as qt_utils
@@ -33,8 +33,8 @@ from .viewers.graph_viewer import GraphViewerFloat #, GraphViewerDate
 
 TANGLE_VERSION = "1.0.7-alpha"
 
-ez_settings(Paths.SETTINGS_PATH)
-ez_settings().set(sc.version, TANGLE_VERSION)
+EZSettings(Paths.SETTINGS_PATH)
+EZSettings().set(sc.version, TANGLE_VERSION)
 
 
 class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):

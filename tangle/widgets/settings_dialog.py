@@ -5,7 +5,7 @@ logging.basicConfig(level=logging.INFO)
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 
-from ez_settings.ez_settings import EZSettings as ez_settings
+from ez_settings import EZSettings
 from ..ui import tangle_settings_ui
 
 SCRIPT_FOLDER = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))

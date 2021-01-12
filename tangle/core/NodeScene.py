@@ -12,7 +12,7 @@ from PySide2.QtCore import *
 import ez_utils.general as utils
 import ez_utils.io_utils as io_utils
 from . import socket_types
-from ez_settings.ez_settings import EZSettings as ez_settings
+from ez_settings import EZSettings
 
 from .SocketConnection import SocketConnection
 from .GroupNode import GroupNode
@@ -430,7 +430,7 @@ class NodeScene(QGraphicsScene):
                 item.destroy_self()
                 if type(item) == GroupNode:
                     group_node = item
-                    if ez_settings().get(ns.chk_delete_nodes_with_group_node, True) is True:
+                    if EZSettings().get(ns.chk_delete_nodes_with_group_node, True) is True:
                         group_node.destroy_nodes()
 
             except Exception as err:

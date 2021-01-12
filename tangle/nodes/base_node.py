@@ -16,7 +16,7 @@ from ..core.Constants import Colors, ss
 from ..core.SettingsConstants import NodeSettings as ns
 
 import ez_qt as qt_utils
-from ez_settings.ez_settings import EZSettings as ez_settings
+from ez_settings import EZSettings
 
 SCRIPT_FOLDER = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
@@ -133,7 +133,7 @@ class BaseNode(Node):
                     connected_node.compute(force=force)
 
     def get_ui(self):
-        help_visible = ez_settings().get(ns.chk_show_help_text_in_node_ui, True)
+        help_visible = EZSettings().get(ns.chk_show_help_text_in_node_ui, True)
         self.lbl_help_text.setVisible(help_visible)
         return self.__widget
 
