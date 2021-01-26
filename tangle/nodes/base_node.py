@@ -45,8 +45,8 @@ class BaseNode(Node):
 
         self.lbl_node_type = self.add_label(str(type(self).__name__), align_center=True)
         self.lbl_node_type.setStyleSheet(ss.bold_12pt)
-        self.lbl_uuid = self.add_label(str(self.get_uuid()), align_center=True)
-        self.lbl_uuid.setStyleSheet(ss.bold_9pt)
+        # self.lbl_uuid = self.add_label(str(self.get_uuid()), align_center=True)
+        # self.lbl_uuid.setStyleSheet(ss.bold_9pt)
 
         icon_layout = QHBoxLayout()
         self.__layout.addLayout(icon_layout)
