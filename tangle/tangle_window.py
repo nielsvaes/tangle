@@ -39,18 +39,21 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.setWindowTitle("Tangle")
-
         self.build_ui()
-        self.show()
-        
-        self.set_help_text("Testing!")
-        self.__image_viewer = ImageViewer(parent=self)
-        self.__graph_viewer = GraphViewerFloat(parent=self)
 
         Logger(self.view.info_label)
 
+        self.ensure_node_db()
+
+        self.show()
+
+        self.__image_viewer = ImageViewer(parent=self)
+        self.__graph_viewer = GraphViewerFloat(parent=self)
+
+
     def build_ui(self):
+        self.setWindowTitle("Tangle")
+
         self.scene = NodeScene()
         self.scene.setObjectName('Scene')
         self.scene.setSceneRect(0, 0, 50000, 28000)
@@ -133,6 +136,13 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
             self.values_layout.removeWidget(widgetToRemove)
             # remove it from the gui
             widgetToRemove.setParent(None)
+
+    def ensure_node_db(self):
+        if not os.path.exists(Paths.NODE_INFO_DB):
+            result = QMessageBox().question(self, "Tangle", "Can't find the node DB file, do you want to generate "
+                                                    "it now?")
+            if result == QMessageBox.Yes:
+                self.generate_node_database()
 
     def generate_node_database(self):
         node_db.generate_database(self.node_tree.get_all_node_items(), self.scene)

@@ -1,15 +1,7 @@
-import os
-import logging
-logging.basicConfig(level=logging.INFO)
+from .logger import Logger
+from .core.Constants import Paths
 
 import ez_utils.io_utils as io_utils
-
-SCRIPT_FOLDER = os.path.dirname(os.path.realpath(__file__))
-UI_PATH = os.path.join(SCRIPT_FOLDER, "ui")
-SETTINGS_PATH = os.path.join(SCRIPT_FOLDER, "settings", "tangle_settings.json")
-NODE_INFO_DB = os.path.join(SCRIPT_FOLDER, "settings", "node_info.json")
-ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
-NODE_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "nodes")
 
 def generate_database(node_items, scene):
     nodes_dict_list = []
@@ -27,12 +19,13 @@ def generate_database(node_items, scene):
 
             temp_node.destroy_self()
         except Exception as err:
-            logging.error(err)
-    io_utils.write_json(nodes_dict_list, NODE_INFO_DB)
+            Logger().error(str(err))
+    io_utils.write_json(nodes_dict_list, Paths.NODE_INFO_DB)
+    Logger().info("Saved NODE_INFO_DB - %s" % Paths.NODE_INFO_DB)
 
 def get_node_dicts_with_input_of_type(input_type):
     node_dicts = []
-    for node_dict in io_utils.read_json(NODE_INFO_DB):
+    for node_dict in io_utils.read_json(Paths.NODE_INFO_DB):
         for input in node_dict.get("inputs"):
             if input == input_type:
                 node_dicts.append(node_dict)
@@ -40,7 +33,7 @@ def get_node_dicts_with_input_of_type(input_type):
 
 def get_node_dicts_with_output_of_type(output_type):
     node_dicts = []
-    for node_dict in io_utils.read_json(NODE_INFO_DB):
+    for node_dict in io_utils.read_json(Paths.NODE_INFO_DB):
         for output in node_dict.get("outputs"):
             if output == output_type:
                 node_dicts.append(node_dict)
