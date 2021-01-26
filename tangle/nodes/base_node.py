@@ -169,7 +169,7 @@ class BaseNode(Node):
         self.__layout.addWidget(line)
 
     def add_spacer(self, width=10, height=20):
-        spacer = QSpacerItem(10, 20)
+        spacer = QSpacerItem(width, height)
         self.__layout.addSpacerItem(spacer)
 
         return spacer
