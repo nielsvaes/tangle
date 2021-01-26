@@ -1,5 +1,4 @@
 import os
-import sys
 from functools import partial
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -7,7 +6,6 @@ logging.basicConfig(level=logging.INFO)
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
-from PySide2.QtUiTools import *
 
 from ez_settings import EZSettings
 from .logger import Logger
@@ -29,7 +27,7 @@ from .widgets.settings_dialog import SettingsDialog
 from . import node_db
 
 from .viewers.image_viewer import ImageViewer
-from .viewers.graph_viewer import GraphViewerFloat #, GraphViewerDate
+from .viewers.graph_viewer import GraphViewerFloat
 
 TANGLE_VERSION = "1.0.7-alpha"
 
