@@ -18,8 +18,6 @@ import ez_utils.general as utils
 import ez_qt as qt_utils
 
 class NodeSocket(QGraphicsEllipseItem):
-    # got_connected = Signal(str)
-    # got_disconnected = Signal(str)
     def __init__(self, io, socket_type, label, scene, position=None):
         super(NodeSocket, self).__init__()
         self.rect = QRectF(0, 0, nc.socket_size, nc.socket_size)

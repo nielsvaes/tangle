@@ -8,7 +8,7 @@ data_files_to_include = ["*.png", "*.tngl", "*.jpg"]
 
 setup(
     name='tangle-node-editor',
-    version='1.0.6-alpha',
+    version='1.0.7-alpha',
     packages=find_packages(),
     package_data={
         "": data_files_to_include,
