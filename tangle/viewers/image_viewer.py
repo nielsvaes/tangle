@@ -37,7 +37,7 @@ class ImageViewer(QDockWidget):
                                                           Qt.KeepAspectRatio, Qt.SmoothTransformation))
         except AttributeError as err:
             pass
-            ez_utils.general.trace(err)
+            #ez_utils.general.trace(err)
 
     def set_pixmap(self, pixmap):
         if self.chk_auto_update.isChecked():
