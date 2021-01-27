@@ -125,9 +125,7 @@ class TangleWindow(QMainWindow, tangle_ui.Ui_tangle_window):
                 if issubclass(type(node), BaseNode) or type(node) == GroupNode:
                     node.refresh()
                     widget = node.get_ui()
-                    widget.setVisible(True)
                     self.values_layout.addWidget(widget)
-                    # self.values_layout.insertWidget(self.values_layout.count() + 1, widget)
 
     def clear_values_ui(self):
         for i in reversed(range(self.values_layout.count())):
