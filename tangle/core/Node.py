@@ -6,6 +6,8 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 import uuid
 
+from ..logger import Logger
+
 import ez_utils
 
 from .Constants import nc, Colors, IO
@@ -47,6 +49,7 @@ class Node(QGraphicsRectItem):
 
         self.scene.addItem(self)
         self.scene.addItem(self.title)
+        print(self)
 
     def add_output(self, socket_type, output_name):
         if self.get_socket(output_name, IO.output) is not None:
@@ -559,3 +562,6 @@ class Node(QGraphicsRectItem):
         self.node_title_background = NodeTitleBackground(self.scene, self, self.title_background_color)
 
         return node_title
+
+    def __str__(self):
+        return self.__class__.__name__

@@ -187,6 +187,6 @@ class SocketConnection(QGraphicsPathItem):
         self.setPen(pen)
 
     def __str__(self):
-        return "SocketConnection: %s.%s -> %s.%s" % \
+        return "SOCKETCONNECTION: %s.%s -> %s.%s" % \
                (self.output_socket.get_node(), self.output_socket.name,
                 self.input_socket.get_node(), self.input_socket.name)
