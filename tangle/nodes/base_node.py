@@ -426,9 +426,7 @@ class BaseNode(Node):
             self.set_uuid(node_dict.get("uuid"))
 
     def _toggle_help_label(self):
-        print("toggling")
         visible = self.chk_show_help.isChecked()
-        print(visible)
         self.lbl_help_text.setVisible(visible)
 
     def hoverEnterEvent(self, event):
