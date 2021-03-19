@@ -18,7 +18,7 @@ SETTINGS_PATH = os.path.join(SCRIPT_FOLDER, "settings", "tangle_settings.json")
 ICONS_PATH = os.path.join(SCRIPT_FOLDER, "ui", "icons")
 NODE_FOLDER = os.path.join(SCRIPT_FOLDER, "nodes")
 
-class NodeTree(QTreeWidget, node_tree_ui.Ui_Form):
+class NodeTree(QWidget, node_tree_ui.Ui_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
