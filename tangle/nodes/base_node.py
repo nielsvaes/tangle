@@ -57,7 +57,6 @@ class BaseNode(Node):
         icon_layout.addWidget(self.lbl_icon)
 
         self.lbl_help_text = self.add_label("")
-        self._toggle_help_label()
 
         self.add_horizontal_line()
         self.add_spacer()
