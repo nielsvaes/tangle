@@ -48,9 +48,6 @@ class BaseNode(Node):
         # self.lbl_uuid = self.add_label(str(self.get_uuid()), align_center=True)
         # self.lbl_uuid.setStyleSheet(ss.bold_9pt)
 
-        self.chk_show_help = self.add_checkbox("Show help text", checked=False,
-                                               change_checked_function=self._toggle_help_label)
-
         icon_layout = QHBoxLayout()
         self.__layout.addLayout(icon_layout)
         self.lbl_icon = self.add_label("", align_center=True)
@@ -425,9 +422,6 @@ class BaseNode(Node):
         else:
             self.set_uuid(node_dict.get("uuid"))
 
-    def _toggle_help_label(self):
-        visible = self.chk_show_help.isChecked()
-        self.lbl_help_text.setVisible(visible)
 
     def hoverEnterEvent(self, event):
         super().hoverEnterEvent(event)
