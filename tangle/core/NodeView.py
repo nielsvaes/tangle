@@ -20,7 +20,7 @@ class NodeView(QGraphicsView):
 
         self.setDragMode(QGraphicsView.RubberBandDrag)
 
-        self.scale(0.9, 0.9)
+        self.scale(0.45, 0.45)
 
         font = QFont()
         font.setPointSize(8)
@@ -62,7 +62,7 @@ class NodeView(QGraphicsView):
 
     def wheelEvent(self, event):
         if event.angleDelta().y() > 0:
-            if self.zoom < 15:
+            if self.zoom < 30:
                 self.zoom += 1
                 self.scale(1.1, 1.1)
         else:
