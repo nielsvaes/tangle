@@ -172,7 +172,7 @@ class Node(QGraphicsRectItem):
     def set_uuid(self, new_uuid):
         if type(new_uuid) == str:
             new_uuid = uuid.UUID(new_uuid)
-        self.lbl_uuid.setText(str(new_uuid))
+        # self.lbl_uuid.setText(str(new_uuid))
         self.__uuid = new_uuid
 
     def get_socket_by_uuid(self, search_uuid):
