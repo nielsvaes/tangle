@@ -30,12 +30,12 @@ class SettingsDialog(QDialog, tangle_settings_ui.Ui_tangle_settings):
 
     def load_checkboxes(self):
         for checkbox in self.findChildren(QCheckBox):
-            if ez_settings().exists(checkbox.objectName()):
-                checkbox.setChecked(ez_settings().get(checkbox.objectName()))
+            if EZSettings().exists(checkbox.objectName()):
+                checkbox.setChecked(EZSettings().get(checkbox.objectName()))
 
     def save_checkboxes(self):
         for checkbox in self.findChildren(QCheckBox):
-            ez_settings().set(checkbox.objectName(), checkbox.isChecked())
+            EZSettings().set(checkbox.objectName(), checkbox.isChecked())
 
     def load_settings(self):
         self.load_checkboxes()
